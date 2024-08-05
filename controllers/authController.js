@@ -72,6 +72,14 @@ import generateTokens from '../helpers/generateToken.js';
 // 	};
 // };
 
+export const getAuthRoutes = async (req, res) => {
+  res.status(200).send({
+    route1: 'router.get("", controller.getAuthRoutes)',
+    route2: 'router.post("/login", controller.login)',
+    route3: 'router.post("/logout", controller.logout);',
+   });
+};
+
 export const login = async (req, res) => {
 	try {
 		const { name, phone, email, password } = req.body;
