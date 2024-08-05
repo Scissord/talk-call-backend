@@ -75,6 +75,7 @@ import generateTokens from '../helpers/generateToken.js';
 export const login = async (req, res) => {
 	try {
 		const { name, phone, email, password } = req.body;
+    console.log(req.body)
 
 		const user = await User.findOne(name, phone, email);
 		const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
