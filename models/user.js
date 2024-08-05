@@ -23,30 +23,10 @@ export const isExist = async function (name, phone) {
     .first();
 };
 
-export const findOne = async function (query) {
+export const findOne = async function (name) {
   return await db('user')
     .select('*')
-    .modify((queryBuilder) => {
-      // Регулярное выражение для проверки телефона
-      // Поддержка номеров, начинающихся с + и цифр, и состоящих из 10-15 цифр
-      const phonePattern = /^(\+?\d{1,3})?\d{10,15}$/;
-
-      // Регулярное выражение для проверки почты (основные проверки, могут быть улучшены)
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      // Проверяем, соответствует ли запрос шаблону телефона
-      if (phonePattern.test(query)) {
-        queryBuilder.where('phone', query);
-      }
-      // Проверяем, соответствует ли запрос шаблону почты
-      else if (emailPattern.test(query)) {
-        queryBuilder.where('email', query);
-      }
-      // Если это не телефон и не почта, то предполагаем, что это имя
-      else {
-        queryBuilder.where('name', query);
-      }
-    })
+    .where('name', name)
     .first();
 };
 
