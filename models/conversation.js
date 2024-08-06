@@ -27,7 +27,7 @@ export const get = async function (limit, page, search, type, status) {
 };
 
 export const findByCustomerId = async function (customer_id) {
-  return await db('customer')
+  return await db('conversation')
     .select('*')
     .where('customer_id', customer_id)
     .first();

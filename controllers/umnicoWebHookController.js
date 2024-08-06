@@ -41,7 +41,7 @@ export const getIncomingMessages = async (req, res) => {
 
 		res.status(200).send({ message: 'ok' });
 	}	catch (err) {
-		console.log("Error in get product controller", err.message);
+		console.log("Error in post getIncomingMessages controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
 	}
 };
