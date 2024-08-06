@@ -23,5 +23,5 @@ export const getChat = async function (conversation_id) {
     .leftJoin('conversation as co', 'co.id', 'm.conversation_id')
     .leftJoin('customer as cu', 'cu.id', 'co.customer_id')
     .where('conversation_id', conversation_id)
-    .groupBy('m.id');
+    .groupBy('m.id', 'cu.avatar');
 };
