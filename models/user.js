@@ -23,10 +23,10 @@ export const isExist = async function (name, phone) {
     .first();
 };
 
-export const findOne = async function (name) {
+export const findOne = async function (login) {
   return await db('user')
     .select('*')
-    .where('name', name)
+    .where('name', login)
     .first();
 };
 

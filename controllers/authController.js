@@ -14,15 +14,16 @@ export const getAuthRoutes = async (req, res) => {
 
 export const login = async (req, res) => {
 	try {
-		const { name, password } = req.body;
+		const { login, password } = req.body;
 
-		const user = await User.findOne(name);
+		const user = await User.findOne(login);
 		const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
 
     if(!user) return res.status(400).send({ error: "This user does not exist" });
 		if(!isPasswordCorrect) return res.status(400).send({ error: "Invalid password" });
 
     const token = generateToken(user.id);
+    await UserToken.update({ userId: user.id, token });
 
 		res.status(200).send({ message: "Successfully login", user, token });
 	}	catch (err) {
