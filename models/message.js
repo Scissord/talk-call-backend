@@ -16,7 +16,8 @@ export const create = async function (data) {
 };
 
 export const getChat = async function (conversation_id) {
-  return await db('message')
-    .select('*')
+  return await db('message as m')
+    .select('m.*', 'a.*')
+    .leftJoin('attachment as a', 'a.message_id', 'm.id')
     .where('conversation_id', conversation_id)
 };
