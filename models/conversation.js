@@ -22,7 +22,7 @@ export const get = async function (limit, page, search, type, status) {
 
   return {
     conversations,
-    lastPage
+    // lastPage
   }
 };
 
