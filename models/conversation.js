@@ -14,7 +14,7 @@ export const get = async function (limit, page, search, type, status) {
     .where((q) => {
       search && q.where('name', 'ilike', `%${search}%`);
       status && q.where('status', status);
-      type && q.where('type', type);
+      type && q.where('isFavorite', type);
     })
     .limit(limit)
     .offset(offset)
