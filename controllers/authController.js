@@ -19,8 +19,8 @@ export const login = async (req, res) => {
 		const user = await User.findOne(name);
 		const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
 
-    if(!user) return res.status(400).send({ error: "Такого пользователя не существует" });
-		if(!isPasswordCorrect) return res.status(400).send({ error: "Неверный пароль" });
+    if(!user) return res.status(400).send({ message: "Такого пользователя не существует" });
+		if(!isPasswordCorrect) return res.status(400).send({ message: "Неверный пароль" });
 
     const token = generateToken(user.id);
     await UserToken.updateWhere({ user_id: user.id }, { token });
