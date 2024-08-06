@@ -3,14 +3,18 @@ import countPagination from '../helpers/countPagination.js';
 
 const db = knex();
 
-export const get = async function (limit, page, search, status) {
-  const { offset, lastPage } = await countPagination('conversation', limit, page, search, status);
+export const get = async function (limit, page, search, type, status) {
+  const { offset } = await countPagination(
+    'conversation', limit, page,
+    search, type, status
+  );
 
   const conversations = await db('conversation')
     .select('*')
     .where((q) => {
       search && q.where('name', 'ilike', `%${search}%`);
       status && q.where('status', status);
+      type && q.where('type', type);
     })
     .limit(limit)
     .offset(offset)

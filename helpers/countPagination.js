@@ -2,7 +2,7 @@ import knex from '../models/knex.js';
 
 const db = knex();
 
-export default async function(table, limit, page, search, status) {
+export default async function(table, limit, page, search, type, status) {
   const offset = (page - 1) * limit;
 
   const total = await db(table)
@@ -10,13 +10,14 @@ export default async function(table, limit, page, search, status) {
     .where((q) => {
       search && q.where('name', 'ilike', `%${search}%`);
       status && q.where('status', status);
+      type && q.where('type', type);
     })
     .first();
 
-  const lastPage = Math.ceil(+total.count / +limit);
+  // const lastPage = Math.ceil(+total.count / +limit);
 
   return {
     offset,
-    lastPage
+    // lastPage
   }
 }

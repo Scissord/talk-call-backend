@@ -4,7 +4,7 @@ import * as Message from "../models/message.js";
 
 export const get = async (req, res) => {
 	try {
-    const { limit, page, search } = req.query;
+    const { limit, page, type, search } = req.query;
     const { role } = req.user;
 
     let status = 0;
@@ -25,9 +25,9 @@ export const get = async (req, res) => {
       status = 3;
     };
 
-    const { conversations, lastPage } = await Conversation.get(limit, page, search, status);
+    const { conversations } = await Conversation.get(limit, page, search, type, status);
 
-		res.status(200).send({ message: 'ok', conversations, lastPage });
+		res.status(200).send({ message: 'ok', conversations });
 	}	catch (err) {
 		console.log("Error in get product controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
