@@ -9,6 +9,8 @@ export const get = async (req, res) => {
 
     let status = 0;
 
+    console.log(role);
+
     if(role.id === 1 || role.id === 2) {
       status = 0;
     };
@@ -24,6 +26,8 @@ export const get = async (req, res) => {
     if(role.id === 7) {
       status = 3;
     };
+
+    console.log(status);
 
     const { conversations } = await Conversation.get(limit, page, search, type, status);
 
