@@ -16,6 +16,8 @@ export const getIncomingMessages = async (req, res) => {
       const customer_avatar = req.body.message.sender.avatar;
       const message = req.body.message.message.text;
 
+      console.log(req.body.message.message);
+
       // check if customer exist
       let customer = await Customer.findByPhone(customer_phone)
       if(!customer) {
