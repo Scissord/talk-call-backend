@@ -24,6 +24,7 @@ export const isExist = async function (name, phone) {
 };
 
 export const findOne = async function (login) {
+  console.log(login);
   return await db('user')
     .select('*')
     .where('name', login)
