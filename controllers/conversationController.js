@@ -27,7 +27,21 @@ export const get = async (req, res) => {
 
 		res.status(200).send({ message: 'ok', conversations });
 	}	catch (err) {
-		console.log("Error in get product controller", err.message);
+		console.log("Error in get conversation controller", err.message);
+		res.status(500).send({ error: "Internal Server Error" });
+	}
+};
+
+export const makeFavorite = async (req, res) => {
+	try {
+    const customer_id = req.params.customer_id;
+    const user = req.user;
+
+    console.log(customer_id, user)
+
+		res.status(200).send({ message: 'ok' });
+	}	catch (err) {
+		console.log("Error in get conversation controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
 	}
 };
