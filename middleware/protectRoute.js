@@ -13,20 +13,20 @@ const protectRoute = async (req, res, next) => {
     if(!decodedAccessToken) return res.status(400).send({ error: "Invalid Token" })
 
     const userToken = await UserToken.findByUserId(decodedAccessToken.userId);
-
-    if(accessToken === userToken.token) {
-      const user = await User.findById(decodedAccessToken.userId);
-      if (!user) return res.status(401).send({ error: "User not found" });
-
-      const role = await Role.getForUser(user.id);
-      if (!role) return res.status(401).send({ error: "User role nor found" });
-      user.role = role
-
-      req.user = user;
-      next();
-    } else {
+    if (!userToken || accessToken !== userToken.token) {
       return res.status(401).send({ error: "Invalid Token" });
     }
+
+    const user = await User.findById(decodedAccessToken.userId);
+    if (!user) return res.status(401).send({ error: "User not found" });
+
+    const role = await Role.getForUser(user.id);
+    if (!role) return res.status(401).send({ error: "User role nor found" });
+
+    user.role = role
+
+    req.user = user;
+    next();
   } catch (err) {
     console.log("Error in protectRoute controller", err.message);
     res.status(500).send({ error: "Internal Server Error" });
