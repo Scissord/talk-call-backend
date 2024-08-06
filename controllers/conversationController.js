@@ -32,12 +32,12 @@ export const get = async (req, res) => {
 	}
 };
 
-export const makeFavorite = async (req, res) => {
+export const toggleFavorite = async (req, res) => {
 	try {
     const customer_id = req.params.customer_id;
-    const user = req.user;
+    const isFavorite = req.body.isFavorite;
 
-    console.log(customer_id, user)
+    await Conversation.update(customer_id, { isFavorite: !isFavorite });
 
 		res.status(200).send({ message: 'ok' });
 	}	catch (err) {

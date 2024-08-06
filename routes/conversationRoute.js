@@ -5,6 +5,6 @@ import protectRoute from "../middleware/protectRoute.js";
 const router = express.Router();
 
 router.get("", protectRoute, controller.get);
-router.patch("/:customer_id", protectRoute, controller.makeFavorite);
+router.patch("/:customer_id", protectRoute, controller.toggleFavorite);
 
 export default router;

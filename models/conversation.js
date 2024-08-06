@@ -44,3 +44,12 @@ export const create = async function (data) {
   data.id = conversation.id;
   return data;
 };
+
+export const updateByCustomerId = async function (customer_id, data) {
+  const [conversation] = await db("conversation")
+    .where("customer_id", customer_id)
+    .update(data)
+    .returning("*");
+
+  return conversation;
+};
