@@ -4,6 +4,6 @@ import protectRoute from "../middleware/protectRoute.js";
 
 const router = express.Router();
 
-router.get("/:customer_id", protectRoute, controller.get);
+router.get("/:conversation_id", protectRoute, controller.get);
 
 export default router;

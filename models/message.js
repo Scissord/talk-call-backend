@@ -15,8 +15,8 @@ export const create = async function (data) {
   return data;
 };
 
-export const getChat = async function (customer_id) {
+export const getChat = async function (conversation_id) {
   return await db('message')
     .select('*')
-    .where('customer_id', customer_id)
+    .where('conversation_id', conversation_id)
 };
