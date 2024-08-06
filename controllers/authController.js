@@ -23,7 +23,7 @@ export const login = async (req, res) => {
 		if(!isPasswordCorrect) return res.status(400).send({ error: "Invalid password" });
 
     const token = generateToken(user.id);
-    console.log(token);
+    console.log(user, token);
     await UserToken.update({ userId: user.id, token });
 
 		res.status(200).send({ message: "Successfully login", user, token });
