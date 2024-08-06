@@ -12,7 +12,7 @@ const protectRoute = async (req, res, next) => {
     const decodedAccessToken = jwt.verify(accessToken, process.env.JWT_SECRET);
     if(!decodedAccessToken) return res.status(400).send({ error: "Invalid Token" })
 
-    const userToken = await UserToken.findById(decodedAccessToken.userId);
+    const userToken = await UserToken.findByUserId(decodedAccessToken.userId);
 
     if(accessToken === userToken.token) {
       const user = await User.findById(decodedAccessToken.userId);
