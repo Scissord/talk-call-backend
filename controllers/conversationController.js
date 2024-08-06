@@ -37,6 +37,8 @@ export const toggleFavorite = async (req, res) => {
     const customer_id = req.params.customer_id;
     const isFavorite = req.body.isFavorite;
 
+    console.log(isFavorite, !isFavorite)
+
     await Conversation.updateByCustomerId(customer_id, { isFavorite: !isFavorite });
 
 		res.status(200).send({ message: 'ok' });
