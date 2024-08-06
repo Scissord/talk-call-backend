@@ -14,3 +14,10 @@ export const create = async function (data) {
   data.id = customer.id;
   return data;
 };
+
+export const findByPhone = async function (phone) {
+  return await db('customer')
+    .select('*')
+    .where('phone', phone)
+    .first();
+};

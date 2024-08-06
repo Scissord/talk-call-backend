@@ -5,13 +5,12 @@ import * as Message from "../models/message.js";
 
 export const getIncomingMessages = async (req, res) => {
 	try {
-    console.log(req.body);
-
     if (!req.body || req.body.type !== 'message.incoming') {
       return res.status(400).send({ error: "Bad Request" });
     };
 
     if(req.body.type === 'message.incoming') {
+      console.log(req.body)
       const { leadId, message } = req.body;
 
       // Проверка наличия leadId
@@ -24,12 +23,14 @@ export const getIncomingMessages = async (req, res) => {
         return res.status(400).send({ error: "Missing message" });
       };
 
-      const customer = await Customer.create({ lead_id: leadId });
-      const conversation = await Conversation.create({ customer_id: customer.id });
-      await Message.create({
-        conversation_id: conversation.id,
-        text: message
-      });
+      const customer = await Customer.findByPhone()
+
+      // const customer = await Customer.create({ lead_id: leadId });
+      // const conversation = await Conversation.create({ customer_id: customer.id });
+      // await Message.create({
+      //   conversation_id: conversation.id,
+      //   text: message
+      // });
     };
 
 		res.status(200).send({ message: 'ok' });
