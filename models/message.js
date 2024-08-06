@@ -17,7 +17,7 @@ export const create = async function (data) {
 
 export const getChat = async function (conversation_id) {
   return await db('message as m')
-    .select('m.*', 'co.avatar')
+    .select('m.*', 'cu.avatar')
     .select(db.raw('COALESCE(json_agg(a.*) FILTER (WHERE a.id IS NOT NULL), \'[]\') as attachments'))
     .leftJoin('attachment as a', 'a.message_id', 'm.id')
     .leftJoin('conversation as co', 'co.id', 'm.conversation_id')
