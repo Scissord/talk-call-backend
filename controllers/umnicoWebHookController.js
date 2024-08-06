@@ -10,27 +10,33 @@ export const getIncomingMessages = async (req, res) => {
     };
 
     if(req.body.type === 'message.incoming') {
-      console.log(req.body)
-      const { leadId, message } = req.body;
+      const customer_name = req.body.message.sender.login;
+      const customer_phone = req.body.message.sender.socialId;
+      const buyer_phone = req.body.message.sa.login;
+      const customer_avatar = req.body.message.sender.avatar;
+      const message = req.body.message.message.text;
 
-      // Проверка наличия leadId
-      if (!leadId) {
-        return res.status(400).send({ error: "Missing leadId" });
+      // check if customer exist
+      let customer = await Customer.findByPhone(customer_phone)
+      if(!customer) {
+        customer = await Customer.create({
+          name: customer_name,
+          phone: customer_phone,
+          avatar: customer_avatar,
+          buyer_phone
+        });
       };
 
-      // Проверка наличия сообщения
-      if (!message) {
-        return res.status(400).send({ error: "Missing message" });
+      let conversation = await Conversation.findByCustomerId(customer.id);
+      if(!conversation) {
+        conversation = await Conversation.create({ customer_id: customer.id });
       };
 
-      const customer = await Customer.findByPhone()
-
-      // const customer = await Customer.create({ lead_id: leadId });
-      // const conversation = await Conversation.create({ customer_id: customer.id });
-      // await Message.create({
-      //   conversation_id: conversation.id,
-      //   text: message
-      // });
+      await Message.create({
+        conversation_id: conversation.id,
+        text: message,
+        incoming: true
+      });
     };
 
 		res.status(200).send({ message: 'ok' });

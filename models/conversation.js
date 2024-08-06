@@ -26,6 +26,13 @@ export const get = async function (limit, page, search, type, status) {
   }
 };
 
+export const findByCustomerId = async function (customer_id) {
+  return await db('customer')
+    .select('*')
+    .where('customer_id', customer_id)
+    .first();
+};
+
 export const create = async function (data) {
   const [conversation] = await db("conversation")
     .insert(data)
