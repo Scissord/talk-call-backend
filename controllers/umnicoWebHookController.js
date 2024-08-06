@@ -2,6 +2,7 @@ import axios from "axios";
 import * as Customer from "../models/customer.js";
 import * as Conversation from "../models/conversation.js";
 import * as Message from "../models/message.js";
+import * as Attachment from "../models/attachment.js";
 
 export const getIncomingMessages = async (req, res) => {
 	try {
@@ -14,9 +15,8 @@ export const getIncomingMessages = async (req, res) => {
       const customer_phone = req.body.message.sender.socialId;
       const buyer_phone = req.body.message.sa.login;
       const customer_avatar = req.body.message.sender.avatar;
-      const message = req.body.message.message.text;
-
-      console.log(req.body.message.message);
+      const text = req.body.message.message.text;
+      const attachments = req.body.message.message.attachments;
 
       // check if customer exist
       let customer = await Customer.findByPhone(customer_phone)
@@ -34,11 +34,24 @@ export const getIncomingMessages = async (req, res) => {
         conversation = await Conversation.create({ customer_id: customer.id });
       };
 
-      await Message.create({
+
+
+      const message = await Message.create({
         conversation_id: conversation.id,
-        text: message,
-        incoming: true
+        incoming: true,
+        text,
       });
+
+      if(attachments) {
+        for(const attachment of attachments) {
+          await Attachment.create({
+            message_id: message.id,
+            type: attachment.type,
+            url: attachment.url,
+            size: attachment.filesize,
+          });
+        };
+      };
     };
 
 		res.status(200).send({ message: 'ok' });
