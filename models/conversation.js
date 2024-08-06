@@ -14,7 +14,9 @@ export const get = async function (limit, page, search, type, status) {
     .leftJoin('customer as cu', 'cu.id', 'co.customer_id')
     .where((q) => {
       search && q.where('co.name', 'ilike', `%${search}%`);
-      status && q.where('co.status', status);
+      if(status) {
+        q.where('co.status', status);
+      }
       type && q.where('co.isFavorite', type);
     })
     .limit(limit)
