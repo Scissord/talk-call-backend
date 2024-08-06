@@ -34,6 +34,7 @@ export const updateWhere = async function (condition, data) {
 };
 
 export const findByUserId = async function (user_id) {
+  console.log(user_id)
   const [user_token] = await db("user_token")
     .select('*')
     .where("user_id", user_id)
