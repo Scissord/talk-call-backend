@@ -14,3 +14,9 @@ export const create = async function (data) {
   data.id = message.id;
   return data;
 };
+
+export const getChat = async function (customer_id) {
+  return await db('message')
+    .select('*')
+    .where('customer_id', customer_id)
+};
