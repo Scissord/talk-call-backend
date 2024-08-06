@@ -24,6 +24,15 @@ export const update = async function (id, data) {
   return user_token;
 };
 
+export const updateWhere = async function (condition, data) {
+  const [user_token] = await db("user_token")
+    .where(condition)
+    .update(data)
+    .returning("*");
+
+  return user_token;
+};
+
 export const findByUserId = async function (user_id) {
   const [user_token] = await db("user_token")
     .select('*')

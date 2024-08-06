@@ -24,7 +24,7 @@ export const login = async (req, res) => {
 
     const token = generateToken(user.id);
     console.log(user, token);
-    await UserToken.update({ userId: user.id, token });
+    await UserToken.update({ user_id: user.id }, { token });
 
 		res.status(200).send({ message: "Successfully login", user, token });
 	}	catch (err) {
