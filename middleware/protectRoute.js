@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import * as User from '../models/user.js';
 import * as UserToken from '../models/user_token.js';
+import * as Role from '../models/role.js';
 
 const protectRoute = async (req, res, next) => {
   try {
@@ -16,6 +17,10 @@ const protectRoute = async (req, res, next) => {
     if(accessToken === userToken.token) {
       const user = await User.findById(decodedAccessToken.userId);
       if (!user) return res.status(401).send({ error: "User not found" });
+
+      const role = await Role.getForUser(user.id);
+      if (!role) return res.status(401).send({ error: "User role nor found" });
+      user.role = role
 
       req.user = user;
       next();

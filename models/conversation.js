@@ -1,11 +1,25 @@
 import knex from './knex.js';
+import countPagination from '../helpers/countPagination.js';
 
 const db = knex();
 
-export const get = async function (status) {
-  return await db('conversation')
+export const get = async function (limit, page, search, status) {
+  const { offset, lastPage } = await countPagination('product', limit, page, search, status);
+
+  const conversations = await db('conversation')
     .select('*')
-    .where('status', status);
+    .where((q) => {
+      search && q.where('name', 'ilike', `%${search}%`);
+      status && q.where('status', status);
+    })
+    .limit(limit)
+    .offset(offset)
+    .orderBy('id', 'desc');
+
+  return {
+    conversations,
+    lastPage
+  }
 };
 
 export const create = async function (data) {
