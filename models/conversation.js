@@ -9,16 +9,17 @@ export const get = async function (limit, page, search, type, status) {
     search, type, status
   );
 
-  const conversations = await db('conversation')
-    .select('*')
+  const conversations = await db('conversation as co')
+    .select('co.*', 'cu.*')
+    .leftJoin('customer as cu', 'cu.id', 'co.customer_id')
     .where((q) => {
-      search && q.where('name', 'ilike', `%${search}%`);
-      status && q.where('status', status);
-      type && q.where('isFavorite', type);
+      search && q.where('co.name', 'ilike', `%${search}%`);
+      status && q.where('co.status', status);
+      type && q.where('co.isFavorite', type);
     })
     .limit(limit)
     .offset(offset)
-    .orderBy('id', 'desc');
+    .orderBy('co.id', 'desc');
 
   return {
     conversations,
