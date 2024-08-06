@@ -4,7 +4,7 @@ import countPagination from '../helpers/countPagination.js';
 const db = knex();
 
 export const get = async function (limit, page, search, status) {
-  const { offset, lastPage } = await countPagination('product', limit, page, search, status);
+  const { offset, lastPage } = await countPagination('conversation', limit, page, search, status);
 
   const conversations = await db('conversation')
     .select('*')

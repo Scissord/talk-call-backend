@@ -13,7 +13,6 @@ const protectRoute = async (req, res, next) => {
     if(!decodedAccessToken) return res.status(400).send({ error: "Invalid Token" })
 
     const userToken = await UserToken.findByUserId(decodedAccessToken.userId);
-    console.log(accessToken, userToken.token)
     if (!userToken || accessToken !== userToken.token) {
       return res.status(401).send({ error: "Invalid Token" });
     }
