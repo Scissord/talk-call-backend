@@ -5,6 +5,8 @@ export const get = async (req, res) => {
     const conversation_id = req.params.conversation_id
     const messages = await Message.getChat(conversation_id);
 
+    console.log(messages);
+
 		res.status(200).send({ message: 'ok', messages });
 	}	catch (err) {
 		console.log("Error in get message controller", err.message);
