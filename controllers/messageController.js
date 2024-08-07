@@ -24,6 +24,8 @@ export const create = async (req, res) => {
     const conversation_id = req.params.conversation_id;
     const files = req.body.files;
 
+    console.log(customer.source)
+
     // try {
       await axios({
         method: 'POST',
@@ -34,7 +36,7 @@ export const create = async (req, res) => {
             // attachment: {},
             // attachment: files[0]
           },
-          source: +customer.source,
+          source: customer.source,
           userId: +req.user.umnico_user_id
         },
         headers: {
