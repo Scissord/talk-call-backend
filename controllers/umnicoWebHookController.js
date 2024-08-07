@@ -18,6 +18,8 @@ export const getIncomingMessages = async (req, res) => {
       const text = req.body.message.message.text;
       const attachments = req.body.message.message.attachments;
 
+      console.log(req.body);
+
       // check if customer exist
       let customer = await Customer.findByPhone(customer_phone)
       if(!customer) {
@@ -34,11 +36,10 @@ export const getIncomingMessages = async (req, res) => {
         conversation = await Conversation.create({ customer_id: customer.id });
       };
 
-
-
       const message = await Message.create({
         conversation_id: conversation.id,
         incoming: true,
+        // lead_id: ,
         text,
       });
 
