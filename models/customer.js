@@ -16,7 +16,6 @@ export const create = async function (data) {
 };
 
 export const find = async function (id) {
-  console.log(id)
   return await db('customer')
     .select('*')
     .where('id', id)

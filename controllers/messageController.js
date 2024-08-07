@@ -18,6 +18,10 @@ export const create = async (req, res) => {
   try {
     const { customer_id, lead_id, message } = req.body;
 
+    console.log(req.body)
+
+    console.log(customer_id, lead_id, message)
+
     const customer = await Customer.find(customer_id);
     const conversation_id = req.params.conversation_id;
     const files = req.body.files;
