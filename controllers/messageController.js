@@ -31,7 +31,7 @@ export const create = async (req, res) => {
         data: {
           message: {
             text: message,
-            attachment: {},
+            // attachment: {},
             // attachment: files[0]
           },
           source: customer.source,
