@@ -18,10 +18,6 @@ export const create = async (req, res) => {
   try {
     const { customer_id, lead_id, message } = req.body;
 
-    console.log(req.body)
-
-    console.log(customer_id, lead_id, message)
-
     const customer = await Customer.find(customer_id);
     const conversation_id = req.params.conversation_id;
     const files = req.body.files;
@@ -49,7 +45,7 @@ export const create = async (req, res) => {
         // })
       });
     } catch (error1) {
-      console.error('Error sending message 1-way:', error1);
+      console.error('Error sending message 1-way:', error1.response.data.errors);
       try {
         await axios({
           method: 'POST',
@@ -72,7 +68,7 @@ export const create = async (req, res) => {
           // })
         });
       } catch (error2) {
-        console.error('Error sending message 2-way:', error2);
+        console.error('Error sending message 2-way:', error2.response.data.errors);
         res.status(400).send({ error: 'Ошибка, при отправке сообщения!' });
       }
     }
