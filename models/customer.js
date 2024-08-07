@@ -15,6 +15,13 @@ export const create = async function (data) {
   return data;
 };
 
+export const find = async function (id) {
+  return await db('customer')
+    .select('*')
+    .where('id', id)
+    .first();
+};
+
 export const findByPhone = async function (phone) {
   return await db('customer')
     .select('*')

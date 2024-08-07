@@ -16,6 +16,7 @@ export const getIncomingMessages = async (req, res) => {
     const text = req.body.message.message.text;
     const attachments = req.body.message.message.attachments;
     const source = req.body.message.source.realId;
+    const saId = req.body.message.sa.id;
 
     // check if customer exist
     let customer = await Customer.findByPhone(customer_phone)
@@ -25,7 +26,8 @@ export const getIncomingMessages = async (req, res) => {
         phone: customer_phone,
         avatar: customer_avatar,
         buyer_phone,
-        source
+        source,
+        saId
       });
     };
 

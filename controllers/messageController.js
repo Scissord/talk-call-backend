@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as Message from "../models/message.js";
-// import * as
+import * as Customer from "../models/customer.js";
 
 export const get = async (req, res) => {
 	try {
@@ -16,25 +16,62 @@ export const get = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
-    const lead_id = req.body.lead_id;
+    const { lead_id, message } = req.body;
 
-    // const customer = await Customer.findByConversationId(lead_id);
-    // const conversation_id = req.params.conversation_id;
-    // const files = req.body.files;
+    const customer = await Customer.find(req.body.customer_id);
+    const conversation_id = req.params.conversation_id;
+    const files = req.body.files;
 
-    // await axios({
-    //   method: 'POST',
-    //   url: `/v1.3/messaging/${lead_id}/send`,
-    //   data: {
-    //     message: {
-    //       text: req.body.message,
-    //       attachment: null,
-    //       // attachment: files[0]
-    //     }
-    //     source:
-    //   }
-    // })
-
+    try {
+      await axios({
+        method: 'POST',
+        url: `https://api.umnico.com/v1.3/messaging/${lead_id}/send`,
+        data: {
+          message: {
+            text: message,
+            attachment: null,
+            // attachment: files[0]
+          },
+          source: customer.source,
+          userId: req.user.umnico_user_id
+        }
+      }).then(async (res) => {
+        console.log(res)
+        // const message = await Message.create({
+        //   conversation_id,
+        //   text: message,
+        //   incoming: false,
+        //   lead_id:
+        // })
+      });
+    } catch (error1) {
+      console.error('Error sending message 1-way:', error1);
+      try {
+        await axios({
+          method: 'POST',
+          url: `https://api.umnico.com/v1.3/messaging/post`,
+          data: {
+            message: {
+              text: req.body.message,
+              attachment: files[0] || null,
+            },
+            destination: customer.phone,
+            saId: customer.saId
+          }
+        }).then(async (res) => {
+          console.log(res)
+          // const message = await Message.create({
+          //   conversation_id,
+          //   text: message,
+          //   incoming: false,
+          //   lead_id:
+          // })
+        });
+      } catch (error2) {
+        console.error('Error sending message 2-way:', error2);
+        res.status(400).send({ error: 'Ошибка, при отправке сообщения!' });
+      }
+    }
 
 		res.status(200).send({ message: 'ok' });
 	}	catch (err) {
