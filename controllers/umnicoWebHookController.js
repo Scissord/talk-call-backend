@@ -6,6 +6,9 @@ import * as Attachment from "../models/attachment.js";
 
 export const getIncomingMessages = async (req, res) => {
 	try {
+    console.log(">>>")
+    console.log(req.body);
+
     if (!req.body || req.body.type !== 'message.incoming') {
       return res.status(400).send({ error: "Bad Request" });
     };
@@ -17,9 +20,6 @@ export const getIncomingMessages = async (req, res) => {
       const customer_avatar = req.body.message.sender.avatar;
       const text = req.body.message.message.text;
       const attachments = req.body.message.message.attachments;
-
-      console.log(">>>")
-      console.log(req.body);
 
       // check if customer exist
       let customer = await Customer.findByPhone(customer_phone)
