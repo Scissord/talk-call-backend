@@ -5,14 +5,10 @@ import * as Message from "../models/message.js";
 import * as Attachment from "../models/attachment.js";
 
 export const getIncomingMessages = async (req, res) => {
-  console.log(">>>")
-  console.log(req.body);
-
-  if (!req.body || req.body.type !== 'message.incoming') {
-    return res.status(400).send({ error: "Bad Request" });
-  };
-
   if(req.body.type === 'message.incoming') {
+    console.log(">>>")
+    console.log(req.body);
+
     const customer_name = req.body.message.sender.login;
     const customer_phone = req.body.message.sender.socialId;
     const buyer_phone = req.body.message.sa.login;
