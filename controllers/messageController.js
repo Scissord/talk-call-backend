@@ -1,6 +1,8 @@
 import axios from "axios";
 import * as Message from "../models/message.js";
 import * as Customer from "../models/customer.js";
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const get = async (req, res) => {
 	try {
@@ -25,7 +27,7 @@ export const create = async (req, res) => {
     try {
       await axios({
         method: 'POST',
-        url: `https://api.umnico.com/v1.3/messaging/${lead_id}/send`,
+        url: `${process.env.UMNICO_URL}/v1.3/messaging/${lead_id}/send`,
         data: {
           message: {
             text: message,
@@ -34,6 +36,9 @@ export const create = async (req, res) => {
           },
           source: customer.source,
           userId: req.user.umnico_user_id
+        },
+        headers: {
+          'Authorization': `Bearer ${process.env.UMNICO_API_TOKEN}`
         }
       }).then(async (res) => {
         console.log(res)
@@ -49,7 +54,7 @@ export const create = async (req, res) => {
       try {
         await axios({
           method: 'POST',
-          url: `https://api.umnico.com/v1.3/messaging/post`,
+          url: `${process.env.UMNICO_URL}/v1.3/messaging/post`,
           data: {
             message: {
               text: req.body.message,
@@ -57,6 +62,9 @@ export const create = async (req, res) => {
             },
             destination: customer.phone,
             saId: customer.saId
+          },
+          headers: {
+            'Authorization': `Bearer ${process.env.UMNICO_API_TOKEN}`
           }
         }).then(async (res) => {
           console.log(res)
