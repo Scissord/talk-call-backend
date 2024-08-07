@@ -24,7 +24,7 @@ export const create = async (req, res) => {
     const conversation_id = req.params.conversation_id;
     const files = req.body.files;
 
-    try {
+    // try {
       await axios({
         method: 'POST',
         url: `${process.env.UMNICO_URL}/v1.3/messaging/${lead_id}/send`,
@@ -51,37 +51,37 @@ export const create = async (req, res) => {
       }).catch((err) => {
         console.log(err);
       })
-    } catch (error1) {
-      console.error('Error sending message 1-way:', error1.response.data.errors);
-      try {
-        await axios({
-          method: 'POST',
-          url: `${process.env.UMNICO_URL}/v1.3/messaging/post`,
-          data: {
-            message: {
-              text: req.body.message,
-              attachment: files[0] || null,
-            },
-            destination: customer.phone,
-            saId: customer.saId
-          },
-          headers: {
-            'Authorization': `Bearer ${process.env.UMNICO_API_TOKEN}`
-          }
-        }).then(async (res) => {
-          console.log(res)
-          // const message = await Message.create({
-          //   conversation_id,
-          //   text: message,
-          //   incoming: false,
-          //   lead_id:
-          // })
-        });
-      } catch (error2) {
-        console.error('Error sending message 2-way:', error2.response.data.errors);
-        res.status(400).send({ error: 'Ошибка, при отправке сообщения!' });
-      }
-    }
+    // } catch (error1) {
+    //   console.error('Error sending message 1-way:', error1.response.data.errors);
+    //   try {
+    //     await axios({
+    //       method: 'POST',
+    //       url: `${process.env.UMNICO_URL}/v1.3/messaging/post`,
+    //       data: {
+    //         message: {
+    //           text: req.body.message,
+    //           attachment: files[0] || null,
+    //         },
+    //         destination: customer.phone,
+    //         saId: customer.saId
+    //       },
+    //       headers: {
+    //         'Authorization': `Bearer ${process.env.UMNICO_API_TOKEN}`
+    //       }
+    //     }).then(async (res) => {
+    //       console.log(res)
+    //       // const message = await Message.create({
+    //       //   conversation_id,
+    //       //   text: message,
+    //       //   incoming: false,
+    //       //   lead_id:
+    //       // })
+    //     });
+    //   } catch (error2) {
+    //     console.error('Error sending message 2-way:', error2.response.data.errors);
+    //     res.status(400).send({ error: 'Ошибка, при отправке сообщения!' });
+    //   }
+    // }
 
 		res.status(200).send({ message: 'ok' });
 	}	catch (err) {
