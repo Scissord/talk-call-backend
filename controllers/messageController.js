@@ -40,7 +40,7 @@ export const create = async (req, res) => {
         headers: {
           'Authorization': `Bearer ${process.env.UMNICO_API_TOKEN}`
         }
-      }).then(async (res) => {
+      }).then((res) => {
         console.log(res)
         // const message = await Message.create({
         //   conversation_id,
