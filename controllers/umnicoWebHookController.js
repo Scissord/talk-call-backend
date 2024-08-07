@@ -6,6 +6,8 @@ import * as Attachment from "../models/attachment.js";
 
 export const getIncomingMessages = async (req, res) => {
   if(req.body.type === 'message.incoming') {
+    console.log('>>>');
+    console.log(req.body);
     const lead_id = req.body.leadId;
     const customer_name = req.body.message.sender.login;
     const customer_phone = req.body.message.sender.socialId;
@@ -13,6 +15,8 @@ export const getIncomingMessages = async (req, res) => {
     const customer_avatar = req.body.message.sender.avatar;
     const text = req.body.message.message.text;
     const attachments = req.body.message.message.attachments;
+    const source = req.body.message.source.realId;
+    const userId = req.body.message.sender.id;
 
     // check if customer exist
     let customer = await Customer.findByPhone(customer_phone)
@@ -21,6 +25,8 @@ export const getIncomingMessages = async (req, res) => {
         name: customer_name,
         phone: customer_phone,
         avatar: customer_avatar,
+        source,
+        userId,
         buyer_phone
       });
     };
@@ -33,7 +39,7 @@ export const getIncomingMessages = async (req, res) => {
     const message = await Message.create({
       conversation_id: conversation.id,
       incoming: true,
-      lead_id: lead_id,
+      lead_id,
       text,
     });
 
