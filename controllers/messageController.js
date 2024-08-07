@@ -31,11 +31,11 @@ export const create = async (req, res) => {
         data: {
           message: {
             text: message,
-            attachment: null,
+            attachment: {},
             // attachment: files[0]
           },
           source: customer.source,
-          userId: req.user.umnico_user_id
+          userId: +req.user.umnico_user_id
         },
         headers: {
           'Authorization': `Bearer ${process.env.UMNICO_API_TOKEN}`
