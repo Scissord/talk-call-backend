@@ -18,6 +18,7 @@ export const getIncomingMessages = async (req, res) => {
       const text = req.body.message.message.text;
       const attachments = req.body.message.message.attachments;
 
+      console.log(">>>")
       console.log(req.body);
 
       // check if customer exist
