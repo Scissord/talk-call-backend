@@ -51,7 +51,7 @@ export const create = async (req, res) => {
         //   lead_id:
         // })
       }).catch((err) => {
-        console.log(err);
+        console.log(err.response.data.errors);
       })
     // } catch (error1) {
     //   console.error('Error sending message 1-way:', error1.response.data.errors);
