@@ -6,9 +6,7 @@ import * as Attachment from "../models/attachment.js";
 
 export const getIncomingMessages = async (req, res) => {
   if(req.body.type === 'message.incoming') {
-    console.log(">>>")
-    console.log(req.body);
-
+    const lead_id = req.body.leadId;
     const customer_name = req.body.message.sender.login;
     const customer_phone = req.body.message.sender.socialId;
     const buyer_phone = req.body.message.sa.login;
@@ -35,7 +33,7 @@ export const getIncomingMessages = async (req, res) => {
     const message = await Message.create({
       conversation_id: conversation.id,
       incoming: true,
-      // lead_id: ,
+      lead_id: lead_id,
       text,
     });
 
