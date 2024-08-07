@@ -16,9 +16,9 @@ export const get = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
-    const { lead_id, message } = req.body;
+    const { customer_id, lead_id, message } = req.body;
 
-    const customer = await Customer.find(req.body.customer_id);
+    const customer = await Customer.find(customer_id);
     const conversation_id = req.params.conversation_id;
     const files = req.body.files;
 
@@ -75,7 +75,7 @@ export const create = async (req, res) => {
 
 		res.status(200).send({ message: 'ok' });
 	}	catch (err) {
-		console.log("Error in get message controller", err.message);
+		console.log("Error in post message controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
 	}
 };
