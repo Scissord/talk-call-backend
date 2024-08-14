@@ -3,6 +3,8 @@ import * as Customer from "../models/customer.js";
 import * as Conversation from "../models/conversation.js";
 import * as Message from "../models/message.js";
 import * as Attachment from "../models/attachment.js";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN } = process.env;
 

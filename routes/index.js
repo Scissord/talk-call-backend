@@ -7,6 +7,7 @@ import whatsAppRoutes from './webhookRoute.js';
 
 const router = Router();
 
+// router.get('/', indexRoutes);
 router.use('/auth', authRoutes);
 // router.use('/umnico', umnicoRoutes);
 router.use('/conversations', conversationRoutes);
