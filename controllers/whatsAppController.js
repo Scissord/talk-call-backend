@@ -8,6 +8,7 @@ const { WEBHOOK_VERIFY_TOKEN, GRAPH_API_TOKEN } = process.env;
 
 export const initialize = async (req, res) => {
   console.log('here');
+  console.log(GRAPH_API_TOKEN)
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
