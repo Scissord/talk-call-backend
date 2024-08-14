@@ -24,8 +24,6 @@ export const create = async (req, res) => {
     const conversation_id = req.params.conversation_id;
     const files = req.body.files;
 
-    console.log(customer.source)
-
     // try {
       await axios({
         method: 'POST',
@@ -42,14 +40,13 @@ export const create = async (req, res) => {
         headers: {
           'Authorization': `Bearer ${process.env.UMNICO_API_TOKEN}`
         }
-      }).then((res) => {
-        console.log(res)
-        // const message = await Message.create({
-        //   conversation_id,
-        //   text: message,
-        //   incoming: false,
-        //   lead_id:
-        // })
+      }).then(async (res) => {
+        await Message.create({
+          conversation_id,
+          text: message,
+          incoming: false,
+          lead_id,
+        });
       }).catch((err) => {
         console.log(err.response.data.errors);
       })
