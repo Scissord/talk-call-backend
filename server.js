@@ -20,9 +20,8 @@ app.use(cors({
   origin: '*',
 }));
 
-
 app.get("/", (req, res) => {
-  res.send(`<pre>Nothing to see here.</pre>`);
+  res.send(`Nothing to see here.`);
 });
 app.use('/api', apiRoutes);
 
