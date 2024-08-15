@@ -9,7 +9,7 @@ import apiRoutes from './routes/index.js';
 import printName from "./helpers/printName.js";
 
 const app = express();
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 5005;
 
 dotenv.config();
 
