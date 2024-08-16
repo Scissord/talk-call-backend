@@ -20,7 +20,7 @@ app.use(cors({
 }));
 
 app.get("/", (req, res) => {
-  res.send(`Nothing to see here.`);
+  res.send(`Welcome to restrain api.`);
 });
 app.use('/api', apiRoutes);
 

@@ -9,7 +9,7 @@ export const register = async (req, res) => {
 
   await axios({
     method: 'PUT',
-    url: "https://api.chatapp.online/v1/licenses/1234/messengers/grWhatsApp/callbackUrl",
+    url: "https://api.chatapp.online/v1/licenses/51426/messengers/grWhatsApp/callbackUrl",
     headers: {
       "Authorization": process.env.WEBHOOK_ACCESS_TOKEN,
       "Lang": "en",
