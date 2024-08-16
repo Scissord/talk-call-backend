@@ -25,6 +25,8 @@ export const get = async function (limit, page, search, type, status) {
     .offset(offset)
     .orderBy('co.id', 'desc');
 
+  console.log(conversations)
+
   return {
     conversations,
     // lastPage
