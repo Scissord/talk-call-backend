@@ -4,6 +4,8 @@ import * as Role from '../models/role.js';
 
 const protectRoute = async (req, res, next) => {
   try {
+    console.log(req.cookies)
+    console.log(req.cookies.refreshToken)
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) return res.status(401).send({
       error: "Unauthorized - No Refresh Token Provided"
