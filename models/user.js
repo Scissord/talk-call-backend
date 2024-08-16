@@ -23,6 +23,13 @@ export const isExist = async function (name, phone) {
     .first();
 };
 
+export const find = async function (id) {
+  return await db('user')
+    .select('*')
+    .where('id', id)
+    .first();
+};
+
 export const findOne = async function (name) {
   return await db('user')
     .select('*')

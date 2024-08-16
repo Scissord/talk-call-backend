@@ -41,3 +41,12 @@ export const findByUserId = async function (user_id) {
 
   return user_token
 };
+
+export const findByToken = async function (token) {
+  const user_token = await db("user_token")
+    .select('*')
+    .where("token", token)
+    .first();
+
+  return user_token
+};

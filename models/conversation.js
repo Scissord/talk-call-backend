@@ -4,31 +4,26 @@ import countPagination from '../helpers/countPagination.js';
 const db = knex();
 
 export const get = async function (limit, page, search, type, status) {
-  const { offset } = await countPagination(
+  const offset = await countPagination(
     'conversation', limit, page,
-    search, type
+    search, type, status
   );
-
-  // , status
 
   const conversations = await db('conversation as co')
     .select('co.id as id', 'co.*', 'cu.*')
     .leftJoin('customer as cu', 'cu.id', 'co.customer_id')
     .where((q) => {
       search && q.where('co.name', 'ilike', `%${search}%`);
-      // if(status) {
-      //   q.where('co.status', status);
-      // };
+      if(status) {
+        q.where('co.status', status);
+      };
       type && q.where('co.isFavorite', type);
     })
     .limit(limit)
     .offset(offset)
     .orderBy('co.id', 'desc');
 
-  return {
-    conversations,
-    // lastPage
-  }
+  return conversations
 };
 
 export const findByCustomerId = async function (customer_id) {
