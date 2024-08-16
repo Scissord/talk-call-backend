@@ -49,9 +49,11 @@ export const register = async (req, res) => {
 };
 
 export const getIncomingMessages = async (req, res) => {
-  console.log(req.body.data.message);
-  console.log(req.body.data.fromUser);
-  console.log(req.body.data.chat);
+  console.log(req.body);
+
+  console.log(req.body.data[0].message);
+  console.log(req.body.data[0].fromUser);
+  console.log(req.body.data[0].chat);
 
   return res.sendStatus(200);
 };
