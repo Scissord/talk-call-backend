@@ -12,7 +12,7 @@ export const get = async function (limit, page, search, type, status) {
   // , status
 
   const conversations = await db('conversation as co')
-    .select('co.*', 'cu.*')
+    .select('co.id as id', 'co.*', 'cu.*')
     .leftJoin('customer as cu', 'cu.id', 'co.customer_id')
     .where((q) => {
       search && q.where('co.name', 'ilike', `%${search}%`);
