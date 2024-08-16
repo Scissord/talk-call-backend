@@ -55,5 +55,40 @@ export const getIncomingMessages = async (req, res) => {
   console.log(req.body.data[0].fromUser);
   console.log(req.body.data[0].chat);
 
+  const customer_name = req.body.data[0].fromUser.name;
+  const customer_phone = req.body.data[0].fromUser.phone;
+  const customer_avatar = req.body.data[0].chat.image;
+  const text = req.body.data[0].message.text;
+  const file = req.body.data[0].message.file;
+
+  let customer = await Customer.findByPhone(customer_phone)
+  if(!customer) {
+    customer = await Customer.create({
+      name: customer_name,
+      phone: customer_phone,
+      avatar: customer_avatar,
+    });
+  };
+
+  let conversation = await Conversation.findByCustomerId(customer.id);
+  if(!conversation) {
+    conversation = await Conversation.create({ customer_id: customer.id });
+  };
+
+  const message = await Message.create({
+    conversation_id: conversation.id,
+    incoming: true,
+    text,
+  });
+
+  // if(file) {
+  //   await Attachment.create({
+  //     message_id: message.id,
+  //     type: attachment.type,
+  //     url: attachment.url,
+  //     size: attachment.filesize,
+  //   });
+  // };
+
   return res.sendStatus(200);
 };
