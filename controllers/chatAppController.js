@@ -8,26 +8,40 @@ export const register = async (req, res) => {
   console.log('starting to register webhook');
 
   await axios({
-    method: 'PUT',
-    url: "https://api.chatapp.online/v1/licenses/51426/messengers/grWhatsApp/callbackUrl",
+    method: 'GET',
+    url: "https://api.chatapp.online/v1/licenses",
     headers: {
       "Authorization": process.env.WEBHOOK_ACCESS_TOKEN,
       "Lang": "en",
-      "Content-Type": "application/json",
       "Accept": "application/json",
-    },
-    data: {
-      "events": [
-        "message",
-        "messageStatus"
-      ],
-      "url": "https://restrain.pw/api/chatapp/get_incoming_messages",
     },
   }).then(res => {
     if(res.data.success === true) {
-      console.log('webhook registered successfully');
+      console.log(res.data.data);
     };
   })
+
+  // await axios({
+  //   method: 'PUT',
+  //   url: "https://api.chatapp.online/v1/licenses/51426/messengers/grWhatsApp/callbackUrl",
+  //   headers: {
+  //     "Authorization": process.env.WEBHOOK_ACCESS_TOKEN,
+  //     "Lang": "en",
+  //     "Content-Type": "application/json",
+  //     "Accept": "application/json",
+  //   },
+  //   data: {
+  //     "events": [
+  //       "message",
+  //       "messageStatus"
+  //     ],
+  //     "url": "https://restrain.pw/api/chatapp/get_incoming_messages",
+  //   },
+  // }).then(res => {
+  //   if(res.data.success === true) {
+  //     console.log('webhook registered successfully');
+  //   };
+  // })
 
   res.sendStatus(200);
 };
