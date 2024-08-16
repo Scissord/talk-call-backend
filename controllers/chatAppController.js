@@ -7,6 +7,7 @@ import * as Attachment from "../models/attachment.js";
 export const register = async (req, res) => {
   console.log('starting to register webhook');
 
+  // IF YOU NEED LICENSE_ID USE THIS TO COLLECT INFO
   // await axios({
   //   method: 'GET',
   //   url: "https://api.chatapp.online/v1/licenses",
@@ -48,7 +49,9 @@ export const register = async (req, res) => {
 };
 
 export const getIncomingMessages = async (req, res) => {
-  console.log(req.body);
+  console.log(req.body.data.message);
+  console.log(req.body.data.fromUser);
+  console.log(req.body.data.chat);
 
   return res.sendStatus(200);
 };
