@@ -5,8 +5,10 @@ import * as Role from '../models/role.js';
 
 const protectRoute = async (req, res, next) => {
   try {
-    // const token = req.headers['authorization'];
-    // if (!token) return res.status(401).send({ error: "Unauthorized - No Token Provided" });
+    const token = req.headers['authorization'];
+    if (!token) return res.status(401).send({ error: "Unauthorized - No Token Provided" });
+
+    console.log(token);
 
     // const accessToken = token.startsWith('Bearer ') ? token.slice(7) : token;
     // const decodedAccessToken = jwt.verify(accessToken, process.env.JWT_SECRET);
@@ -25,7 +27,7 @@ const protectRoute = async (req, res, next) => {
 
     // user.role = role
     // req.user = user;
-    next();
+    // next();
   } catch (err) {
     console.log("Error in protectRoute controller", err);
     res.status(500).send({ error: "Internal Server Error" });
