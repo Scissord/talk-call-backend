@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 });
 app.use('/api', apiRoutes);
 
-app.listen(PORT, () => {
+app.listen(PORT, process.env.NODE_ENV === 'development' ? 'localhost' : '31.128.41.42', () => {
 	printName();
 	console.log(`Welcome to Constructor server, port ${PORT} ✅✅✅`);
 });
