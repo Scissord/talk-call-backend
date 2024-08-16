@@ -18,6 +18,7 @@ export const register = async (req, res) => {
   }).then(res => {
     if(res.data.success === true) {
       console.log(res.data.data);
+      console.log(res.data.data[1].messenger);
     };
   })
 
