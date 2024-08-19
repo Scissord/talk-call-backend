@@ -79,14 +79,14 @@ export const getIncomingMessages = async (req, res) => {
     text,
   });
 
-  // if(file) {
-  //   await Attachment.create({
-  //     message_id: message.id,
-  //     type: attachment.type,
-  //     url: attachment.url,
-  //     size: attachment.filesize,
-  //   });
-  // };
+  if(file) {
+    await Attachment.create({
+      message_id: message.id,
+      link: file.link,
+      name: file.name,
+      contentType: file.contentType,
+    });
+  };
 
   return res.sendStatus(200);
 };
