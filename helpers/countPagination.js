@@ -9,7 +9,9 @@ export default async function(table, limit, page, search, type, status) {
     .count('* as count')
     .where((q) => {
       search && q.where('name', 'ilike', `%${search}%`);
-      status && q.where('status', status);
+      if(status !== 3) {
+        q.where('status', status);
+      };
       type && q.where('isFavorite', type);
     })
     .first();
