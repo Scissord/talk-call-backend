@@ -3,7 +3,7 @@ import * as Conversation from "../models/conversation.js";
 export const get = async (req, res) => {
 	try {
     const { limit, page, type, search } = req.query;
-    // const { role } = req.user;
+    const { role } = req.user;
 
     let status = 0;
 
