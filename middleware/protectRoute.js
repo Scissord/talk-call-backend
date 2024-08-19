@@ -9,6 +9,8 @@ const protectRoute = async (req, res, next) => {
       error: "Unauthorized - No Refresh Token Provided"
     });
 
+    console.log(refreshToken);
+
     const user_token = await UserToken.findByToken(refreshToken);
     if(!user_token) return res.status(401).send({
       error: "Unauthorized - No User Token Provided"
