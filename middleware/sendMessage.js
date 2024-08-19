@@ -4,7 +4,8 @@ import * as Role from '../models/role.js';
 
 const sendMessage = async (req, res, next) => {
   try {
-    const token = req.headers['x-refresh-token'];
+    const preAccessToken = req.headers['authorization'];
+    const preRefreshToken = req.headers['x-refresh-token'];
     if (!token) return res.status(401).send({
       error: "Unauthorized - No Refresh Token Provided"
     });
