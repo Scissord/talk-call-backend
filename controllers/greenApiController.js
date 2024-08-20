@@ -8,6 +8,7 @@ export const getIncomingMessages = async (req, res) => {
   const verifyToken = token.startsWith('Bearer ') ? token.slice(7) : token;
   if(verifyToken === process.env.VERIFY_TOKEN && req.body.typeWebhook !== 'outgoingMessageStatus') {
     console.log("webhook >>", req.body);
+    const instance = await req.body.instanceData.idInstance;
     const customer_phone = req.body.senderData.sender;
     const customer_name = req.body.senderData.senderName;
     const text = req.body.messageData?.textMessageData?.textMessage;
@@ -34,6 +35,7 @@ export const getIncomingMessages = async (req, res) => {
       customer = await Customer.create({
         name: customer_name,
         phone: customer_phone,
+        instance
         // avatar: customer_avatar,
       });
     };
