@@ -5,12 +5,11 @@ import * as Message from "../models/message.js";
 import * as Attachment from "../models/attachment.js";
 
 export const getIncomingMessages = async (req, res) => {
-  console.log(req.body);
-  const verifyToken = req.headers['authorization']
-  console.log(verifyToken)
-  // if(verifyToken === process.env.VERIFY_TOKEN) {
-
-  // };
+  const token = req.headers['authorization'];
+  const verifyToken = token.startsWith('Bearer ') ? token.slice(7) : token;
+  if(verifyToken === process.env.VERIFY_TOKEN) {
+    console.log(req.body);
+  };
 
   // let customer = await Customer.findByPhone(customer_phone)
   // if(!customer) {
