@@ -5,9 +5,9 @@
 export const up = function(knex) {
   return knex.schema
     .alterTable('attachment', (table) => {
-      table.string('link', 255).nullable();
-      table.string('name', 255).nullable();
-      table.string('contentType', 255).nullable();
+      table.string('link', 255).nullable().alter();
+      table.string('name', 255).nullable().alter();
+      table.string('contentType', 255).nullable().alter();
       table.string('lat', 255).nullable();
       table.string('lon', 255).nullable();
       table.text('thumb', 255).nullable();
