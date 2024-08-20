@@ -10,7 +10,7 @@ export const getIncomingMessages = async (req, res) => {
     console.log("webhook >>", req.body);
     const customer_phone = req.body.senderData.sender;
     const customer_name = req.body.senderData.senderName;
-    const text = req.body.messageData.textMessageData.textMessage;
+    const text = req.body.messageData?.textMessageData?.textMessage;
     const isFile = req.body.messageData.typeMessage === "audioMessage" ||
       req.body.messageData.typeMessage === "videoMessage" ||
       req.body.messageData.typeMessage === "imageMessage" ||
