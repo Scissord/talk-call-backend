@@ -16,11 +16,11 @@ export const getIncomingMessages = async (req, res) => {
       req.body.messageData.typeMessage === "imageMessage" ||
       req.body.messageData.typeMessage === "documentMessage"
     const isLocation = req.body.messageData.typeMessage === "locationMessage";
-    let link, name, type;
+    const type = req.body.messageData.typeMessage;
+    let link, name;
     if(isFile) {
       link = req.body.messageData.fileMessageData.downloadUrl;
       name = req.body.messageData.fileMessageData.fileName;
-      type = req.body.messageData.typeMessage;
     };
     let lat, lon, thumb;
     if(isLocation) {
