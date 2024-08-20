@@ -46,7 +46,7 @@ export const getIncomingMessages = async (req, res) => {
     const message = await Message.create({
       conversation_id: conversation.id,
       incoming: true,
-      text: !isFile ? text : '',
+      text: !isFile && !isLocation ? text : '',
     });
 
     if(isFile) {
@@ -54,14 +54,14 @@ export const getIncomingMessages = async (req, res) => {
         message_id: message.id,
         link: link,
         name: name,
-        contextType: type,
+        contentType: type,
       });
     };
 
     if(isLocation) {
       await Attachment.create({
         message_id: message.id,
-        contextType: type,
+        contentType: type,
         lat,
         lon,
         thumb
