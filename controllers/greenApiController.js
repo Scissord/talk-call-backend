@@ -15,12 +15,18 @@ export const getIncomingMessages = async (req, res) => {
       req.body.messageData.typeMessage === "imageMessage" ||
       req.body.messageData.typeMessage === "documentMessage"
     const isLocation = req.body.messageData.typeMessage === "locationMessage";
-    const link = req.body.messageData.fileMessageData.downloadUrl;
-    const name = req.body.messageData.fileMessageData.fileName;
-    const type = req.body.messageData.typeMessage;
-    const lat = req.body.messageData.locationMessageData.latitude;
-    const lon = req.body.messageData.locationMessageData.longitude;
-    const thumb = req.body.messageData.locationMessageData.jpegThumbnail;
+    let link, name, type;
+    if(isFile) {
+      link = req.body.messageData.fileMessageData.downloadUrl;
+      name = req.body.messageData.fileMessageData.fileName;
+      type = req.body.messageData.typeMessage;
+    };
+    let lat, lon, thumb;
+    if(isLocation) {
+      lat = req.body.messageData.locationMessageData.latitude;
+      lon = req.body.messageData.locationMessageData.longitude;
+      thumb = req.body.messageData.locationMessageData.jpegThumbnail;
+    };
 
     let customer = await Customer.findByPhone(customer_phone)
     if(!customer) {
