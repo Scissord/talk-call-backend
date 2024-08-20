@@ -61,6 +61,7 @@ export const getIncomingMessages = async (req, res) => {
     if(isLocation) {
       await Attachment.create({
         message_id: message.id,
+        contextType: type,
         lat,
         lon,
         thumb
