@@ -6,7 +6,7 @@ import * as Attachment from "../models/attachment.js";
 export const getIncomingMessages = async (req, res) => {
   const token = req.headers['authorization'];
   const verifyToken = token.startsWith('Bearer ') ? token.slice(7) : token;
-  if(verifyToken === process.env.VERIFY_TOKEN) {
+  if(verifyToken === process.env.VERIFY_TOKEN && req.body.typeWebhook !== 'outgoingMessageStatus') {
     console.log("webhook >>", req.body);
     const customer_phone = req.body.senderData.sender;
     const customer_name = req.body.senderData.senderName;
