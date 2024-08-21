@@ -6,10 +6,12 @@ import fs from 'fs';
 export default function getMulterStorage() {
   return multer.diskStorage({
     destination: (req, file, cb) => {
-      const projectName = req.body.projectName;
-      const uploadPath = path.join('./templates', projectName, 'img');
+      const uploadPath = path.resolve('./uploads'); // Исправлено
 
-      fs.mkdirSync(uploadPath, { recursive: true });
+      // Создание директории, если она не существует
+      if (!fs.existsSync(uploadPath)) {
+        fs.mkdirSync(uploadPath, { recursive: true });
+      }
 
       cb(null, uploadPath);
     },
