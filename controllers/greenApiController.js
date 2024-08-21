@@ -7,68 +7,71 @@ export const getIncomingMessages = async (req, res) => {
   const token = req.headers['authorization'];
   const verifyToken = token.startsWith('Bearer ') ? token.slice(7) : token;
   if(verifyToken === process.env.VERIFY_TOKEN && req.body.typeWebhook !== 'outgoingMessageStatus') {
-    console.log("webhook >>", req.body);
-    const instance = await req.body.instanceData.idInstance;
-    const customer_phone = req.body.senderData.sender;
-    const customer_name = req.body.senderData.senderName;
-    const text = req.body.messageData?.textMessageData?.textMessage;
-    const isFile = req.body.messageData.typeMessage === "audioMessage" ||
-      req.body.messageData.typeMessage === "videoMessage" ||
-      req.body.messageData.typeMessage === "imageMessage" ||
-      req.body.messageData.typeMessage === "documentMessage"
-    const isLocation = req.body.messageData.typeMessage === "locationMessage";
-    const type = req.body.messageData.typeMessage;
-    let link, name;
-    if(isFile) {
-      link = req.body.messageData.fileMessageData.downloadUrl;
-      name = req.body.messageData.fileMessageData.fileName;
-    };
-    let lat, lon, thumb;
-    if(isLocation) {
-      lat = req.body.messageData.locationMessageData.latitude;
-      lon = req.body.messageData.locationMessageData.longitude;
-      thumb = req.body.messageData.locationMessageData.jpegThumbnail;
-    };
+    // send request to nurlykhan
 
-    let customer = await Customer.findByPhone(customer_phone)
-    if(!customer) {
-      customer = await Customer.create({
-        name: customer_name,
-        phone: customer_phone,
-        instance
-        // avatar: customer_avatar,
-      });
-    };
+    // console.log("webhook >>", req.body);
+    // const instance = await req.body.instanceData.idInstance;
+    // const customer_phone = req.body.senderData.sender;
+    // const customer_name = req.body.senderData.senderName;
+    // const text = req.body.messageData?.textMessageData?.textMessage;
+    // const isFile = req.body.messageData.typeMessage === "audioMessage" ||
+    //   req.body.messageData.typeMessage === "videoMessage" ||
+    //   req.body.messageData.typeMessage === "imageMessage" ||
+    //   req.body.messageData.typeMessage === "documentMessage"
+    // const isLocation = req.body.messageData.typeMessage === "locationMessage";
+    // const type = req.body.messageData.typeMessage;
+    // let link, name;
+    // if(isFile) {
+    //   link = req.body.messageData.fileMessageData.downloadUrl;
+    //   name = req.body.messageData.fileMessageData.fileName;
+    // };
+    // let lat, lon, thumb;
+    // if(isLocation) {
+    //   lat = req.body.messageData.locationMessageData.latitude;
+    //   lon = req.body.messageData.locationMessageData.longitude;
+    //   thumb = req.body.messageData.locationMessageData.jpegThumbnail;
+    // };
 
-    let conversation = await Conversation.findByCustomerId(customer.id);
-    if(!conversation) {
-      conversation = await Conversation.create({ customer_id: customer.id });
-    };
+    // let customer = await Customer.findByPhone(customer_phone)
+    // if(!customer) {
+    //   //find avatar here
+    //   customer = await Customer.create({
+    //     name: customer_name,
+    //     phone: customer_phone,
+    //     instance
+    //     // avatar: customer_avatar,
+    //   });
+    // };
 
-    const message = await Message.create({
-      conversation_id: conversation.id,
-      incoming: true,
-      text: !isFile && !isLocation ? text : '',
-    });
+    // let conversation = await Conversation.findByCustomerId(customer.id);
+    // if(!conversation) {
+    //   conversation = await Conversation.create({ customer_id: customer.id });
+    // };
 
-    if(isFile) {
-      await Attachment.create({
-        message_id: message.id,
-        link: link,
-        name: name,
-        contentType: type,
-      });
-    };
+    // const message = await Message.create({
+    //   conversation_id: conversation.id,
+    //   incoming: true,
+    //   text: !isFile && !isLocation ? text : '',
+    // });
 
-    if(isLocation) {
-      await Attachment.create({
-        message_id: message.id,
-        contentType: type,
-        lat,
-        lon,
-        thumb
-      });
-    };
+    // if(isFile) {
+    //   await Attachment.create({
+    //     message_id: message.id,
+    //     link: link,
+    //     name: name,
+    //     contentType: type,
+    //   });
+    // };
+
+    // if(isLocation) {
+    //   await Attachment.create({
+    //     message_id: message.id,
+    //     contentType: type,
+    //     lat,
+    //     lon,
+    //     thumb
+    //   });
+    // };
   };
 
   return res.sendStatus(200);
