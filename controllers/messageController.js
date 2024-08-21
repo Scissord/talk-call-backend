@@ -33,7 +33,7 @@ export const create = async (req, res) => {
     };
 
     if(type === 'fileMessage') {
-      obj = sendFileMessage();
+      obj = sendFileMessage(customer, files, conversation_id);
       return;
     };
 
