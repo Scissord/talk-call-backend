@@ -29,19 +29,16 @@ export const create = async (req, res) => {
 
     if(type === 'textMessage') {
       obj = await sendTextMessage(customer, message, conversation_id);
-      return;
     };
 
     if(type === 'fileMessage') {
       obj = await sendFileMessage(customer, file, conversation_id);
-      return;
     };
 
     console.log(obj)
 
     if(type === 'locationMessage') {
       obj = await sendLocationMessage();
-      return;
     };
 
 		res.status(200).send({ message: obj });
