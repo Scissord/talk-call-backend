@@ -5,13 +5,6 @@ import * as Role from "../models/role.js";
 // import * as ChatAppTokens from "../services/chatapp/tokens.js";
 import generateToken from '../helpers/generateToken.js';
 
-export const getAuthRoutes = async (req, res) => {
-  res.status(200).send({
-    route1: 'router.get("", controller.getAuthRoutes)',
-    route2: 'router.post("/login", controller.login)',
-   });
-};
-
 export const login = async (req, res) => {
 	try {
 		const { name, password } = req.body;
