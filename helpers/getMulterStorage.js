@@ -14,7 +14,9 @@ export default function getMulterStorage() {
       cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-      cb(null, `${file.originalname}`);
+      const currentTime = new Date().toISOString().replace(/[-:.]/g, ''); // Удаляем лишние символы
+      const uniqueSuffix = `${currentTime}${path.extname(file.originalname)}`;
+      cb(null, uniqueSuffix);
     }
   });
 }
