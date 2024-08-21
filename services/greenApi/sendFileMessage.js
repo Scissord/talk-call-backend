@@ -1,4 +1,4 @@
-import Message from '../../models/message.js';
+import * as Message from '../../models/message.js';
 
 export default async function sendFileMessage(customer, message, conversation_id) {
   const res = await axios({
