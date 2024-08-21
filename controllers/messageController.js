@@ -36,15 +36,17 @@ export const create = async (req, res) => {
       },
     })
 
-    if(response.status === 200) {
-      await Message.create({
-        conversation_id,
-        text: message,
-        incoming: false,
-      });
+    const obj = {
+      conversation_id,
+      text: message,
+      incoming: false,
     };
 
-		res.status(200).send({ message: 'ok' });
+    if(response.status === 200) {
+      await Message.create(obj);
+    };
+
+		res.status(200).send({ message: obj });
 	}	catch (err) {
 		console.log("Error in post message controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
