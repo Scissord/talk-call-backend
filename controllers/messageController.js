@@ -28,17 +28,17 @@ export const create = async (req, res) => {
     let obj = null;
 
     if(type === 'textMessage') {
-      obj = sendTextMessage(customer, message, conversation_id);
+      obj = await sendTextMessage(customer, message, conversation_id);
       return;
     };
 
     if(type === 'fileMessage') {
-      obj = sendFileMessage(customer, file, conversation_id);
+      obj = await sendFileMessage(customer, file, conversation_id);
       return;
     };
 
     if(type === 'locationMessage') {
-      obj = sendLocationMessage();
+      obj = await sendLocationMessage();
       return;
     };
 
