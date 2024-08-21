@@ -24,9 +24,7 @@ export const create = async (req, res) => {
     const conversation_id = req.params.conversation_id;
     const files = req.body.files;
 
-    console.log(process.env.GREEN_API_URL)
-
-    const res = await axios({
+    const response = await axios({
       url: `${process.env.GREEN_API_URL}/waInstance${process.env.INSTANCE_ID}/sendMessage/${process.env.API_TOKEN_INSTANCE}`,
       method: 'POST',
       headers: {
@@ -38,15 +36,14 @@ export const create = async (req, res) => {
       },
     })
 
-    console.log(res)
+    if(response.status === 200) {
+      await Message.create({
+        conversation_id,
+        text: message,
+        incoming: false,
+      });
+    };
 
-    // if(res.data.message === 'success') {
-    //   await Message.create({
-    //     conversation_id,
-    //     text: message,
-    //     incoming: false,
-    //   });
-    // };
 		res.status(200).send({ message: 'ok' });
 	}	catch (err) {
 		console.log("Error in post message controller", err.message);
