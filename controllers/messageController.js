@@ -37,6 +37,8 @@ export const create = async (req, res) => {
       return;
     };
 
+    console.log(obj)
+
     if(type === 'locationMessage') {
       obj = await sendLocationMessage();
       return;
