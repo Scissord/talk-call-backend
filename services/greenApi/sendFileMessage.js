@@ -15,7 +15,7 @@ export default async function sendFileMessage(customer, files, conversation_id) 
   //   },
   // })
 
-  // let obj = null;
+  let obj = null;
   // if(res.status === 200) {
   //   obj = await Message.create({
   //     conversation_id,

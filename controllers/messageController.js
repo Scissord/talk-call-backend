@@ -23,7 +23,7 @@ export const create = async (req, res) => {
 
     const customer = await Customer.find(customer_id);
     const conversation_id = req.params.conversation_id;
-    const files = req.body.files;
+    const files = req.files;
 
     let obj = null;
 
