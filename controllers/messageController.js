@@ -36,14 +36,13 @@ export const create = async (req, res) => {
       },
     })
 
-    const obj = {
-      conversation_id,
-      text: message,
-      incoming: false,
-    };
-
+    let obj = null;
     if(response.status === 200) {
-      await Message.create(obj);
+      obj = await Message.create({
+        conversation_id,
+        text: message,
+        incoming: false,
+      });
     };
 
 		res.status(200).send({ message: obj });
