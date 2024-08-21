@@ -24,6 +24,8 @@ export const create = async (req, res) => {
     const conversation_id = req.params.conversation_id;
     const files = req.body.files;
 
+    console.log(GREEN_API_URL, INSTANCE_ID, API_TOKEN_INSTANCE)
+
     const res = await axios({
       url: `${process.env.GREEN_API_URL}/waInstance${process.env.INSTANCE_ID}/sendMessage/${process.env.API_TOKEN_INSTANCE}`,
       method: 'POST',
