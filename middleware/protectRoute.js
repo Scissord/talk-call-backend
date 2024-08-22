@@ -4,13 +4,13 @@ import * as Role from '../models/role.js';
 
 const protectRoute = async (req, res, next) => {
   try {
-    const token = req.headers['x-refresh-token'];
+    const token = req.headers['authorization'];
     if (!token) return res.status(401).send({
       error: "Unauthorized - No Refresh Token Provided"
     });
-    const refreshToken = token.startsWith('Bearer ') ? token.slice(7) : token;
+    const accessToken = token.startsWith('Bearer ') ? token.slice(7) : token;
 
-    const user_token = await UserToken.findByToken(refreshToken);
+    const user_token = await UserToken.findByToken(accessToken);
     if(!user_token) return res.status(401).send({
       error: "Unauthorized - No User Token Provided"
     });

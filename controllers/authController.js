@@ -2,7 +2,6 @@ import bcrypt from 'bcryptjs';
 import * as User from "../models/user.js";
 import * as UserToken from "../models/user_token.js";
 import * as Role from "../models/role.js";
-// import * as ChatAppTokens from "../services/chatapp/tokens.js";
 import generateToken from '../helpers/generateToken.js';
 
 export const login = async (req, res) => {
@@ -15,14 +14,10 @@ export const login = async (req, res) => {
     if(!user) return res.status(400).send({ message: "Такого пользователя не существует" });
 		if(!isPasswordCorrect) return res.status(400).send({ message: "Неверный пароль" });
 
-    let accessToken, accessTokenEndTime,
-    refreshToken, refreshTokenEndTime,
-    cabinetUserId;
+    const token = generateToken();
 
     await UserToken.updateWhere({ user_id: user.id }, {
-      token: refreshToken,
-      expires_at: refreshTokenEndTime,
-      cabinetUserId
+      token: token,
     });
 
     const role = await Role.getForUser(user.id);
@@ -31,10 +26,7 @@ export const login = async (req, res) => {
 		res.status(200).send({
       message: "Successfully login",
       user,
-      accessToken,
-      accessTokenEndTime,
-      refreshToken,
-      refreshTokenEndTime
+      token
     });
 	}	catch (err) {
 		console.log("Error in login controller", err.message);
