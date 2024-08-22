@@ -17,7 +17,7 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
   console.log("a user connected", socket.id);
-  const user_id = socket.handshake.user_id;
+  const user_id = socket.handshake.query.user_id;
   if(user_id) {
     console.log(user_id);
   };
