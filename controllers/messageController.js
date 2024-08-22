@@ -1,14 +1,21 @@
-import axios from "axios";
 import * as Message from "../models/message.js";
 import * as Customer from "../models/customer.js";
+import redisClient from '../services/redis/redis.js';
 import sendTextMessage from '../services/greenApi/sendTextMessage.js';
 import sendFileMessage from '../services/greenApi/sendFileMessage.js';
-import sendLocationMessage from '../services/greenApi/sendLocationMessage.js';
 
 export const get = async (req, res) => {
 	try {
     const conversation_id = req.params.conversation_id
+    // Попробуйте сначала получить сообщения из Redis
+		const cachedMessages = await redisClient.get(conversation_id);
+		if (cachedMessages) {
+			return res.status(200).send({ message: 'ok', messages: JSON.parse(cachedMessages) });
+		};
+
     const messages = await Message.getChat(conversation_id);
+
+		await redisClient.setEx(conversation_id, 3600, JSON.stringify(messages));
 
 		res.status(200).send({ message: 'ok', messages });
 	}	catch (err) {
@@ -35,9 +42,8 @@ export const create = async (req, res) => {
       obj = await sendFileMessage(customer, file, conversation_id);
     };
 
-    // if(type === 'locationMessage') {
-    //   obj = await sendLocationMessage();
-    // };
+    // Кэшируйте сообщение в Redis с установкой срока действия
+		await redisClient.setEx(conversation_id, 3600, JSON.stringify(obj));
 
 		res.status(200).send({ message: obj });
 	}	catch (err) {
