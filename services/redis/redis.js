@@ -1,5 +1,7 @@
 import redis from 'redis';
 
+console.log(process.env.NODE_ENV === 'production')
+
 // Создайте клиент Redis
 const redisClient = redis.createClient({
   url: process.env.NODE_ENV === 'production'
