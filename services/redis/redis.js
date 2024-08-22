@@ -2,7 +2,7 @@ import redis from 'redis';
 
 // Создайте клиент Redis
 const redisClient = redis.createClient({
-  url: process.env.NODE_ENV === 'development'
+  url: process.env.NODE_ENV === 'production'
   ? 'redis://localhost:6379'
   : `redis://${process.env.SERVER_IP}:6379`
 });
