@@ -8,9 +8,9 @@ import apiRoutes from './routes/index.js';
 import printName from "./helpers/printName.js";
 import { app, server } from './socket/socket.js';
 
-const PORT = process.env.PORT || 8080;
-
 dotenv.config();
+
+const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 app.use(cookieParser());
@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 });
 app.use('/api', apiRoutes);
 
-server.listen(PORT, process.env.NODE_ENV === 'development' ? 'localhost' : process.env.IP, () => {
+server.listen(PORT, process.env.NODE_ENV === 'development' ? 'localhost' : process.env.SERVER_IP, () => {
 	printName();
 	console.log(`Welcome to Constructor server, port ${PORT} ✅✅✅`);
 });
