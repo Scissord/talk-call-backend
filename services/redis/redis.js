@@ -2,9 +2,9 @@ import redis from 'redis';
 
 // Создайте клиент Redis
 const redisClient = redis.createClient({
-  url: process.env.NODE_ENV === 'production'
-    ? 'redis://localhost:6379'
-    : `redis://${process.env.SERVER_IP}:6379`
+  url: process.env.NODE_ENV === 'development'
+    ? `redis://${process.env.SERVER_IP}:6379`
+    : 'redis://localhost:6379'
 });
 
 // Обработчик ошибок подключения
