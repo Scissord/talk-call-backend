@@ -6,8 +6,8 @@ import cors from "cors";
 import apiRoutes from './routes/index.js';
 
 import printName from "./helpers/printName.js";
+import { app, server } from './socket/socket.js';
 
-const app = express();
 const PORT = process.env.PORT || 8080;
 
 dotenv.config();
@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 });
 app.use('/api', apiRoutes);
 
-app.listen(PORT, process.env.NODE_ENV === 'development' ? 'localhost' : '31.128.41.42', () => {
+server.listen(PORT, process.env.NODE_ENV === 'development' ? 'localhost' : process.env.IP, () => {
 	printName();
 	console.log(`Welcome to Constructor server, port ${PORT} ✅✅✅`);
 });
