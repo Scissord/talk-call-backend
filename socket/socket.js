@@ -11,8 +11,8 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      'http://' + process.env.CLIENT_IP, // IP клиента из переменной окружения
-      'http://localhost:5173' // Добавляем localhost:5173
+      'http://' + process.env.CLIENT_IP,
+      'http://localhost:5173'
     ],
     methods: ['GET', 'POST'],
   },
