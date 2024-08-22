@@ -42,8 +42,15 @@ export const create = async (req, res) => {
       obj = await sendFileMessage(customer, file, conversation_id);
     };
 
-    // Кэшируйте сообщение в Redis с установкой срока действия
-		await redisClient.setEx(conversation_id, 3600, JSON.stringify(obj));
+    // Получаем текущие сообщения из Redis
+    let messages = await redisClient.get(conversation_id);
+    messages = messages ? JSON.parse(messages) : [];
+
+    // Добавляем новое сообщение в список
+    messages.push(obj);
+
+    // Обновляем кэш в Redis
+    await redisClient.setEx(conversation_id, 3600, JSON.stringify(messages));
 
 		res.status(200).send({ message: obj });
 	}	catch (err) {
