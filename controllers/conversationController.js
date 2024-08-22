@@ -5,6 +5,8 @@ export const get = async (req, res) => {
     const { limit, page, type, search } = req.query;
     const { role } = req.user;
 
+    console.log(role)
+
     let status = 0;
 
     if(+role.id === 1 || +role.id === 2) {
