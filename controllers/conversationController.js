@@ -3,6 +3,7 @@ import * as Conversation from "../models/conversation.js";
 export const create = async (req, res) => {
   try {
     console.log(req.body);
+    return res.status(200).send({ message: 'ok' });
   }	catch (err) {
 		console.log("Error in create conversation controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
