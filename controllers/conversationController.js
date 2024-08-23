@@ -1,5 +1,14 @@
 import * as Conversation from "../models/conversation.js";
 
+export const create = async (req, res) => {
+  try {
+    console.log(req.body);
+  }	catch (err) {
+		console.log("Error in create conversation controller", err.message);
+		res.status(500).send({ error: "Internal Server Error" });
+	}
+};
+
 export const get = async (req, res) => {
 	try {
     const { limit, page, type, search } = req.query;

@@ -7,8 +7,8 @@ import sendFileMessage from '../services/greenApi/sendFileMessage.js';
 export const get = async (req, res) => {
 	try {
     const conversation_id = req.params.conversation_id
-    // Попробуйте сначала получить сообщения из Redis
-		const cachedMessages = await redisClient.get(conversation_id);
+
+    const cachedMessages = await redisClient.get(conversation_id);
 		if (cachedMessages) {
 			return res.status(200).send({ message: 'ok', messages: JSON.parse(cachedMessages) });
 		};
@@ -42,11 +42,9 @@ export const create = async (req, res) => {
       obj = await sendFileMessage(customer, file, conversation_id);
     };
 
-    // Получаем текущие сообщения из Redis
     let messages = await redisClient.get(conversation_id);
     messages = messages ? JSON.parse(messages) : [];
 
-    // Добавляем новое сообщение в список
     messages.push(obj);
 
     // Обновляем кэш в Redis
