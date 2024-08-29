@@ -15,7 +15,6 @@ export const get = async (req, res) => {
       const exist = await PivotUserCustomer.find(req.user.id, customer_id);
       isFavorite = !!exist
 
-      console.log(isFavorite)
 			return res.status(200).send({
         message: 'ok',
         messages: JSON.parse(cachedMessages),
@@ -30,7 +29,6 @@ export const get = async (req, res) => {
 
     const exist = await PivotUserCustomer.find(req.user.id, customer_id);
     isFavorite = !!exist
-    console.log(isFavorite)
 
 		res.status(200).send({
       message: 'ok',
@@ -59,6 +57,8 @@ export const create = async (req, res) => {
     if(type === 'fileMessage') {
       obj = await sendFileMessage(customer, file, customer_id);
     };
+
+    console.log(obj);
 
     let messages = await redisClient.get(customer_id);
     messages = messages ? JSON.parse(messages) : [];
