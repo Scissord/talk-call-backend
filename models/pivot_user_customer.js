@@ -14,13 +14,6 @@ export const find = async function (user_id, customer_id) {
     .first();
 };
 
-export const isExist = async function (user_id, customer_id) {
-  return await db('pivot_user_customer')
-    .select('*')
-    .where('user_id', user_id)
-    .andWhere('customer_id', customer_id)
-};
-
 export const destroy = async function (user_id, customer_id) {
   return await db('pivot_user_customer')
     .del()
