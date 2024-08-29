@@ -50,6 +50,9 @@ export const get = async (req, res) => {
     };
 
     let customers = [];
+
+    console.log(type);
+
     if(type) {
       customers = await Customer.getFavorites(limit, page, search, type, status, req.user.id)
     } else {
