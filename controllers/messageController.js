@@ -16,7 +16,7 @@ export const get = async (req, res) => {
 
     const messages = await Message.getChat(customer_id);
 
-    const exist = await PivotStorageUser.find(req.user.id, customer_id);
+    const exist = await PivotStorageUser.isExist(req.user.id, customer_id);
     const isFavorite = !!exist;
 
     console.log(isFavorite)
