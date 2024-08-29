@@ -51,11 +51,11 @@ export const get = async (req, res) => {
 
     let customers = [];
 
-    if(type) {
-      customers = await Customer.getFavorites(limit, page, search, status, req.user.id)
-    } else {
-      customers = await Customer.get(limit, page, search, status);
-    }
+    console.log(type);
+
+    type === true
+      ? customers = await Customer.getFavorites(limit, page, search, status, req.user.id)
+      : customers = await Customer.get(limit, page, search, status);
 
 		res.status(200).send({ message: 'ok', customers });
 	}	catch (err) {
