@@ -15,13 +15,12 @@ export const create = async function (data) {
   return data;
 };
 
-export const getChat = async function (conversation_id) {
+export const getChat = async function (customer_id) {
   return await db('message as m')
     .select('m.*', 'cu.avatar')
     .select(db.raw('COALESCE(json_agg(a.*) FILTER (WHERE a.id IS NOT NULL), \'[]\') as attachments'))
     .leftJoin('attachment as a', 'a.message_id', 'm.id')
-    .leftJoin('conversation as co', 'co.id', 'm.conversation_id')
     .leftJoin('customer as cu', 'cu.id', 'co.customer_id')
-    .where('conversation_id', conversation_id)
+    .where('customer_id', customer_id)
     .groupBy('m.id', 'cu.avatar');
 };

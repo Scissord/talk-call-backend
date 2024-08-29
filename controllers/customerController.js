@@ -1,5 +1,5 @@
 import * as Customer from "../models/customer.js";
-import * as Conversation from "../models/conversation.js";
+import * as PivotUserCustomer from "../models/pivot_user_customer.js";
 
 const phones = [
   { phone: '4444', access: 'buyer' },
@@ -21,7 +21,7 @@ export const create = async (req, res) => {
 
     return res.status(200).send({ message: 'ok' });
   }	catch (err) {
-		console.log("Error in create conversation controller", err.message);
+		console.log("Error in create customer controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
 	}
 };
@@ -49,11 +49,16 @@ export const get = async (req, res) => {
       status = 3;
     };
 
-    const conversations = await Conversation.get(limit, page, search, type, status);
+    let customers = [];
+    if(type) {
+      customers = await Customer.getFavorites(limit, page, search, type, status, req.user.id)
+    } else {
+      customers = await Customer.get(limit, page, search, type, status);
+    }
 
-		res.status(200).send({ message: 'ok', conversations });
+		res.status(200).send({ message: 'ok', customers });
 	}	catch (err) {
-		console.log("Error in get conversation controller", err.message);
+		console.log("Error in get customer controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
 	}
 };
@@ -61,13 +66,17 @@ export const get = async (req, res) => {
 export const toggleFavorite = async (req, res) => {
 	try {
     const customer_id = req.params.customer_id;
-    const isFavorite = req.body.isFavorite;
 
-    await Conversation.updateByCustomerId(customer_id, { isFavorite: !isFavorite });
+    const check = await PivotUserCustomer.find(req.user, customer_id)
+    if(check) {
+      await PivotUserCustomer.destroy(req.user, customer_id);
+    } else {
+      await PivotUserCustomer.create({ user_id: req.user, customer_id });
+    };
 
 		res.status(200).send({ message: 'ok' });
 	}	catch (err) {
-		console.log("Error in get conversation controller", err.message);
+		console.log("Error in get customer controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
 	}
 };

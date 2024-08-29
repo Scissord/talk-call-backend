@@ -9,7 +9,7 @@ const upload = multer({ storage });
 
 const router = express.Router();
 
-router.get("/:conversation_id", protectRoute, controller.get);
-router.post("/:conversation_id", protectRoute, upload.array('files'), controller.create);
+router.get("/:customer_id", protectRoute, controller.get);
+router.post("/", protectRoute, upload.array('files'), controller.create);
 
 export default router;

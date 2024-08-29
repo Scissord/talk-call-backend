@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as Message from '../../models/message.js';
 import * as Attachment from '../../models/attachment.js';
 
-export default async function sendFileMessage(customer, file, conversation_id) {
+export default async function sendFileMessage(customer, file, customer_id) {
   const url = process.env.URL + 'uploads/' + file.filename;
 
   const res = await axios({
@@ -22,7 +22,7 @@ export default async function sendFileMessage(customer, file, conversation_id) {
 
   if(res.status === 200) {
     obj = await Message.create({
-      conversation_id,
+      customer_id,
       text: "",
       incoming: false,
     });

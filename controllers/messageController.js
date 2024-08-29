@@ -6,16 +6,17 @@ import sendFileMessage from '../services/greenApi/sendFileMessage.js';
 
 export const get = async (req, res) => {
 	try {
-    const conversation_id = req.params.conversation_id
+    const customer_id = req.params.customer_id
 
-    const cachedMessages = await redisClient.get(conversation_id);
+    const cachedMessages = await redisClient.get(customer_id);
 		if (cachedMessages) {
 			return res.status(200).send({ message: 'ok', messages: JSON.parse(cachedMessages) });
 		};
 
-    const messages = await Message.getChat(conversation_id);
+    const messages = await Message.getChat(customer_id);
 
-		await redisClient.setEx(conversation_id, 3600, JSON.stringify(messages));
+    // 1h
+		await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
 		res.status(200).send({ message: 'ok', messages });
 	}	catch (err) {
@@ -29,26 +30,24 @@ export const create = async (req, res) => {
     const { customer_id, message, type } = req.body;
 
     const customer = await Customer.find(customer_id);
-    const conversation_id = req.params.conversation_id;
     const file = req.files[0];
 
     let obj = null;
 
     if(type === 'textMessage') {
-      obj = await sendTextMessage(customer, message, conversation_id);
+      obj = await sendTextMessage(customer, message, customer_id);
     };
 
     if(type === 'fileMessage') {
-      obj = await sendFileMessage(customer, file, conversation_id);
+      obj = await sendFileMessage(customer, file, customer_id);
     };
 
-    let messages = await redisClient.get(conversation_id);
+    let messages = await redisClient.get(customer_id);
     messages = messages ? JSON.parse(messages) : [];
 
     messages.push(obj);
 
-    // Обновляем кэш в Redis
-    await redisClient.setEx(conversation_id, 3600, JSON.stringify(messages));
+    await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
 		res.status(200).send({ message: obj });
 	}	catch (err) {

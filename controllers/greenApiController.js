@@ -1,5 +1,4 @@
 import * as Customer from "../models/customer.js";
-import * as Conversation from "../models/conversation.js";
 import * as Message from "../models/message.js";
 import * as Attachment from "../models/attachment.js";
 
