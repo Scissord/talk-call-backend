@@ -51,11 +51,11 @@ export const create = async (req, res) => {
     let obj = null;
 
     if(type === 'textMessage') {
-      obj = await sendTextMessage(customer, message, customer_id);
+      obj = await sendTextMessage(req.user.id, customer, message, customer_id);
     };
 
     if(type === 'fileMessage') {
-      obj = await sendFileMessage(customer, file, customer_id);
+      obj = await sendFileMessage(req.user.id, customer, file, customer_id);
     };
 
     console.log(obj);
