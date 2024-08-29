@@ -16,14 +16,10 @@ export const get = async (req, res) => {
 
     const messages = await Message.getChat(customer_id);
 
-    let isFavorite;
     const exist = await PivotStorageUser.find(req.user.id, customer_id);
+    const isFavorite = !!exist;
 
-    console.log(exist);
-
-    exist
-      ? isFavorite = true
-      : isFavorite = false;
+    console.log(isFavorite)
 
     // 1h
 		await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
