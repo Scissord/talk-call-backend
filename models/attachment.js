@@ -1,5 +1,4 @@
 import knex from './knex.js';
-import countPagination from '../helpers/countPagination.js';
 
 const db = knex();
 
