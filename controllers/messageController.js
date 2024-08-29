@@ -1,5 +1,6 @@
 import * as Message from "../models/message.js";
 import * as Customer from "../models/customer.js";
+import * as PivotStorageUser from "../models/pivot_user_customer.js";
 import redisClient from '../services/redis/redis.js';
 import sendTextMessage from '../services/greenApi/sendTextMessage.js';
 import sendFileMessage from '../services/greenApi/sendFileMessage.js';
@@ -15,10 +16,17 @@ export const get = async (req, res) => {
 
     const messages = await Message.getChat(customer_id);
 
+    let isFavorite;
+    const exist = await PivotStorageUser.find(req.user.id, customer_id);
+
+    exist
+      ? isFavorite = true
+      : isFavorite = false;
+
     // 1h
 		await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
-		res.status(200).send({ message: 'ok', messages });
+		res.status(200).send({ message: 'ok', messages, isFavorite });
 	}	catch (err) {
 		console.log("Error in get message controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
