@@ -1,6 +1,6 @@
 import * as Message from "../models/message.js";
 import * as Customer from "../models/customer.js";
-import * as PivotStorageUser from "../models/pivot_user_customer.js";
+import * as PivotUserCustomer from "../models/pivot_user_customer.js";
 import redisClient from '../services/redis/redis.js';
 import sendTextMessage from '../services/greenApi/sendTextMessage.js';
 import sendFileMessage from '../services/greenApi/sendFileMessage.js';
@@ -16,12 +16,12 @@ export const get = async (req, res) => {
 
     const messages = await Message.getChat(customer_id);
 
-    let isFavorite = false
-    const exist = await PivotStorageUser.find(req.user.id, customer_id);
-    console.log(exist);
-
     // 1h
 		await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
+
+    console.log('Before find');
+    const exist = await PivotUserCustomer.find(req.user.id, customer_id);
+    console.log('After find', exist);
 
 		res.status(200).send({ message: 'ok', messages, isFavorite });
 	}	catch (err) {
