@@ -21,7 +21,6 @@ export const destroy = async function (user_id, customer_id) {
     .andWhere('customer_id', customer_id)
 };
 
-
 export const create = async function (data) {
   const [pivot_user_customer] = await db("pivot_user_customer")
     .insert(data)

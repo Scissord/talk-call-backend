@@ -4,8 +4,6 @@ import { countOffset, countOffsetWithFavorites } from '../helpers/countPaginatio
 const db = knex();
 
 export const get = async function (limit, page, search, status) {
-  console.log("get >>");
-
   const offset = await countOffset(
     'customer', limit, page,
     search, status
@@ -27,8 +25,6 @@ export const get = async function (limit, page, search, status) {
 };
 
 export const getFavorites = async function (limit, page, search, status, user_id) {
-  console.log("getFavorites >>");
-
   const offset = await countOffsetWithFavorites(
     limit, page, search, status, user_id
   );

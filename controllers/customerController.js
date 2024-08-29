@@ -66,16 +66,17 @@ export const toggleFavorite = async (req, res) => {
 	try {
     const customer_id = req.params.customer_id;
 
-    const check = await PivotUserCustomer.find(req.user, customer_id)
+    const check = await PivotUserCustomer.find(req.user.id, customer_id);
+
     if(check) {
-      await PivotUserCustomer.destroy(req.user, customer_id);
+      await PivotUserCustomer.destroy(req.user.id, customer_id);
     } else {
-      await PivotUserCustomer.create({ user_id: req.user, customer_id });
+      await PivotUserCustomer.create({ user_id: req.user.id, customer_id });
     };
 
 		res.status(200).send({ message: 'ok' });
 	}	catch (err) {
-		console.log("Error in get customer controller", err.message);
+		console.log("Error in toggleFavorite customer controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
 	}
 };
