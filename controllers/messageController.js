@@ -8,10 +8,19 @@ import sendFileMessage from '../services/greenApi/sendFileMessage.js';
 export const get = async (req, res) => {
 	try {
     const customer_id = req.params.customer_id
+    let isFavorite = false;
 
     const cachedMessages = await redisClient.get(customer_id);
 		if (cachedMessages) {
-			return res.status(200).send({ message: 'ok', messages: JSON.parse(cachedMessages) });
+      const exist = await PivotUserCustomer.find(req.user.id, customer_id);
+      isFavorite = !!exist
+
+      console.log(isFavorite)
+			return res.status(200).send({
+        message: 'ok',
+        messages: JSON.parse(cachedMessages),
+        isFavorite
+      });
 		};
 
     const messages = await Message.getChat(customer_id);
@@ -19,11 +28,15 @@ export const get = async (req, res) => {
     // 1h
 		await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
-    console.log('Before find');
     const exist = await PivotUserCustomer.find(req.user.id, customer_id);
-    console.log('After find', exist);
+    isFavorite = !!exist
+    console.log(isFavorite)
 
-		res.status(200).send({ message: 'ok', messages, isFavorite });
+		res.status(200).send({
+      message: 'ok',
+      messages,
+      isFavorite
+    });
 	}	catch (err) {
 		console.log("Error in get message controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
