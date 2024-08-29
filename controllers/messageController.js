@@ -19,6 +19,8 @@ export const get = async (req, res) => {
     let isFavorite;
     const exist = await PivotStorageUser.find(req.user.id, customer_id);
 
+    console.log(exist);
+
     exist
       ? isFavorite = true
       : isFavorite = false;
