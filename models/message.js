@@ -20,7 +20,7 @@ export const getChat = async function (customer_id) {
     .select('m.*', 'cu.avatar')
     .select(db.raw('COALESCE(json_agg(a.*) FILTER (WHERE a.id IS NOT NULL), \'[]\') as attachments'))
     .leftJoin('attachment as a', 'a.message_id', 'm.id')
-    .leftJoin('customer as cu', 'cu.id', 'co.customer_id')
+    .leftJoin('customer as cu', 'cu.id', 'm.customer_id')
     .where('customer_id', customer_id)
     .groupBy('m.id', 'cu.avatar');
 };
