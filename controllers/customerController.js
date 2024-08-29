@@ -53,7 +53,7 @@ export const get = async (req, res) => {
 
     console.log(type, typeof type)
 
-    type === 1
+    Number(type) === 1
       ? customers = await Customer.getFavorites(limit, page, search, status, req.user.id)
       : customers = await Customer.get(limit, page, search, status);
 
