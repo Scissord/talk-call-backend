@@ -41,10 +41,10 @@ export const getFavorites = async function (limit, page, search, status, user_id
       if(status !== 3) {
         q.where('cu.status', status);
       };
-      user_id && q.where('puc.user_id', user_id);
     })
     .limit(limit)
     .offset(offset)
+    .where('puc.user_id', user_id)
     .orderBy('cu.id', 'desc');
 
   return customers

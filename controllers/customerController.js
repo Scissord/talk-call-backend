@@ -51,8 +51,6 @@ export const get = async (req, res) => {
 
     let customers = [];
 
-    console.log(type);
-
     type === true
       ? customers = await Customer.getFavorites(limit, page, search, status, req.user.id)
       : customers = await Customer.get(limit, page, search, status);
