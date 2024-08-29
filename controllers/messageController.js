@@ -17,14 +17,12 @@ export const get = async (req, res) => {
     const messages = await Message.getChat(customer_id);
 
     const exist = await PivotStorageUser.isExist(req.user.id, customer_id);
-    const isFavorite = !!exist;
-
-    console.log(isFavorite)
+    console.log(exist);
 
     // 1h
 		await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
-		res.status(200).send({ message: 'ok', messages, isFavorite });
+		res.status(200).send({ message: 'ok', messages, exist });
 	}	catch (err) {
 		console.log("Error in get message controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
