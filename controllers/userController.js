@@ -8,6 +8,8 @@ export const create = async (req, res) => {
 
     const token = generateToken();
 
+    console.log(token)
+
     await UserToken.create({
       user_id: user.id,
       token: token
