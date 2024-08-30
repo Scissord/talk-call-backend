@@ -44,7 +44,16 @@ export const get = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const user_id = req.params.user.id;
-    await User.update(user_id, req.body);
+    const { name, password, role } = req.body;
+
+    const salt = await bcrypt.genSalt(10);
+		const hashedPassword = await bcrypt.hash(password, salt);
+
+    await User.update(user_id, {
+      name: name,
+      password: hashedPassword,
+      role: role
+    });
 
 		res.status(200).send({ message: 'ok' });
 	}	catch (err) {
