@@ -20,9 +20,11 @@ export const login = async (req, res) => {
       token: token,
     });
 
-    const role = await Role.getForUser(user.id);
-    user.role = role;
+    console.log(user.id);
 
+    const role = await Role.getForUser(user.id);
+    console.log(role)
+    user.role = role;
 		res.status(200).send({
       message: "Successfully login",
       user,
