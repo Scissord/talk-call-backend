@@ -43,7 +43,7 @@ export const get = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const user_id = req.params.user.id;
+    const user_id = req.params.user_id;
     const { name, password, role } = req.body;
 
     const salt = await bcrypt.genSalt(10);
@@ -64,7 +64,7 @@ export const update = async (req, res) => {
 
 export const destroy = async (req, res) => {
   try {
-    const user_id = req.params.user.id;
+    const user_id = req.params.user_id;
     await User.destroy(user_id);
     await UserToken.destroy(user_id);
 
