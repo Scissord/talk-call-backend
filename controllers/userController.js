@@ -10,8 +10,6 @@ export const create = async (req, res) => {
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(password, salt);
 
-    console.log(hashedPassword)
-
     const user = await User.create({
       name,
       password: hashedPassword,
@@ -19,8 +17,6 @@ export const create = async (req, res) => {
     });
 
     const token = generateToken();
-
-    console.log(token)
 
     await UserToken.create({
       user_id: user.id,
@@ -41,6 +37,31 @@ export const get = async (req, res) => {
 		res.status(200).send({ message: 'ok', users });
 	}	catch (err) {
 		console.log("Error in get user controller", err.message);
+		res.status(500).send({ error: "Internal Server Error" });
+	}
+};
+
+export const update = async (req, res) => {
+  try {
+    const user_id = req.params.user.id;
+    await User.update(user_id, req.body);
+
+		res.status(200).send({ message: 'ok' });
+	}	catch (err) {
+		console.log("Error in update user controller", err.message);
+		res.status(500).send({ error: "Internal Server Error" });
+	}
+};
+
+export const destroy = async (req, res) => {
+  try {
+    const user_id = req.params.user.id;
+    await User.destroy(user_id);
+    await UserToken.destroy(user_id);
+
+		res.status(200).send({ message: 'ok' });
+	}	catch (err) {
+		console.log("Error in destroy user controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
 	}
 };

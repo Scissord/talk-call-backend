@@ -50,3 +50,9 @@ export const findByToken = async function (token) {
 
   return user_token
 };
+
+export const destroy = async function (id) {
+  return await db('user_token')
+    .del()
+    .where('user_id', id);
+};

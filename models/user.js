@@ -44,6 +44,8 @@ export const findById = async function (id) {
    .first();
 }
 
-
-
-
+export const destroy = async function (id) {
+  return await db('user')
+    .del()
+    .where('id', id);
+};
