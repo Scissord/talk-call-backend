@@ -10,11 +10,8 @@ const protectRoute = async (req, res, next) => {
     });
     const accessToken = token.startsWith('Bearer ') ? token.slice(7) : token;
 
-    // console.log(accessToken)
-
     const user_token = await UserToken.findByToken(accessToken);
 
-    // console.log(user_token)
     if(!user_token) return res.status(401).send({
       error: "Unauthorized - No User Token Provided"
     });
@@ -22,7 +19,7 @@ const protectRoute = async (req, res, next) => {
     const user = await User.find(user_token.user_id);
     if (!user) return res.status(401).send({ error: "User not found" });
 
-    const role = await Role.getForUser(user.id);
+    const role = await Role.getForUser(user.role);
     if (!role) return res.status(401).send({ error: "User role nor found" });
 
     user.role = role
