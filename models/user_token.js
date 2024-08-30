@@ -17,7 +17,7 @@ export const create = async function (data) {
 
 export const update = async function (id, data) {
   const [user_token] = await db("user_token")
-    .where({ id })
+    .where("id", id)
     .update(data)
     .returning("*");
 

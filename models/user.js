@@ -42,7 +42,16 @@ export const findById = async function (id) {
    .select('*')
    .where('id', id)
    .first();
-}
+};
+
+export const update = async function (id, data) {
+  const [user] = await db("user")
+    .where("id", id)
+    .update(data)
+    .returning("*");
+
+  return user;
+};
 
 export const destroy = async function (id) {
   return await db('user')
