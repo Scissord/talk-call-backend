@@ -1,13 +1,16 @@
 import * as User from "../models/user.js";
 import * as UserToken from "../models/user_token.js";
+import generateToken from "../helpers/generateToken.js";
 
 export const create = async (req, res) => {
   try {
     const user = await User.create(req.body);
 
+    const token = generateToken();
+
     await UserToken.create({
       user_id: user.id,
-      token: process.env.USER_INIT_TOKEN
+      token: token
     });
 
     return res.status(200).send({ message: 'ok' });
