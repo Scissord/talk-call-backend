@@ -10,10 +10,11 @@ const protectRoute = async (req, res, next) => {
     });
     const accessToken = token.startsWith('Bearer ') ? token.slice(7) : token;
 
-    console.log(accessToken)
+    // console.log(accessToken)
 
     const user_token = await UserToken.findByToken(accessToken);
-    console.log(user_token)
+
+    // console.log(user_token)
     if(!user_token) return res.status(401).send({
       error: "Unauthorized - No User Token Provided"
     });
