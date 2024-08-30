@@ -9,6 +9,8 @@ export const create = async (req, res) => {
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(password, salt);
 
+    console.log(hashedPassword)
+
     const user = await User.create({
       name,
       password: hashedPassword,
@@ -16,6 +18,8 @@ export const create = async (req, res) => {
     });
 
     const token = generateToken();
+
+    console.log(token)
 
     await UserToken.create({
       user_id: user.id,
