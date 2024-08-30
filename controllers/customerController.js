@@ -1,22 +1,14 @@
 import * as Customer from "../models/customer.js";
 import * as PivotUserCustomer from "../models/pivot_user_customer.js";
 
-const phones = [
-  { phone: '4444', access: 'buyer' },
-  { phone: '5555', access: 'all' }
-];
-
 export const create = async (req, res) => {
   try {
     const { orderId, phone } = req.body;
-    const isCameFromLeadVertex = phones.some((p) => p.phone === phone);
-
-    if (!isCameFromLeadVertex) {
-      return res.status(400).send({ message: 'Вас нет в базе для доступа к добавлению.' })
-    };
 
     const customer = await Customer.create({
-
+      // name: ,
+      // phone: orderId,
+      // buyer_phone:
     });
 
     return res.status(200).send({ message: 'ok' });
