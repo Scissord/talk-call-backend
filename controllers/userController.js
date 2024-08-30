@@ -4,11 +4,18 @@ import generateToken from "../helpers/generateToken.js";
 
 export const create = async (req, res) => {
   try {
-    const user = await User.create(req.body);
+    const { name, password, role } = req.body;
+
+		const salt = await bcrypt.genSalt(10);
+		const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = await User.create({
+      name,
+      password: hashedPassword,
+      role
+    });
 
     const token = generateToken();
-
-    console.log(token)
 
     await UserToken.create({
       user_id: user.id,

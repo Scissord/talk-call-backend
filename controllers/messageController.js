@@ -58,8 +58,6 @@ export const create = async (req, res) => {
       obj = await sendFileMessage(req.user.id, customer, file, customer_id);
     };
 
-    console.log(obj);
-
     let messages = await redisClient.get(customer_id);
     messages = messages ? JSON.parse(messages) : [];
 
