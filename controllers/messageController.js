@@ -75,7 +75,7 @@ export const create = async (req, res) => {
 export const cache = async (req, res) => {
   try {
     const message = req.body;
-    const customer_id = req.body.message.toString();
+    const customer_id = req.body.customer_id.toString();
 
     console.log('cache', message);
 
