@@ -74,21 +74,19 @@ export const create = async (req, res) => {
 
 export const cache = async (req, res) => {
   try {
-    // const { message } = req.body;
+    const message = req.body;
 
-    console.log('cache >> ', req.body);
+    let messages = await redisClient.get(message.customer_id);
+    if(messages.length > 0) {
+      messages = JSON.parse(messages)
+      messages.push(message);
+    } else {
+      messages = await Message.getChat(message.customer_id);
+    };
 
-    // let messages = await redisClient.get(message.customer_id);
-    // if(messages.length > 0) {
-    //   messages = JSON.parse(messages)
-    //   messages.push(message);
-    // } else {
-    //   messages = await Message.getChat(message.customer_id);
-    // };
+    await redisClient.setEx(message.customer_id, 3600, JSON.stringify(messages));
 
-    // await redisClient.setEx(message.customer_id, 3600, JSON.stringify(messages));
-
-		// res.status(200).send({ message: obj });
+		res.status(200).send({ message: obj });
 	}	catch (err) {
 		console.log("Error in cache message controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
