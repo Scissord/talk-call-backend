@@ -22,7 +22,7 @@ export const login = async (req, res) => {
 
     const role = await Role.getForUser(user.role);
     user.role = role;
-    console.log(role)
+
 		res.status(200).send({
       message: "Successfully login",
       user,
