@@ -58,8 +58,6 @@ export const create = async (req, res) => {
       obj = await sendFileMessage(req.user.id, customer, file, customer_id);
     };
 
-    console.log(typeof customer_id);
-
     let messages = await redisClient.get(customer_id);
     messages = messages ? JSON.parse(messages) : [];
 
@@ -77,10 +75,11 @@ export const create = async (req, res) => {
 export const cache = async (req, res) => {
   try {
     const message = req.body;
+    const customer_id = req.body.message.toString();
 
     console.log('cache', message);
 
-    let messages = await redisClient.get(message.customer_id);
+    let messages = await redisClient.get(customer_id);
 
     console.log(messages);
 
@@ -91,7 +90,7 @@ export const cache = async (req, res) => {
       messages = await Message.getChat(message.customer_id);
     };
 
-    await redisClient.setEx(message.customer_id, 3600, JSON.stringify(messages));
+    await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
 		res.status(200).send({ message: obj });
 	}	catch (err) {
