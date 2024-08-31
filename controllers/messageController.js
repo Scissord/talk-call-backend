@@ -77,17 +77,16 @@ export const cache = async (req, res) => {
     const message = req.body;
     const customer_id = req.body.customer_id.toString();
 
+    console.log(req.body)
+
     let messages = await redisClient.get(customer_id);
 
     if(messages && messages.length > 0) {
-      messages = JSON.parse(messages)
+      messages = JSON.parse(messages);
       messages.push(message);
     } else {
       messages = await Message.getChat(message.customer_id);
     };
-
-    console.log(messages);
-    console.log(messages[messages.length - 1]);
 
     await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
