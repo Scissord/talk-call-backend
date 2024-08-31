@@ -76,6 +76,8 @@ export const cache = async (req, res) => {
   try {
     const message = req.body;
 
+    console.log('cache', message);
+
     let messages = await redisClient.get(message.customer_id);
     if(messages.length > 0) {
       messages = JSON.parse(messages)
