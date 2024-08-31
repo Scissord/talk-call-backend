@@ -87,8 +87,11 @@ export const cache = async (req, res) => {
     };
 
     console.log(messages);
+    console.log(messages[messages.length - 1]);
 
     await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
+
+    console.log('success');
 
 		res.status(200).send({ message: "ok" });
 	}	catch (err) {
