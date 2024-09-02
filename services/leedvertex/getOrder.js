@@ -1,8 +1,9 @@
 import axios from 'axios';
 import * as Customer from '../../models/customer.js';
-import * as Message from '../../models/message.js';
+import sendTextMessage from '../greenApi/sendTextMessage.js';
+import redisClient from '../redis/redis.js';
 
-export default async function getOrder(order_id, text) {
+export default async function getOrder(order_id, text, user_id) {
   const res = await axios({
     method: 'GET',
     url: `https://call-center1.leadvertex.ru/api/admin/getOrdersByIds.html?token=${process.env.LEADVERTEX_API_KEY}&ids=${order_id}`,
@@ -16,21 +17,30 @@ export default async function getOrder(order_id, text) {
     const firstGoodKey = goodKeys[0];
     const firstGood = order.goods[firstGoodKey]
 
-    console.log(firstGood);
-    console.log(firstGood.goodID);
-
     let customer = await Customer.findWhere({ order_id: order_id })
     if(customer) {
       return {
         message: 'error'
       }
     } else {
-      // customer = await Customer.create({
-      //   name: order.fio,
-      //   phone: order.phone,
-      //   buyer_phone: 'test@c.us',
-      //   good:
-      // });
+      customer = await Customer.create({
+        name: order.fio,
+        phone: order.phone,
+        buyer_phone: 'nobuyerphone@c.us',
+        good: firstGood.goodID,
+        status: 0,
+        order_id
+      });
+
+      const message = await sendTextMessage(user_id, customer, text, customer.id);
+
+      let messages = await redisClient.get(customer.id);
+      messages = messages ? JSON.parse(messages) : [];
+
+      messages.push(message);
+
+      await redisClient.setEx(customer.id, 3600, JSON.stringify(messages));
+
       return {
         message: 'success'
       }
