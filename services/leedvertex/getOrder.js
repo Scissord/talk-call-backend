@@ -9,7 +9,7 @@ export default async function getOrder(order_id, text) {
 
   const res = await axios({
     method: 'GET',
-    url: `https://call-center1.leadvertex.ru/admin/page/api.html#getOrdersByIds?token=${process.env.LEADVERTEX_API_KEY}&ids=${order_id}`,
+    url: `https://call-center1.leadvertex.ru/api/admin/getOrdersByIds.html?token=${process.env.LEADVERTEX_API_KEY}&ids=${order_id}`,
   })
 
   if(res.status === 200) {
