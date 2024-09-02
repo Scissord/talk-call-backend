@@ -32,7 +32,11 @@ export default async function getOrder(order_id, text, user_id) {
         order_id
       });
 
+      console.log('before sendTextMessage')
+
       const message = await sendTextMessage(user_id, customer, text, customer.id);
+
+      console.log('after sendTextMessage')
 
       let messages = await redisClient.get(customer.id);
       messages = messages ? JSON.parse(messages) : [];
