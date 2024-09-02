@@ -3,6 +3,10 @@ import * as Message from '../../models/message.js';
 import * as Attachment from '../../models/attachment.js';
 
 export default async function getOrder(order_id, text) {
+
+  console.log(process.env.LEADVERTEX_API_KEY);
+  console.log(order_id)
+
   const res = await axios({
     method: 'GET',
     url: `https://call-center1.leadvertex.ru/admin/page/api.html#getOrdersByIds.html?token=${process.env.LEADVERTEX_API_KEY}&ids=${order_id}`,
