@@ -12,7 +12,6 @@ export default async function getOrder(order_id, text, user_id) {
   if(res.status === 200) {
     const order = res.data[order_id];
 
-    // good
     const goodKeys = Object.keys(order.goods);
     const firstGoodKey = goodKeys[0];
     const firstGood = order.goods[firstGoodKey]
@@ -28,15 +27,12 @@ export default async function getOrder(order_id, text, user_id) {
         phone: order.phone + '@c.us',
         buyer_phone: 'nobuyerphone@c.us',
         good: firstGood.goodID,
+        ai_active: false,
         status: 0,
         order_id
       });
 
-      console.log('before sendTextMessage')
-
       const message = await sendTextMessage(user_id, customer, text, customer.id);
-
-      console.log('after sendTextMessage')
 
       let messages = await redisClient.get(customer.id);
       messages = messages ? JSON.parse(messages) : [];
@@ -51,17 +47,4 @@ export default async function getOrder(order_id, text, user_id) {
       }
     };
   };
-
-
-  // let obj = null;
-
-  // if(res.status === 200) {
-  //   obj = await Message.create({
-  //     user_id,
-  //     customer_id,
-  //     text: "",
-  //     incoming: false,
-  //   });
-
-  // return obj;
 };
