@@ -4,6 +4,7 @@ import * as PivotUserCustomer from "../models/pivot_user_customer.js";
 import redisClient from '../services/redis/redis.js';
 import sendTextMessage from '../services/greenApi/sendTextMessage.js';
 import sendFileMessage from '../services/greenApi/sendFileMessage.js';
+import getOrder from "../services/leedvertex/getOrder.js";
 
 export const get = async (req, res) => {
 	try {
@@ -66,6 +67,19 @@ export const create = async (req, res) => {
     await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
 		res.status(200).send({ message: obj });
+	}	catch (err) {
+		console.log("Error in post message controller", err.message);
+		res.status(500).send({ error: "Internal Server Error" });
+	}
+};
+
+export const leadvertexCreate = async (req, res) => {
+  try {
+    const { leadvertex_id, message } = req.body;
+
+    await getOrder(leadvertex_id, message, req.user.id)
+
+		res.status(200).send({ message: ok });
 	}	catch (err) {
 		console.log("Error in post message controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });

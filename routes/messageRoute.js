@@ -11,6 +11,7 @@ const router = express.Router();
 
 router.get("/:customer_id", protectRoute, controller.get);
 router.post("/", protectRoute, upload.array('files'), controller.create);
+router.post("/leadvertex", protectRoute, controller.leadvertexCreate);
 router.post("/cache", controller.cache);
 
 export default router;
