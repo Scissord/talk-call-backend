@@ -6,8 +6,6 @@ export const getIncomingMessages = async (req, res) => {
   const token = req.headers['authorization'];
   const verifyToken = token.startsWith('Bearer ') ? token.slice(7) : token;
   if(verifyToken === process.env.VERIFY_TOKEN && req.body.typeWebhook === 'incomingMessageReceived') {
-    // send request to nurlykhan
-
     console.log("webhook >>", req.body);
     // const instance = await req.body.instanceData.idInstance;
     // const customer_phone = req.body.senderData.sender;
