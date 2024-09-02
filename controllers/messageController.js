@@ -79,7 +79,7 @@ export const leadvertexCreate = async (req, res) => {
 
     const obj = await getOrder(leadvertex_id, message, req.user.id);
     if(obj.message === 'success') {
-      res.status(200).send({ message: "ok" });
+      res.status(200).send({ message: "ok", customer: obj.customer });
     } else {
       res.status(400).send({ message: "error in leadvertexCreate message controller" });
     };
