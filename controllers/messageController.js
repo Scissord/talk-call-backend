@@ -79,7 +79,7 @@ export const leadvertexCreate = async (req, res) => {
 
     await getOrder(leadvertex_id, message, req.user.id)
 
-		res.status(200).send({ message: ok });
+		res.status(200).send({ message: "ok" });
 	}	catch (err) {
 		console.log("Error in post message controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });

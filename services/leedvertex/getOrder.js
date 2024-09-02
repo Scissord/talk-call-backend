@@ -8,7 +8,10 @@ export default async function getOrder(order_id, text) {
     url: `https://call-center1.leadvertex.ru/admin/page/api.html#getOrdersByIds.html?token=${process.env.LEADVERTEX_API_KEY}&ids=${order_id}`,
   })
 
-  console.log(res)
+  if(res.status === 200) {
+    console.log(res.data);
+  };
+
 
   // let obj = null;
 
