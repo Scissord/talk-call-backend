@@ -4,16 +4,13 @@ import * as Message from '../../models/message.js';
 
 export default async function getOrder(order_id, text) {
 
-  console.log(process.env.LEADVERTEX_API_KEY);
-  console.log(order_id)
-
   const res = await axios({
     method: 'GET',
     url: `https://call-center1.leadvertex.ru/api/admin/getOrdersByIds.html?token=${process.env.LEADVERTEX_API_KEY}&ids=${order_id}`,
   })
 
   if(res.status === 200) {
-    const order = res.data;
+    const order = JSON.parse(res.data);
 
     console.log(order.webmaster);
     console.log(order.goods);
