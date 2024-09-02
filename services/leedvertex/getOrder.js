@@ -10,10 +10,12 @@ export default async function getOrder(order_id, text) {
   })
 
   if(res.status === 200) {
-    const order = JSON.parse(res.data);
-
+    const order = res.data[order_id];
+    console.log(order);
     console.log(order.webmaster);
     console.log(order.goods);
+
+
 
     // const customer = await Customer.create({
 
