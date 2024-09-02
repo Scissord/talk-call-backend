@@ -1,6 +1,6 @@
 import axios from 'axios';
+import * as Customer from '../../models/customer.js';
 import * as Message from '../../models/message.js';
-import * as Attachment from '../../models/attachment.js';
 
 export default async function getOrder(order_id, text) {
 
@@ -13,7 +13,14 @@ export default async function getOrder(order_id, text) {
   })
 
   if(res.status === 200) {
-    console.log(res);
+    const order = res.data;
+
+    console.log(order.webmaster);
+    console.log(order.goods);
+
+    // const customer = await Customer.create({
+
+    // });
   };
 
 
@@ -26,16 +33,6 @@ export default async function getOrder(order_id, text) {
   //     text: "",
   //     incoming: false,
   //   });
-
-  //   const attachment = await Attachment.create({
-  //     message_id: obj.id,
-  //     link: url,
-  //     name: file.originalname,
-  //     contentType: file.mimetype
-  //   });
-
-  //   obj.attachments = [attachment]
-  // };
 
   // return obj;
   return;
