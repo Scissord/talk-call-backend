@@ -12,9 +12,9 @@ export default async function getOrder(order_id, text) {
     const order = res.data[order_id];
 
     // good
-    const goodKeys = Object.keys(orderData.goods);
+    const goodKeys = Object.keys(order.goods);
     const firstGoodKey = goodKeys[0];
-    const firstGood = orderData.goods[firstGoodKey]
+    const firstGood = order.goods[firstGoodKey]
 
     console.log(firstGood);
     console.log(firstGood.goodID);
