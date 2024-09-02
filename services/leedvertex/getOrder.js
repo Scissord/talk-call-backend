@@ -3,7 +3,6 @@ import * as Customer from '../../models/customer.js';
 import * as Message from '../../models/message.js';
 
 export default async function getOrder(order_id, text) {
-
   const res = await axios({
     method: 'GET',
     url: `https://call-center1.leadvertex.ru/api/admin/getOrdersByIds.html?token=${process.env.LEADVERTEX_API_KEY}&ids=${order_id}`,
@@ -11,15 +10,31 @@ export default async function getOrder(order_id, text) {
 
   if(res.status === 200) {
     const order = res.data[order_id];
-    console.log(order);
-    console.log(order.webmaster);
-    console.log(order.goods);
 
+    // good
+    const goodKeys = Object.keys(orderData.goods);
+    const firstGoodKey = goodKeys[0];
+    const firstGood = orderData.goods[firstGoodKey]
 
+    console.log(firstGood);
+    console.log(firstGood.goodID);
 
-    // const customer = await Customer.create({
-
-    // });
+    let customer = await Customer.findWhere({ order_id: order_id })
+    if(customer) {
+      return {
+        message: 'error'
+      }
+    } else {
+      // customer = await Customer.create({
+      //   name: order.fio,
+      //   phone: order.phone,
+      //   buyer_phone: 'test@c.us',
+      //   good:
+      // });
+      return {
+        message: 'success'
+      }
+    };
   };
 
 
@@ -34,5 +49,4 @@ export default async function getOrder(order_id, text) {
   //   });
 
   // return obj;
-  return;
 };

@@ -62,6 +62,13 @@ export const find = async function (id) {
     .first();
 };
 
+export const findWhere = async function (condition) {
+  return await db('customer')
+    .select('*')
+    .where(condition)
+    .first();
+};
+
 export const findByPhone = async function (phone) {
   return await db('customer')
     .select('*')
