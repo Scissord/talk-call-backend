@@ -9,7 +9,7 @@ export default async function getOrder(order_id, text) {
   })
 
   if(res.status === 200) {
-    console.log(res.data);
+    console.log(res);
   };
 
 
