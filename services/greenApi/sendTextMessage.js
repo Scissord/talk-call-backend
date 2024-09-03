@@ -3,6 +3,7 @@ import * as Message from '../../models/message.js';
 import * as Instance from '../../models/instance.js';
 
 export default async function sendTextMessage(user_id, customer, message, customer_id) {
+  console.log(customer.buyer_phone)
   const instance = await Instance.findByBuyerPhone(customer.buyer_phone);
 
   console.log(instance)
