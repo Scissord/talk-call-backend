@@ -4,15 +4,12 @@ import { countOffset, countOffsetWithFavorites } from '../helpers/countPaginatio
 const db = knex();
 
 export const get = async function (limit, page, search, status) {
-  const offset = await countOffset(
-    'customer', limit, page,
-    search, status
-  );
+  const offset = await countOffset(limit, page);
 
   const customers = await db('customer as cu')
     .select('cu.*')
     .where((q) => {
-      search && q.where('cu.name', 'ilike', `%${search}%`);
+      search && q.where('cu.order_id', 'ilike', `%${search}%`);
       if(status !== 3) {
         q.where('cu.status', status);
       };
@@ -25,15 +22,13 @@ export const get = async function (limit, page, search, status) {
 };
 
 export const getFavorites = async function (limit, page, search, status, user_id) {
-  const offset = await countOffsetWithFavorites(
-    limit, page, search, status, user_id
-  );
+  const offset = await countOffsetWithFavorites(limit, page);
 
   const customers = await db('customer as cu')
     .select('cu.*')
     .leftJoin('pivot_user_customer as puc', 'puc.customer_id', 'cu.id')
     .where((q) => {
-      search && q.where('cu.name', 'ilike', `%${search}%`);
+      search && q.where('cu.order_id', 'ilike', `%${search}%`);
       if(status !== 3) {
         q.where('cu.status', status);
       };
