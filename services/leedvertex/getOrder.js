@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as Customer from '../../models/customer.js';
 import sendTextMessage from '../greenApi/sendTextMessage.js';
+import updateAvatar from '../greenApi/updateAvatar.js';
 import redisClient from '../redis/redis.js';
 
 export default async function getOrder(order_id, text, user_id) {
@@ -33,6 +34,7 @@ export default async function getOrder(order_id, text, user_id) {
       });
 
       const message = await sendTextMessage(user_id, customer, text, customer.id);
+      await updateAvatar(customer);
 
       let messages = await redisClient.get(customer.id);
       messages = messages ? JSON.parse(messages) : [];
