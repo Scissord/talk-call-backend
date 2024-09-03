@@ -1,9 +1,12 @@
 import axios from 'axios';
 import * as Message from '../../models/message.js';
+import * as Instance from '../../models/instance.js';
 
 export default async function sendTextMessage(user_id, customer, message, customer_id) {
+  const instance = await Instance.findByBuyerPhone(customer.buyer_phone);
+
   const res = await axios({
-    url: `${process.env.GREEN_API_URL}/waInstance${process.env.INSTANCE_ID}/sendMessage/${process.env.API_TOKEN_INSTANCE}`,
+    url: `${process.env.GREEN_API_URL}/waInstance${instance.instance_id}/sendMessage/${instance.api_token}`,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

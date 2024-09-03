@@ -1,12 +1,14 @@
 import axios from 'axios';
 import * as Message from '../../models/message.js';
 import * as Attachment from '../../models/attachment.js';
+import * as Instance from '../../models/instance.js';
 
 export default async function sendFileMessage(user_id, customer, file, customer_id) {
+  const instance = await Instance.findByBuyerPhone(customer.buyer_phone);
   const url = process.env.URL + 'uploads/' + file.filename;
 
   const res = await axios({
-    url: `${process.env.GREEN_API_URL}/waInstance${process.env.INSTANCE_ID}/sendFileByUrl/${process.env.API_TOKEN_INSTANCE}`,
+    url: `${process.env.GREEN_API_URL}/waInstance${instance.instance_id}/sendFileByUrl/${instance.api_token}`,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
