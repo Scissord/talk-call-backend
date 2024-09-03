@@ -13,13 +13,11 @@ export default async function updateAvatar(customer) {
     },
   })
 
-  console.log(res);
-
   if(res.status === 200 && res.data.available === true) {
     await Customer.update(customer.id, {
       avatar: res.data.urlAvatar,
     });
   };
 
-  return obj;
+  return;
 };
