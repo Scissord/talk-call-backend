@@ -17,7 +17,8 @@ app.use(cookieParser());
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'http://' + process.env.CLIENT_IP
+    'http://' + process.env.CLIENT_IP,
+    'https://script.google.com'
   ],
   credentials: true,
 }));
