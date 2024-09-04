@@ -5,7 +5,7 @@ import customerRoutes from './customerRoute.js';
 import messageRoutes from './messageRoute.js';
 import greenApiRoutes from './greenApiRoute.js';
 import userRoutes from './userRoute.js';
-import googleSheetRoutes from './googleSheetRoutes.js';
+import googleSheetRoutes from './googleSheetRoute.js';
 
 const router = Router();
 
