@@ -77,13 +77,8 @@ export const leadvertexCreate = async (req, res) => {
   try {
     const { leadvertex_id, message } = req.body;
 
-    const obj = await getOrder(leadvertex_id, message, req.user.id);
-    if(obj.message === 'success') {
-      res.status(200).send({ message: "ok", customer: obj.customer });
-    } else {
-      res.status(400).send({ message: "error in leadvertexCreate message controller" });
-    };
-
+    const customer = await getOrder(leadvertex_id, message, req.user.id);
+    res.status(200).send({ message: "ok", customer: customer });
 	}	catch (err) {
 		console.log("Error in leadvertexCreate message controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });

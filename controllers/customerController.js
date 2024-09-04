@@ -26,19 +26,19 @@ export const get = async (req, res) => {
     let status = 0;
 
     if(+role.id === 1 || +role.id === 2) {
-      status = 0;
+      status = 99;
     };
 
-    if(+role.id === 3 || +role.id === 4) {
+    if(+role.id === 3 || +role.id === 5) {
       status = 1;
     };
 
-    if(+role.id === 5 || +role.id === 6) {
+    if(+role.id === 4 || +role.id === 6) {
       status = 2;
     };
 
     if(+role.id === 7) {
-      status = 3;
+      status = 100;
     };
 
     let customers = [];

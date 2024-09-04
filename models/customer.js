@@ -10,7 +10,7 @@ export const get = async function (limit, page, search, status) {
     .select('cu.*')
     .where((q) => {
       search && q.where('cu.order_id', 'ilike', `%${search}%`);
-      if(status !== 3) {
+      if(status !== 100) {
         q.where('cu.status', status);
       };
     })
@@ -29,7 +29,7 @@ export const getFavorites = async function (limit, page, search, status, user_id
     .leftJoin('pivot_user_customer as puc', 'puc.customer_id', 'cu.id')
     .where((q) => {
       search && q.where('cu.order_id', 'ilike', `%${search}%`);
-      if(status !== 3) {
+      if(status !== 100) {
         q.where('cu.status', status);
       };
     })

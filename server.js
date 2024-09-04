@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import apiRoutes from './routes/index.js';
 import printName from "./helpers/printName.js";
-// import { app, server } from './socket/socket.js';
 
 const app = express();
 
