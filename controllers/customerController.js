@@ -23,29 +23,11 @@ export const get = async (req, res) => {
     const { limit, page, type, search } = req.query;
     const { role } = req.user;
 
-    let status = 0;
-
-    if(+role.id === 1 || +role.id === 2) {
-      status = 99;
-    };
-
-    if(+role.id === 3 || +role.id === 5) {
-      status = 1;
-    };
-
-    if(+role.id === 4 || +role.id === 6) {
-      status = 2;
-    };
-
-    if(+role.id === 7) {
-      status = 100;
-    };
-
     let customers = [];
 
     Number(type) === 1
-      ? customers = await Customer.getFavorites(limit, page, search, status, req.user.id)
-      : customers = await Customer.get(limit, page, search, status);
+      ? customers = await Customer.getFavorites(limit, page, search, role.status, req.user.id)
+      : customers = await Customer.get(limit, page, search, role.status);
 
 		res.status(200).send({ message: 'ok', customers });
 	}	catch (err) {
