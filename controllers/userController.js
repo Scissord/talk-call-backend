@@ -45,14 +45,14 @@ export const get = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const user_id = req.params.user_id;
-    const { name, password, role } = req.body;
-
-    const salt = await bcrypt.genSalt(10);
-		const hashedPassword = await bcrypt.hash(password, salt);
+    const { name, role } = req.body;
+    // password,
+    // const salt = await bcrypt.genSalt(10);
+		// const hashedPassword = await bcrypt.hash(password, salt);
 
     await User.update(user_id, {
       name: name,
-      password: hashedPassword,
+      // password: hashedPassword,
       role: role
     });
 
