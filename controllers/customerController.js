@@ -25,8 +25,6 @@ export const get = async (req, res) => {
 
     let customers = [];
 
-    console.log(role);
-
     Number(type) === 1
       ? customers = await Customer.getFavorites(limit, page, search, role.status, req.user.id)
       : customers = await Customer.get(limit, page, search, role.status);

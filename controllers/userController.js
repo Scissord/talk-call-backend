@@ -32,7 +32,8 @@ export const create = async (req, res) => {
 
 export const get = async (req, res) => {
 	try {
-    const users = await User.get();
+    const { role } = req.user;
+    const users = await User.get(role.id);
 
 		res.status(200).send({ message: 'ok', users });
 	}	catch (err) {

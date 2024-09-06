@@ -2,8 +2,20 @@ import knex from './knex.js';
 
 const db = knex();
 
-export const get = async function () {
-  return await db('user').select('*')
+export const get = async function (role) {
+  return await db('user')
+    .select('*')
+    .modify((q) => {
+      if(+role === 2) {
+        q.where('role', 1);
+      };
+      if(+role === 5) {
+        q.where('role', 3);
+      };
+      if(+role === 6) {
+        q.where('role', 4);
+      };
+    })
 };
 
 export const create = async function (data) {
