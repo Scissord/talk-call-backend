@@ -4,7 +4,7 @@ const db = knex();
 
 export const get = async function (limit, page, search, status) {
 
-  const customers = await db('customer')
+  const result = await db('customer')
     .select('*')
     .where((q) => {
       search && q.where('order_id', 'ilike', `%${search}%`);
@@ -18,7 +18,10 @@ export const get = async function (limit, page, search, status) {
       isLengthAware: true
     });
 
-  return customers
+  return {
+    customers: result.data,
+    lastPage: result.pagination.lastPage
+  };
 };
 
 export const create = async function (data) {
