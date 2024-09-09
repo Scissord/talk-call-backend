@@ -8,6 +8,7 @@ export const getBoard = async (req, res) => {
     const { role } = req.user;
 
     const columnsFromDb = await Column.get();
+    console.log(limit, page, search, role.status)
     const cardsFromDb = await Customer.get(limit, page, search, role.status);
 
     const columns = {};
