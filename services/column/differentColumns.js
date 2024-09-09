@@ -1,4 +1,3 @@
-import * as Card from '../../models/card.js';
 import * as Column from '../../models/column.js';
 
 export default async function differentColumns(
@@ -22,9 +21,5 @@ export default async function differentColumns(
 
   await Column.update(destinationColumnId, {
     cards_ids: updatedDestinationTaskIds,
-  });
-
-  await Card.update(cardId, {
-    column_id: destinationColumnId
   });
 };

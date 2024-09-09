@@ -7,10 +7,8 @@ export const getBoard = async (req, res) => {
     const { limit, page, search } = req.query;
     const { role } = req.user;
 
-    const columnsFromDb = await Column.get();
+    const columnsFromDb = await Column.get(role.status);
     const { customers: cardsFromDb } = await Customer.get(limit, page, search, role.status);
-
-    console.log(columnsFromDb);
 
     const columns = {};
     const cards = {};
@@ -28,12 +26,10 @@ export const getBoard = async (req, res) => {
     cardsFromDb.forEach(card => {
       cards[card.id] = {
         id: card.id,
-        // price: card.price,
-        // client_name: card.client_name,
-        // source_name: card.source_name,
-        // column_id: card.column_id,
-        // avatar: card.avatar,
-        // created_at: card.created_at
+        name: card.name,
+        avatar: card.avatar,
+        good: card.good,
+        order_id: card.order_id
       };
     });
 
