@@ -5,9 +5,10 @@ const db = knex();
 export const get = async function (status) {
   return await db('column')
     .select('*')
-    .modify((q) => {
+    .where((q) => {
+      search && q.where('order_id', 'ilike', `%${search}%`);
       if(status !== 100) {
-        q.where('status', status)
+        q.where('status', status);
       };
     })
     .where("status", status)
