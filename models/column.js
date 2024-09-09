@@ -5,6 +5,11 @@ const db = knex();
 export const get = async function (status) {
   return await db('column')
     .select('*')
+    .modify((q) => {
+      if(status !== 100) {
+        q.where('status', status)
+      };
+    })
     .where("status", status)
     .orderBy('position', 'asc');
 };
