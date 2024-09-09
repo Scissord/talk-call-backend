@@ -6,7 +6,6 @@ export const get = async function (status) {
   return await db('column')
     .select('*')
     .where((q) => {
-      search && q.where('order_id', 'ilike', `%${search}%`);
       if(status !== 100) {
         q.where('status', status);
       };
