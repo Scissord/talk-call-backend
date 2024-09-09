@@ -4,17 +4,17 @@
  */
 export const up = function(knex) {
   return knex.schema
-    .createTable('user', (table) => {
+    .createTable('card', (table) => {
       table.bigIncrements('id').primary();
-      table.string('name', 50).notNullable();
-      table.string('phone', 15).notNullable();
-      table.string('email', 50).nullable();
-      table.string('password', 255).notNullable();
-      table.tinyint('gender').notNullable();
-      table.string('avatar', 255).nullable();
+      table.decimal('price', 15, 2).notNullable();
+      table.bigInteger('client_id').notNullable();
+      table.bigInteger('source_id').notNullable();
+      table.tinyint('column_id').notNullable();
+      table.bigInteger('creator_id').notNullable();
+
       table.timestamp('created_at').defaultTo(knex.fn.now());
       table.timestamp('updated_at').defaultTo(knex.fn.now());
-      table.timestamp('deleted_at').nullable();
+      table.timestamp('deleted_at').defaultTo(null);
     });
 };
 
@@ -23,5 +23,5 @@ export const up = function(knex) {
  * @returns { Promise<void> }
  */
 export const down = function(knex) {
-  return knex.schema.dropTable('user');
+  return knex.schema.dropTable('card');
 };

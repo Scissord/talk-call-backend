@@ -1,6 +1,5 @@
 import * as Message from "../models/message.js";
 import * as Customer from "../models/customer.js";
-import * as PivotUserCustomer from "../models/pivot_user_customer.js";
 import redisClient from '../services/redis/redis.js';
 import sendTextMessage from '../services/greenApi/sendTextMessage.js';
 import sendFileMessage from '../services/greenApi/sendFileMessage.js';
@@ -9,17 +8,13 @@ import getOrder from "../services/leedvertex/getOrder.js";
 export const get = async (req, res) => {
 	try {
     const customer_id = req.params.customer_id
-    let isFavorite = false;
 
     const cachedMessages = await redisClient.get(customer_id);
 		if (cachedMessages) {
-      const exist = await PivotUserCustomer.find(req.user.id, customer_id);
-      isFavorite = !!exist
 
 			return res.status(200).send({
         message: 'ok',
         messages: JSON.parse(cachedMessages),
-        isFavorite
       });
 		};
 
@@ -28,13 +23,9 @@ export const get = async (req, res) => {
     // 1h
 		await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
-    const exist = await PivotUserCustomer.find(req.user.id, customer_id);
-    isFavorite = !!exist
-
 		res.status(200).send({
       message: 'ok',
       messages,
-      isFavorite
     });
 	}	catch (err) {
 		console.log("Error in get message controller", err.message);

@@ -3,10 +3,7 @@
  * @returns { Promise<void> }
  */
 export const up = function(knex) {
-  return knex.schema
-    .alterTable('message', (table) => {
-      table.boolean('incoming').defaultTo(false);
-    });
+  return knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
 };
 
 /**
@@ -14,8 +11,5 @@ export const up = function(knex) {
  * @returns { Promise<void> }
  */
 export const down = function(knex) {
-  return knex.schema
-    .alterTable('message', (table) => {
-      table.dropColumn('incoming');
-    });
+  return knex.raw('DROP EXTENSION IF EXISTS "uuid-ossp";');
 };

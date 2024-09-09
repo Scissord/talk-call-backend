@@ -1,9 +1,9 @@
 import express from "express";
-import * as controller from '../controllers/customerController.js';
 import protectRoute from "../middleware/protectRoute.js";
+import * as controller from '../controllers/boardController.js';
 
 const router = express.Router();
 
-router.get("", protectRoute, controller.get);
+router.get("", protectRoute, controller.getBoard);
 
 export default router;

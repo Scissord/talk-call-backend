@@ -1,42 +1,22 @@
 import knex from './knex.js';
-import { countOffset, countOffsetWithFavorites } from '../helpers/countPagination.js';
 
 const db = knex();
 
 export const get = async function (limit, page, search, status) {
-  const offset = await countOffset(limit, page);
 
-  const customers = await db('customer as cu')
-    .select('cu.*')
+  const customers = await db('customer')
+    .select('*')
     .where((q) => {
-      search && q.where('cu.order_id', 'ilike', `%${search}%`);
+      search && q.where('order_id', 'ilike', `%${search}%`);
       if(status !== 100) {
-        q.where('cu.status', status);
+        q.where('status', status);
       };
     })
-    .limit(limit)
-    .offset(offset)
-    .orderBy('cu.id', 'desc');
-
-  return customers
-};
-
-export const getFavorites = async function (limit, page, search, status, user_id) {
-  const offset = await countOffsetWithFavorites(limit, page);
-
-  const customers = await db('customer as cu')
-    .select('cu.*')
-    .leftJoin('pivot_user_customer as puc', 'puc.customer_id', 'cu.id')
-    .where((q) => {
-      search && q.where('cu.order_id', 'ilike', `%${search}%`);
-      if(status !== 100) {
-        q.where('cu.status', status);
-      };
-    })
-    .limit(limit)
-    .offset(offset)
-    .where('puc.user_id', user_id)
-    .orderBy('cu.id', 'desc');
+    .paginate({
+      perPage: limit,
+      currentPage: page,
+      isLengthAware: true
+    });
 
   return customers
 };
