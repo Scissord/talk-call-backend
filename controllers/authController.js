@@ -8,8 +8,6 @@ export const login = async (req, res) => {
 	try {
 		const { name, password } = req.body;
 
-    console.log(name, password);
-
 		const user = await User.findByName(name);
 		const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
 
