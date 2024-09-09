@@ -1,10 +1,14 @@
 import * as Column from "../models/column.js";
+import * as Customer from "../models/customer.js";
 import * as Card from "../models/card.js";
 
 export const getBoard = async (req, res) => {
   try {
+    const { limit, page, search } = req.query;
+    const { role } = req.user;
+
     const columnsFromDb = await Column.get();
-    const cardsFromDb = await Card.get();
+    const cardsFromDb = await Customer.get(limit, page, search, role.status);
 
     const columns = {};
     const cards = {};
@@ -22,12 +26,12 @@ export const getBoard = async (req, res) => {
     cardsFromDb.forEach(card => {
       cards[card.id] = {
         id: card.id,
-        price: card.price,
-        client_name: card.client_name,
-        source_name: card.source_name,
-        column_id: card.column_id,
-        avatar: card.avatar,
-        created_at: card.created_at
+        // price: card.price,
+        // client_name: card.client_name,
+        // source_name: card.source_name,
+        // column_id: card.column_id,
+        // avatar: card.avatar,
+        // created_at: card.created_at
       };
     });
 

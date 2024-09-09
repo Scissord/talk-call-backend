@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
 const generateTokens = (userId) => {
-  console.log(process.env.JWT_ACCESS_SECRET, )
   const accessToken = jwt.sign(
     { userId },
     process.env.JWT_ACCESS_SECRET,
