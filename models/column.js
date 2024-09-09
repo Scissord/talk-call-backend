@@ -10,7 +10,6 @@ export const get = async function (status) {
         q.where('status', status);
       };
     })
-    .where("status", status)
     .orderBy('position', 'asc');
 };
 
