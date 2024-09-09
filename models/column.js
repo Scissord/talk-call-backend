@@ -2,9 +2,10 @@ import knex from './knex.js';
 
 const db = knex();
 
-export const get = async function () {
+export const get = async function (status) {
   return await db('column')
     .select('*')
+    .where("status", status)
     .orderBy('position', 'asc');
 };
 
