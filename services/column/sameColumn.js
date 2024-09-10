@@ -15,6 +15,4 @@ export default async function sameColumn(
   await Column.update(sourceColumnId, {
     cards_ids: updatedSourceTaskIds,
   });
-
-  console.log(sourceColumn)
 };

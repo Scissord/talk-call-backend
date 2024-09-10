@@ -24,5 +24,7 @@ export default async function differentColumns(
     cards_ids: updatedDestinationTaskIds,
   });
 
-  console.log(destinationColumn);
+  await Customer.update(cardId, {
+    manager_id: destinationColumn.manager_id,
+  })
 };
