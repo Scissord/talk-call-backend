@@ -5,10 +5,9 @@ export const get = async (req, res) => {
     const { limit, page, search } = req.query;
     const { role } = req.user;
 
-    const data = await Customer.get(limit, page, search, role.status);
-    console.log(data);
+    const { customers } = await Customer.get(limit, page, search, role.status);
 
-		res.status(200).send({ message: 'ok' });
+		res.status(200).send({ message: 'ok', customers });
 	}	catch (err) {
 		console.log("Error in get customer controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
