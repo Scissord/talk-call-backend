@@ -46,8 +46,6 @@ const protectRoute = async (req, res, next) => {
     if (!user) return res.status(401).send({ error: "User not found" });
 
     const role = await Role.getForUser(user.role);
-
-    console.log(role);
     user.role = role;
 
     req.user = user;
