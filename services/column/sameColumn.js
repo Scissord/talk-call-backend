@@ -1,4 +1,5 @@
 import * as Column from '../../models/column.js';
+import * as Customer from '../../models/customer.js';
 
 export default async function sameColumn(
   sourceColumn,
@@ -14,4 +15,7 @@ export default async function sameColumn(
   await Column.update(sourceColumnId, {
     cards_ids: updatedSourceTaskIds,
   });
+
+  console.log(cardId);
+  // await Customer.update()
 };

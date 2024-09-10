@@ -22,4 +22,6 @@ export default async function differentColumns(
   await Column.update(destinationColumnId, {
     cards_ids: updatedDestinationTaskIds,
   });
+
+  console.log(cardId);
 };
