@@ -4,11 +4,11 @@ import * as Card from "../models/card.js";
 
 export const getBoard = async (req, res) => {
   try {
-    const { limit, page, search } = req.query;
+    // const { limit, page, search } = req.query;
     const { id, role } = req.user;
 
     const columnsFromDb = await Column.get(role.status);
-    const { customers: cardsFromDb } = await Customer.get(limit, page, search, role.status);
+    const cardsFromDb = await Customer.getAll(role.status);
 
     const columns = {};
     const cards = {};

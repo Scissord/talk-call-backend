@@ -24,6 +24,17 @@ export const get = async function (limit, page, search, status) {
   };
 };
 
+export const getAll = async function (status) {
+  return await db('customer')
+    .select('*')
+    .where((q) => {
+      if(status !== 100) {
+        q.where('status', status);
+        // q.where('manager_id', manager_id);
+      };
+    })
+};
+
 export const create = async function (data) {
   const [customer] = await db("customer")
     .insert(data)
