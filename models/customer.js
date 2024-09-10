@@ -2,16 +2,14 @@ import knex from './knex.js';
 
 const db = knex();
 
-export const get = async function (limit, page, search, status, manager_id) {
-  console.log(status, manager_id);
-
+export const get = async function (limit, page, search, status) {
   const result = await db('customer')
     .select('*')
     .where((q) => {
       search && q.where('order_id', 'ilike', `%${search}%`);
       if(status !== 100) {
         q.where('status', status);
-        q.where('manager_id', manager_id);
+        // q.where('manager_id', manager_id);
       };
     })
     .paginate({

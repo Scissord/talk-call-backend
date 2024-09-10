@@ -8,7 +8,7 @@ export const getBoard = async (req, res) => {
     const { id, role } = req.user;
 
     const columnsFromDb = await Column.get(role.status);
-    const { customers: cardsFromDb } = await Customer.get(limit, page, search, role.status, id);
+    const { customers: cardsFromDb } = await Customer.get(limit, page, search, role.status);
 
     const columns = {};
     const cards = {};
