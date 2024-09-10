@@ -1,4 +1,5 @@
 import * as Column from '../../models/column.js';
+import * as Customer from '../../models/customer.js';
 
 export default async function differentColumns(
   sourceColumn,
@@ -23,5 +24,5 @@ export default async function differentColumns(
     cards_ids: updatedDestinationTaskIds,
   });
 
-  console.log(cardId);
+  console.log(destinationColumn);
 };

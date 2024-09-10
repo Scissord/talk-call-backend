@@ -16,6 +16,5 @@ export default async function sameColumn(
     cards_ids: updatedSourceTaskIds,
   });
 
-  console.log(cardId);
-  // await Customer.update()
+  console.log(sourceColumn)
 };
