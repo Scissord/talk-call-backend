@@ -5,7 +5,7 @@ export const get = async (req, res) => {
     const { limit, page, search } = req.query;
     const { id, role } = req.user;
 
-    console.log(role);
+    console.log('here');
 
     const { customers } = await Customer.get(limit, page, search, role.status, id);
 
