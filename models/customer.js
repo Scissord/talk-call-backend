@@ -3,6 +3,7 @@ import knex from './knex.js';
 const db = knex();
 
 export const get = async function (limit, page, search, status, manager_id) {
+  console.log(status, manager_id);
 
   const result = await db('customer')
     .select('*')
