@@ -29,7 +29,8 @@ export const login = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 дней
       httpOnly: true, // Защищает от XSS атак
       sameSite: "strict", // Защита от CSRF атак
-      secure: process.env.NODE_ENV === "production" // Только в производственной среде
+      secure: false,
+      // process.env.NODE_ENV === "production" // Только в производственной среде
     });
 
     const role = await Role.getForUser(user.role);
