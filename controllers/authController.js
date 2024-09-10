@@ -17,6 +17,8 @@ export const login = async (req, res) => {
     // generate JWT TOKEN
     const { accessToken, refreshToken } = generateTokens(user.id);
 
+    console.log(refreshToken);
+
     // save refreshToken in DB
     await UserToken.update(user.id, {
       refresh_token: refreshToken,
