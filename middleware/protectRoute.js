@@ -48,6 +48,8 @@ const protectRoute = async (req, res, next) => {
     user.role = role;
 
     req.user = user;
+
+    console.log(req.user);
     next();
   } catch (err) {
     console.log("Error in protectRoute controller", err.message);
