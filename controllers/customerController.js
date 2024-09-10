@@ -2,7 +2,9 @@ import * as Customer from "../models/customer.js";
 
 export const get = async (req, res) => {
 	try {
-    console.log(req);
+    console.log(req.user);
+
+    console.log(req.query);
     const { limit, page, search } = req.query;
     const { role } = req.user;
 

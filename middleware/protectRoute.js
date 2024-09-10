@@ -14,7 +14,6 @@ const protectRoute = async (req, res, next) => {
       decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET);
     } catch (err) {
       if (err.name === 'TokenExpiredError') {
-        console.log('TokenExpiredError')
         const refreshToken = req.cookies.refreshToken;
         if (!refreshToken) return res.status(401).send({
           error: "Unauthorized - No Refresh Token Provided"
@@ -50,7 +49,6 @@ const protectRoute = async (req, res, next) => {
 
     req.user = user;
 
-    console.log(req.user);
     next();
   } catch (err) {
     console.log("Error in protectRoute controller", err.message);
