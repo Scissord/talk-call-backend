@@ -5,8 +5,6 @@ export const get = async (req, res) => {
     const { limit, page, search } = req.query;
     const { role } = req.user;
 
-    console.log(req.user);
-
     const { customers } = await Customer.get(limit, page, search, role.status, req.user.id);
 
 		res.status(200).send({ message: 'ok', customers });

@@ -15,6 +15,7 @@ const protectRoute = async (req, res, next) => {
     } catch (err) {
       if (err.name === 'TokenExpiredError') {
         const refreshToken = req.cookies.refreshToken;
+        console.log(refreshToken);
         if (!refreshToken) return res.status(401).send({
           error: "Unauthorized - No Refresh Token Provided"
         });
