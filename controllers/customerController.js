@@ -2,13 +2,10 @@ import * as Customer from "../models/customer.js";
 
 export const get = async (req, res) => {
 	try {
-    console.log(req.user);
-
-    console.log(req.query);
     const { limit, page, search } = req.query;
-    const { role } = req.user;
+    const { id, role } = req.user;
 
-    const { customers } = await Customer.get(limit, page, search, role.status, req.user.id);
+    const { customers } = await Customer.get(limit, page, search, role.status, id);
 
 		res.status(200).send({ message: 'ok', customers });
 	}	catch (err) {
