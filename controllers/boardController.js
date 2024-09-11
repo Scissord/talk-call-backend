@@ -28,7 +28,8 @@ export const getBoard = async (req, res) => {
         name: card.name,
         avatar: card.avatar,
         good: card.good,
-        order_id: card.order_id
+        order_id: card.order_id,
+        status: card.status
       };
     });
 
