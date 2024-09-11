@@ -6,15 +6,19 @@ import fs from 'fs';
 export default function getMulterStorage() {
   return multer.diskStorage({
     destination: (req, file, cb) => {
-      const projectName = req.body.projectName;
-      const uploadPath = path.join('./templates', projectName, 'img');
+      const uploadPath = path.resolve('./uploads');
 
-      fs.mkdirSync(uploadPath, { recursive: true });
+      if (!fs.existsSync(uploadPath)) {
+        fs.mkdirSync(uploadPath, { recursive: true });
+      }
 
       cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-      cb(null, `${file.originalname}`);
+      const currentTime = new Date().toISOString().replace(/[-:.]/g, '');
+      const originalName = path.basename(file.originalname, path.extname(file.originalname));
+      const uniqueSuffix = `${originalName}-${currentTime}${path.extname(file.originalname)}`;
+      cb(null, uniqueSuffix);
     }
   });
 }
