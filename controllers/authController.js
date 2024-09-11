@@ -8,6 +8,7 @@ export const login = async (req, res) => {
 	try {
 		const { name, password } = req.body;
 
+    console.log(name);
     console.log(name.trim());
 
 		const user = await User.findByName(name);
