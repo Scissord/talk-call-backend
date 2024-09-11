@@ -6,8 +6,6 @@ export const getBoard = async (req, res) => {
   try {
     const { role } = req.user;
 
-    console.log(role.status);
-
     const columnsFromDb = await Column.get(role.status);
     const cardsFromDb = await Customer.getForBoard(role.status);
 
