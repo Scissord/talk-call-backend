@@ -23,7 +23,7 @@ export default async function getOrder(order_id, text, user_id) {
       customer = await Customer.create({
         name: order.fio,
         phone: order.phone + '@c.us',
-        buyer_phone: 'nobuyerphone@c.us',
+        buyer_phone: '77752426015@c.us',
         good: firstGood.goodID,
         ai_active: false,
         status: 0,
