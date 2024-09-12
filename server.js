@@ -16,11 +16,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'http://5.35.82.30',
-    'https://tc-chat.pw/'
-  ],
+  origin: '*',
   methods: '*',
   allowHeaders: '*',
   credentials: true,
