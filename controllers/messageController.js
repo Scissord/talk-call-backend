@@ -35,6 +35,7 @@ export const get = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
+    console.log('create message')
     const { customer_id, message, type } = req.body;
 
     const customer = await Customer.find(customer_id);
