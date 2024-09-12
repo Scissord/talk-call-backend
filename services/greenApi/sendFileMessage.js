@@ -4,9 +4,7 @@ import * as Attachment from '../../models/attachment.js';
 import * as Instance from '../../models/instance.js';
 
 export default async function sendFileMessage(user_id, customer, file, customer_id) {
-  console.log(customer.buyer_phone);
   const instance = await Instance.findByBuyerPhone(customer.buyer_phone);
-  console.log(instance);
   const url = process.env.URL + 'uploads/' + file.filename;
 
   const res = await axios({
