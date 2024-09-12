@@ -16,8 +16,12 @@ dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://5.35.82.30', 'http://5.35.82.30/chats'], // Разрешаем запросы с двух источников
-  credentials: true, // Позволяем передавать куки и авторизационные заголовки
+  origin: [
+    'http://localhost:5173',
+    'http://5.35.82.30',
+    'https://tc-chat.pw'
+  ],
+  credentials: true,
 }));
 
 app.use('/api', apiRoutes);
