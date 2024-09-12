@@ -22,6 +22,7 @@ app.use(cors({
     'https://tc-chat.pw/'
   ],
   methods: '*',
+  allowHeaders: '*',
   credentials: true,
 }));
 
