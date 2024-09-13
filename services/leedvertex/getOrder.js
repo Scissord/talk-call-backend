@@ -19,6 +19,15 @@ export default async function getOrder(order_id, text, user_id, status) {
       const goodKeys = Object.keys(order.goods);
       const firstGoodKey = goodKeys[0];
       const firstGood = order.goods[firstGoodKey];
+      console.log(
+        order.fio,
+        order.phone + '@c.us','77752426015@c.us',
+        firstGood.goodID,
+        false,
+        status,
+        user_id,
+        order_id
+      );
 
       customer = await Customer.create({
         name: order.fio,
