@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as Customer from '../../models/customer.js';
+import * as Column from '../../models/column.js';
 import sendTextMessage from '../greenApi/sendTextMessage.js';
 import updateAvatar from '../greenApi/updateAvatar.js';
 import redisClient from '../redis/redis.js';
@@ -51,6 +52,11 @@ export default async function getOrder(order_id, text, user_id, status) {
   messages.push(message);
 
   await redisClient.setEx(customer.id, 3600, JSON.stringify(messages));
+
+  const column = await Column.getByManagerId(user_id);
+  const newIds = Array.isArray(column.card_ids) ? [...column.card_ids] : [];
+  newIds.unshift(customer.id);
+  await Column.updateByManagerId(user_id, newIds);
 
   return customer
 };
