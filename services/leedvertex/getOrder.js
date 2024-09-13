@@ -4,7 +4,7 @@ import sendTextMessage from '../greenApi/sendTextMessage.js';
 import updateAvatar from '../greenApi/updateAvatar.js';
 import redisClient from '../redis/redis.js';
 
-export default async function getOrder(order_id, text, user_id) {
+export default async function getOrder(order_id, text, user_id, status) {
   let customer = await Customer.findWhere({ order_id: order_id });
 
   if(!customer) {
@@ -26,7 +26,8 @@ export default async function getOrder(order_id, text, user_id) {
         buyer_phone: '77752426015@c.us',
         good: firstGood.goodID,
         ai_active: false,
-        status: 0,
+        status: status,
+        manager_id: user_id,
         order_id
       });
     };
