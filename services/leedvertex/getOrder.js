@@ -54,9 +54,9 @@ export default async function getOrder(order_id, text, user_id, status) {
   await redisClient.setEx(customer.id, 3600, JSON.stringify(messages));
 
   const column = await Column.getByManagerId(user_id);
-  const newIds = Array.isArray(column.card_ids) ? [...column.card_ids] : [];
+  const newIds = Array.isArray(column.cards_ids) ? [...column.cards_ids] : [];
   newIds.unshift(customer.id);
-  await Column.updateByManagerId(user_id, newIds);
+  await Column.updateByManagerId(user_id, { cards_ids: newIds });
 
   return customer
 };
