@@ -18,7 +18,8 @@ export const getBoard = async (req, res) => {
         id: column.id,
         title: column.title,
         cardsIds: column.cards_ids,
-        manager_id: column.manager_id
+        manager_id: column.manager_id,
+        status: column.status
       };
       order.push(column.id);
     });
