@@ -24,3 +24,11 @@ export const getChat = async function (customer_id) {
     .where('customer_id', customer_id)
     .groupBy('m.id', 'cu.avatar');
 };
+
+export const getLast = async function (customer_id) {
+  return await db('message as m')
+    .select('m.text')
+    .where('m.customer_id', customer_id)
+    .orderBy('m.id', 'desc')
+    .first();
+};

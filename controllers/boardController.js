@@ -1,6 +1,6 @@
 import * as Column from "../models/column.js";
 import * as Customer from "../models/customer.js";
-import * as Card from "../models/card.js";
+import * as Message from "../models/message.js";
 
 export const getBoard = async (req, res) => {
   try {
@@ -24,16 +24,17 @@ export const getBoard = async (req, res) => {
       order.push(column.id);
     });
 
-    cardsFromDb.forEach(card => {
+    for (const card of cardsFromDb) {
       cards[card.id] = {
         id: card.id,
         name: card.name,
         avatar: card.avatar,
         good: card.good,
         order_id: card.order_id,
-        manager_id: card.manager_id
+        manager_id: card.manager_id,
+        text: await Message.getLast(card.id) ?? ''
       };
-    });
+    }
 
     res.status(200).send({
       columns,
