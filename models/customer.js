@@ -25,11 +25,18 @@ export const get = async function (limit, page, search, status, manager_id) {
 };
 
 export const getForBoard = async function (status) {
-  return await db('customer')
-    .select('*')
+  return await db('customer as c')
+    .select('c.*', 'm.text as text')
+    .leftJoin('message as m', function() {
+      this.on('m.customer_id', 'c.id')
+        .andOn('m.id', '=', db('message as m2')
+          .select(db.raw('MAX(m2.id)'))
+          .whereRaw('m2.customer_id = c.id')
+        );
+    })
     .where((q) => {
       if(status !== 100) {
-        q.where('status', status);
+        q.where('c.status', status);
       };
     })
 };
