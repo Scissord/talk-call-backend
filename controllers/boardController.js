@@ -32,7 +32,7 @@ export const getBoard = async (req, res) => {
         good: card.good,
         order_id: card.order_id,
         manager_id: card.manager_id,
-        // text: await Message.getLast(card.id) ?? ''
+        // text: card.text,
       };
     }
 
