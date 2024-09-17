@@ -8,11 +8,13 @@ export default async function sameColumn(
   cardId,
   sourceColumnId
 ) {
-  const updatedSourceTaskIds = Array.from(sourceColumn.cards_ids);
-  updatedSourceTaskIds.splice(sourceIndex, 1);
-  updatedSourceTaskIds.splice(destinationIndex, 0, cardId);
+  const updatedSourceTaskIds = new Set(sourceColumn.cards_ids);
+
+  const tempArray = Array.from(updatedSourceTaskIds);
+  tempArray.splice(sourceIndex, 1);
+  tempArray.splice(destinationIndex, 0, cardId);
 
   await Column.update(sourceColumnId, {
-    cards_ids: updatedSourceTaskIds,
+    cards_ids: Array.from(new Set(tempArray)),
   });
 };

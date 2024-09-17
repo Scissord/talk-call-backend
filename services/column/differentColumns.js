@@ -10,21 +10,21 @@ export default async function differentColumns(
   cardId,
   destinationColumnId
 ) {
-  const updatedSourceTaskIds = Array.from(sourceColumn.cards_ids);
-  updatedSourceTaskIds.splice(sourceIndex, 1);
+  const updatedSourceTaskIds = new Set(sourceColumn.cards_ids);
+  updatedSourceTaskIds.delete(cardId);
 
   await Column.update(sourceColumnId, {
-    cards_ids: updatedSourceTaskIds,
-  })
+    cards_ids: Array.from(updatedSourceTaskIds),
+  });
 
-  const updatedDestinationTaskIds = Array.from(destinationColumn.cards_ids);
-  updatedDestinationTaskIds.splice(destinationIndex, 0, cardId);
+  const updatedDestinationTaskIds = new Set(destinationColumn.cards_ids);
+  updatedDestinationTaskIds.add(cardId);
 
   await Column.update(destinationColumnId, {
-    cards_ids: updatedDestinationTaskIds,
+    cards_ids: Array.from(updatedDestinationTaskIds),
   });
 
   await Customer.update(cardId, {
     manager_id: destinationColumn.manager_id,
-  })
+  });
 };
