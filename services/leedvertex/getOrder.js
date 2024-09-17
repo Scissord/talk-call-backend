@@ -8,6 +8,10 @@ import redisClient from '../redis/redis.js';
 export default async function getOrder(order_id, text, user_id, status) {
   let customer = await Customer.findWhere({ order_id: order_id });
 
+  if(+status === 100) {
+    status = 0;
+  };
+
   console.log(status);
 
   if(!customer) {
@@ -30,7 +34,7 @@ export default async function getOrder(order_id, text, user_id, status) {
         good: firstGood.goodID,
         ai_active: false,
         manager_id: user_id,
-        status: +status,
+        status,
         order_id
       });
     };
