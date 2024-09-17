@@ -8,6 +8,8 @@ import redisClient from '../redis/redis.js';
 export default async function getOrder(order_id, text, user_id, status) {
   let customer = await Customer.findWhere({ order_id: order_id });
 
+  console.log(status);
+
   if(!customer) {
     const res = await axios({
       method: 'GET',
@@ -27,8 +29,8 @@ export default async function getOrder(order_id, text, user_id, status) {
         buyer_phone: '77752426015@c.us',
         good: firstGood.goodID,
         ai_active: false,
-        status: status,
         manager_id: user_id,
+        status: +status,
         order_id
       });
     };
