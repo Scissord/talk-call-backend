@@ -29,8 +29,12 @@ export const getForBoard = async function (status) {
     .select('c.*', 'm.text as text')
     .leftJoin(
       db('message as m')
-        .select('m.customer_id', 'm.text')
-        .whereRaw('m.id = (select max(id) from message where message.customer_id = m.customer_id)')
+        .select('m.customer_id', 'm.text', 'm.id')
+        .whereIn('m.id', function () {
+          this.select(db.raw('max(id)'))
+            .from('message')
+            .whereRaw('message.customer_id = m.customer_id');
+        })
         .as('m'),
       'm.customer_id',
       'c.id'
