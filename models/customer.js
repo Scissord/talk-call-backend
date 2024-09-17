@@ -26,13 +26,22 @@ export const get = async function (limit, page, search, status, manager_id) {
 
 export const getForBoard = async function (status) {
   return await db('customer as c')
-    .select('c.*')
+    .select('c.*', 'm.text as text')
+    .leftJoin(
+      db('message as m')
+        .select('m.customer_id', 'm.text')
+        .whereRaw('m.id = (select max(id) from message where message.customer_id = m.customer_id)')
+        .as('m'),
+      'm.customer_id',
+      'c.id'
+    )
     .where((q) => {
-      if(status !== 100) {
+      if (status !== 100) {
         q.where('c.status', status);
-      };
-    })
+      }
+    });
 };
+
 
 export const create = async function (data) {
   const [customer] = await db("customer")
