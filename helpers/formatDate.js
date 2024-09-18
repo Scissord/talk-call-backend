@@ -8,7 +8,7 @@ const formatDate = (createdAt) => {
   if (isToday) {
     return createdDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
   } else if (isYesterday) {
-    return `Вчера, ${createdDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`;
+    return `Вчр. ${createdDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`;
   } else {
     return createdDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
   };
