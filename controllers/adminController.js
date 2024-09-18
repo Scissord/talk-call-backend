@@ -123,7 +123,7 @@ export const destroy = async (req, res) => {
       if (targetManagerId) {
         const sourceColumn = await Column.getByManagerId(targetManagerId);
         await Column.update(sourceColumn.id, {
-          cards_ids: [...sourceColumn.cards_ids, ...column.cards_ids]
+          cards_ids: [...column.cards_ids, ...sourceColumn.cards_ids]
         });
       }
     }
