@@ -27,10 +27,8 @@ export const create = async (req, res) => {
 
     let position = null;
     let status = null;
-    let manager_id = null;
 
     if(+role === 3 || +role === 5) {
-      manager_id = 43;
       status = 1;
       const columns = await Column.get(1);
       if (columns.length > 0) {
@@ -42,7 +40,6 @@ export const create = async (req, res) => {
     };
 
     if(+role === 4 || +role === 6) {
-      manager_id = 45;
       status = 2;
       const columns = await Column.get(2);
       if (columns.length > 0) {
@@ -58,7 +55,7 @@ export const create = async (req, res) => {
       cards_ids: [],
       position,
       status,
-      manager_id
+      manager_id: user.id
     });
 
     return res.status(200).send({ message: 'ok' });
