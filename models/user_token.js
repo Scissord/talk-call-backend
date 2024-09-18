@@ -23,3 +23,9 @@ export const update = async function (user_id, data) {
 
   return user_token;
 };
+
+export const destroy = async function (user_id) {
+  await db("user_token")
+    .del()
+    .where("user_id", user_id)
+};

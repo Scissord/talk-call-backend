@@ -35,4 +35,10 @@ export const find = async function (id) {
    .select('*')
    .where('id', id)
    .first();
-}
+};
+
+export const destroy = async function (id) {
+  await db("user")
+    .del()
+    .where("id", id)
+};
