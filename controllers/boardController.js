@@ -25,6 +25,9 @@ export const getBoard = async (req, res) => {
       order.push(column.id);
     });
 
+    console.log(cardsFromDb[0].created_at);
+    console.log(typeof cardsFromDb[0].created_at);
+
     for (const card of cardsFromDb) {
       card.path = findProduct(+card.good);
       card.time = formatDate(card.created_at);
@@ -38,7 +41,6 @@ export const getBoard = async (req, res) => {
         manager_id: card.manager_id,
         text: card.text,
         path: card.path,
-        created_at: card.created_at,
         time: card.time
       };
     };

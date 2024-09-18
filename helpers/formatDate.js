@@ -6,11 +6,10 @@ const formatDate = (createdAt) => {
   const isYesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1).toDateString() === createdDate.toDateString();
 
   if (isToday) {
-    return createdDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Форматируем как время, если сегодня
+    return createdDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   } else if (isYesterday) {
-    return `Вчера, ${createdDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`; // Форматируем как вчера
+    return `Вчера, ${createdDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
   } else {
-    return createdDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }); // Форматируем как дата (например, 17 августа)
   };
 };
 
