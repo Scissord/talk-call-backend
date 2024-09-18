@@ -26,7 +26,7 @@ export const get = async function (limit, page, search, status, manager_id) {
 
 export const getForBoard = async function (status) {
   return await db('customer as c')
-    .select('c.*', 'm.text as text')
+    .select('c.*', 'm.text as text', 'm.created_at as created_at')
     .leftJoin(
       db('message as m')
         .select('m.customer_id', 'm.text', 'm.id')
