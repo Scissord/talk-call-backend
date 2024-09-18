@@ -65,3 +65,9 @@ export const updateWhereIn = async function (ids, data) {
 
   return data;
 };
+
+export const destroy = async function (manager_id) {
+  await db("column")
+    .del()
+    .where("manager_id", manager_id)
+};

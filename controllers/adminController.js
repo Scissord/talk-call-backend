@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import * as User from "../models/user.js";
 import * as UserToken from "../models/user_token.js";
+import * as Column from '../models/column.js';
 
 export const create = async (req, res) => {
   try {
@@ -20,6 +21,42 @@ export const create = async (req, res) => {
     await UserToken.create({
       user_id: user.id,
       token: token
+    });
+
+    let position = null;
+    let status = null;
+    let manager_id = null;
+
+    if(+role === 3 || +role === 5) {
+      manager_id = 43;
+      status = 1;
+      const columns = await Column.get(1);
+      if (columns.length > 0) {
+        const lastPosition = columns[columns.length - 1].position;
+        position = +lastPosition + 1;
+      } else {
+        position = 1;
+      };
+    };
+
+    if(+role === 4 || +role === 6) {
+      manager_id = 45;
+      status = 2;
+      const columns = await Column.get(2);
+      if (columns.length > 0) {
+        const lastPosition = columns[columns.length - 1].position;
+        position = +lastPosition + 1;
+      } else {
+        position = 1;
+      };
+    };
+
+    await Column.create({
+      title: name,
+      cards_ids: [],
+      position,
+      status,
+      manager_id
     });
 
     return res.status(200).send({ message: 'ok' });
@@ -55,6 +92,10 @@ export const update = async (req, res) => {
       role: role
     });
 
+    await Column.updateByManagerId(user_id, {
+      title: name
+    });
+
 		res.status(200).send({ message: 'ok' });
 	}	catch (err) {
 		console.log("Error in update user controller", err.message);
@@ -65,8 +106,30 @@ export const update = async (req, res) => {
 export const destroy = async (req, res) => {
   try {
     const user_id = req.params.user_id;
+    const { role } = req.body;
+
     await User.destroy(user_id);
     await UserToken.destroy(user_id);
+
+    const column = await Column.getByManagerId(user_id);
+    if (column.cards_ids.length > 0) {
+      let targetManagerId;
+
+      if (+role === 3 || +role === 5) {
+        targetManagerId = 43;
+      } else if (+role === 4 || +role === 6) {
+        targetManagerId = 45;
+      }
+
+      if (targetManagerId) {
+        const sourceColumn = await Column.getByManagerId(targetManagerId);
+        await Column.update(sourceColumn.id, {
+          cards_ids: [...sourceColumn.cards_ids, ...column.cards_ids]
+        });
+      }
+    }
+
+    await Column.destroy(user_id);
 
 		res.status(200).send({ message: 'ok' });
 	}	catch (err) {
