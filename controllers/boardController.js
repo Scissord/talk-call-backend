@@ -36,7 +36,7 @@ export const getBoard = async (req, res) => {
         manager_id: card.manager_id,
         text: card.text,
         path: card.path,
-        counter: 1
+        // counter: 1
       };
     };
 
