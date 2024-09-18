@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import * as User from "../models/user.js";
 import * as UserToken from "../models/user_token.js";
 import * as Column from '../models/column.js';
+import generateTokens from "../helpers/generateTokens.js";
 
 export const create = async (req, res) => {
   try {
@@ -16,11 +17,12 @@ export const create = async (req, res) => {
       role
     });
 
-    const token = generateToken();
+    const { accessToken, refreshToken } = generateTokens(user.id);
 
     await UserToken.create({
       user_id: user.id,
-      token: token
+      refresh_token: refreshToken,
+      expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
     });
 
     let position = null;
