@@ -35,7 +35,8 @@ export const getBoard = async (req, res) => {
         order_id: card.order_id,
         manager_id: card.manager_id,
         text: card.text,
-        path: card.path
+        path: card.path,
+        counter: 1
       };
     };
 
