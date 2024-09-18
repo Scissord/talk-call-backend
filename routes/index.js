@@ -6,7 +6,7 @@ import cardRoutes from './cardRoute.js';
 import cardItemRoutes from './cardItemRoute.js';
 import customerRoutes from './customerRoute.js';
 import messageRoutes from './messageRoute.js';
-import userRoutes from './userRoute.js';
+import adminRoutes from './adminRoute.js';
 
 const router = Router();
 
@@ -16,7 +16,7 @@ router.use('/cards', cardRoutes);
 router.use('/cardItems', cardItemRoutes);
 router.use('/customers', customerRoutes);
 router.use('/messages', messageRoutes);
-router.use('/users', userRoutes);
+router.use('/admin', adminRoutes);
 router.use('/uploads', express.static('uploads'));
 
 export default router;
