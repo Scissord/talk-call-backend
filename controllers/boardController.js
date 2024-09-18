@@ -1,6 +1,7 @@
 import * as Column from "../models/column.js";
 import * as Customer from "../models/customer.js";
 import findProduct from "../helpers/findProduct.js";
+import formatDate from "../helpers/formatDate.js";
 
 export const getBoard = async (req, res) => {
   try {
@@ -26,6 +27,7 @@ export const getBoard = async (req, res) => {
 
     for (const card of cardsFromDb) {
       card.path = findProduct(+card.good);
+      card.time = formatDate(card.created_at);
 
       cards[card.id] = {
         id: card.id,
@@ -36,7 +38,8 @@ export const getBoard = async (req, res) => {
         manager_id: card.manager_id,
         text: card.text,
         path: card.path,
-        // counter: 1
+        created_at: card.created_at,
+        time: card.time
       };
     };
 
