@@ -12,8 +12,6 @@ export default async function getOrder(order_id, text, user_id, status) {
     status = 0;
   };
 
-  console.log(status);
-
   if(!customer) {
     const res = await axios({
       method: 'GET',

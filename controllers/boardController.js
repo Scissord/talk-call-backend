@@ -1,6 +1,6 @@
 import * as Column from "../models/column.js";
 import * as Customer from "../models/customer.js";
-import * as Message from "../models/message.js";
+import findProduct from "../helpers/findProduct.js";
 
 export const getBoard = async (req, res) => {
   try {
@@ -25,6 +25,8 @@ export const getBoard = async (req, res) => {
     });
 
     for (const card of cardsFromDb) {
+      card.path = findProduct(+card.good);
+
       cards[card.id] = {
         id: card.id,
         name: card.name,
@@ -32,7 +34,8 @@ export const getBoard = async (req, res) => {
         good: card.good,
         order_id: card.order_id,
         manager_id: card.manager_id,
-        text: card.text
+        text: card.text,
+        path: card.path
       };
     };
 
