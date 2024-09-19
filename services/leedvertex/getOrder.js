@@ -5,7 +5,7 @@ import sendTextMessage from '../greenApi/sendTextMessage.js';
 import updateAvatar from '../greenApi/updateAvatar.js';
 import redisClient from '../redis/redis.js';
 
-export async function getOrder(order_id, text, user_id, status, phone) {
+export default async function getOrder(order_id, text, user_id, status, phone) {
   let customer = await Customer.findWhere({ order_id: order_id });
 
   if(+status === 100) {
