@@ -31,12 +31,13 @@ export default async function getOrder(order_id, text, user_id, status, phone) {
         good: firstGood.goodID,
         ai_active: false,
         manager_id: user_id,
-        phone,
+        phone: phone !== "" ? phone : customer.phone,
         status,
         order_id
       });
     };
-  } else {
+  }
+  if(phone !== "") {
     customer = await Customer.update(customer.id, {
       phone,
     })
