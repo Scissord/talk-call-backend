@@ -66,10 +66,11 @@ export const create = async (req, res) => {
 
 export const leadvertexCreate = async (req, res) => {
   try {
-    const { leadvertex_id, message } = req.body;
+    const { leadvertex_id, phone, message } = req.body;
 
-    const customer = await getOrder(leadvertex_id, message, req.user.id, req.user.role.status);
-    res.status(200).send({ message: "ok", customer: customer });
+    const customer = await getOrder(leadvertex_id, message, req.user.id, req.user.role.status, phone);
+
+    res.status(200).send({ status: "ok", customer: customer });
 	}	catch (err) {
 		console.log("Error in leadvertexCreate message controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
