@@ -21,6 +21,8 @@ export default async function getOrder(order_id, text, user_id, status) {
     if(res.status === 200) {
       const order = res.data[order_id];
 
+      console.log(order);
+
       const goodKeys = Object.keys(order.goods);
       const firstGoodKey = goodKeys[0];
       const firstGood = order.goods[firstGoodKey];
