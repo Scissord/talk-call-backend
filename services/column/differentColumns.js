@@ -8,7 +8,8 @@ export default async function differentColumns(
   destinationColumn,
   destinationIndex,
   cardId,
-  destinationColumnId
+  destinationColumnId,
+  status
 ) {
   const updatedSourceTaskIds = Array.from(sourceColumn.cards_ids);
   updatedSourceTaskIds.splice(sourceIndex, 1);
@@ -26,5 +27,18 @@ export default async function differentColumns(
 
   await Customer.update(cardId, {
     manager_id: destinationColumn.manager_id,
-  })
+  });
+
+  const cachedBoard = await redisClient.get(`board_${status}`);
+
+  if (cachedBoard) {
+    const boardData = JSON.parse(cachedBoard);
+
+    boardData.columns[sourceColumnId].cardsIds = updatedSourceTaskIds;
+    boardData.columns[destinationColumnId].cardsIds = updatedDestinationTaskIds;
+
+    boardData.cards[cardId].manager_id = destinationColumn.manager_id;
+
+    await redisClient.setEx(`board_${status}`, 3600, JSON.stringify(boardData));
+  };
 };

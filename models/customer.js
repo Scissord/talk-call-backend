@@ -24,6 +24,29 @@ export const get = async function (limit, page, search, status, manager_id) {
   };
 };
 
+// export const get = async function (limit, page, search, status, manager_id) {
+//   const result = await db('customer as c')
+//     .select('c.*', 'u.name')
+//     .leftJoin('user as u', 'c.manager_id', 'u.id')
+//     .where((q) => {
+//       search && q.where('c.order_id', 'ilike', `%${search}%`);
+//       if(status !== 100) {
+//         q.where('c.status', status);
+//         q.where('c.manager_id', manager_id);
+//       };
+//     })
+//     .paginate({
+//       perPage: limit,
+//       currentPage: page,
+//       isLengthAware: true
+//     });
+
+//   return {
+//     customers: result.data,
+//     lastPage: result.pagination.lastPage
+//   };
+// };
+
 export const getForBoard = async function (status) {
   return await db('customer as c')
     .select('c.*', 'm.text as text', 'm.created_at as created_at')

@@ -66,6 +66,7 @@ export const deleteCard = async (req, res) => {
 };
 
 export const moveCard = async (req, res) => {
+  const { status } = req.user.role;
   const { cardId, sourceColumnId, destinationColumnId, sourceIndex, destinationIndex } = req.body;
 
   try {
@@ -82,7 +83,8 @@ export const moveCard = async (req, res) => {
         sourceIndex,
         destinationIndex,
         cardId,
-        sourceColumnId
+        sourceColumnId,
+        status
       );
     } else {
       differentColumns(
@@ -92,7 +94,8 @@ export const moveCard = async (req, res) => {
         destinationColumn,
         destinationIndex,
         cardId,
-        destinationColumnId
+        destinationColumnId,
+        status
       );
     }
 
