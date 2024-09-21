@@ -20,7 +20,6 @@ export const get = async (req, res) => {
 
     const messages = await Message.getChat(customer_id);
 
-    // 1h
 		await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
 		res.status(200).send({

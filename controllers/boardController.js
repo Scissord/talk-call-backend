@@ -8,10 +8,10 @@ export const getBoard = async (req, res) => {
   try {
     const { status } = req.user.role;
 
-    const cachedBoard = await redisClient.get(`board_${status}`);
-    if (cachedBoard) {
-      return res.status(200).send(JSON.parse(cachedBoard));
-    };
+    // const cachedBoard = await redisClient.get(`board_${status}`);
+    // if (cachedBoard) {
+    //   return res.status(200).send(JSON.parse(cachedBoard));
+    // };
 
     const columnsFromDb = await Column.get(status);
     const cardsFromDb = await Customer.getForBoard(status);
@@ -54,7 +54,7 @@ export const getBoard = async (req, res) => {
       order,
     };
 
-    await redisClient.setEx(`board_${status}`, 3600, JSON.stringify(boardData));
+    // await redisClient.setEx(`board_${status}`, 3600, JSON.stringify(boardData));
 
     res.status(200).send(boardData);
   } catch (err) {

@@ -29,16 +29,16 @@ export default async function differentColumns(
     manager_id: destinationColumn.manager_id,
   });
 
-  const cachedBoard = await redisClient.get(`board_${status}`);
+  // const cachedBoard = await redisClient.get(`board_${status}`);
 
-  if (cachedBoard) {
-    const boardData = JSON.parse(cachedBoard);
+  // if (cachedBoard) {
+  //   const boardData = JSON.parse(cachedBoard);
 
-    boardData.columns[sourceColumnId].cardsIds = updatedSourceTaskIds;
-    boardData.columns[destinationColumnId].cardsIds = updatedDestinationTaskIds;
+  //   boardData.columns[sourceColumnId].cardsIds = updatedSourceTaskIds;
+  //   boardData.columns[destinationColumnId].cardsIds = updatedDestinationTaskIds;
 
-    boardData.cards[cardId].manager_id = destinationColumn.manager_id;
+  //   boardData.cards[cardId].manager_id = destinationColumn.manager_id;
 
-    await redisClient.setEx(`board_${status}`, 3600, JSON.stringify(boardData));
-  };
+  //   await redisClient.setEx(`board_${status}`, 3600, JSON.stringify(boardData));
+  // };
 };

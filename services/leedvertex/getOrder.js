@@ -23,12 +23,11 @@ export default async function getOrder(order_id, text, user_id, status, phone) {
 
       const goodKeys = Object.keys(order.goods);
       const firstGoodKey = goodKeys[0];
-      const firstGood = order.goods[firstGoodKey];
 
       customer = await Customer.create({
         name: order.fio,
         buyer_phone: '77752426015@c.us',
-        good: firstGood.goodID,
+        good: firstGoodKey,
         ai_active: false,
         manager_id: user_id,
         phone: phone !== "" ? phone : customer.phone,
