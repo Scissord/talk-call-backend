@@ -1,5 +1,6 @@
 import * as Message from "../models/message.js";
 import * as Customer from "../models/customer.js";
+import * as Attachment from "../models/attachment.js";
 import redisClient from '../services/redis/redis.js';
 import sendTextMessage from '../services/greenApi/sendTextMessage.js';
 import sendFileMessage from '../services/greenApi/sendFileMessage.js';
@@ -95,6 +96,22 @@ export const cache = async (req, res) => {
 		res.status(200).send({ message: "ok" });
 	}	catch (err) {
 		console.log("Error in cache message controller", err.message);
+		res.status(500).send({ error: "Internal Server Error" });
+	}
+};
+
+export const reply = async (req, res) => {
+  try {
+    const { message_id, customer_id } = req.body;
+
+    console.log(message_id, customer_id);
+
+    // const message = await Message.find(message_id);
+    // const attachment = await Attachment.find(message_id);
+
+		res.status(200).send({ status: "ok" });
+	}	catch (err) {
+		console.log("Error in reply message controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
 	}
 };
