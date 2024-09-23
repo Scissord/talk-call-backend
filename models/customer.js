@@ -64,13 +64,13 @@ export const getForBoard = async function (status) {
       'm.customer_id',
       'c.id'
     )
+    .leftJoin('user as u', 'c.manager_id', 'u.id')
     .where((q) => {
       if (status !== 100) {
         q.where('c.status', status);
       }
     });
 };
-
 
 export const create = async function (data) {
   const [customer] = await db("customer")
