@@ -34,8 +34,6 @@ export const get = async function (limit, page, search, status, manager_id) {
       search && q.where('c.order_id', 'ilike', `%${search}%`);
       if (status !== 100) {
         q.where('c.status', status);
-      }
-      if (manager_id) {
         q.where('c.manager_id', manager_id);
       }
     })
