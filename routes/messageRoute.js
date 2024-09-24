@@ -12,7 +12,7 @@ const router = express.Router();
 router.get("/:customer_id", protectRoute, controller.get);
 router.post("/", protectRoute, upload.array('files'), controller.create);
 router.post("/leadvertex", protectRoute, controller.leadvertexCreate);
+router.post("/reply", protectRoute, controller.reply);
 router.post("/cache", controller.cache);
-router.post("/reply", controller.reply);
 
 export default router;
