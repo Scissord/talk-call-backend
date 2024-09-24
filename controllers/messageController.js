@@ -106,7 +106,7 @@ export const reply = async (req, res) => {
 
     const customer = await Customer.find(customer_id);
     const message = await Message.find(message_id);
-    const attachment = await Attachment.find(message_id);
+    const attachment = await Attachment.findByMessageId(message_id);
 
     if(!attachment) {
       obj = await sendTextMessage(req.user.id, customer, message.text, customer_id);
