@@ -104,10 +104,22 @@ export const reply = async (req, res) => {
   try {
     const { message_id, customer_id } = req.body;
 
-    console.log(message_id, customer_id);
+    const customer = await Customer.find(customer_id);
+    const message = await Message.find(message_id);
+    const attachment = await Attachment.find(message_id);
 
-    // const message = await Message.find(message_id);
-    // const attachment = await Attachment.find(message_id);
+    if(!attachment) {
+      obj = await sendTextMessage(req.user.id, customer, message.text, customer_id);
+    } else {
+      obj = await sendFileMessage(req.user.id, customer, attachment, customer_id);
+    };
+
+    let messages = await redisClient.get(customer_id);
+    messages = messages ? JSON.parse(messages) : [];
+
+    messages.push(obj);
+
+    await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
 		res.status(200).send({ status: "ok" });
 	}	catch (err) {

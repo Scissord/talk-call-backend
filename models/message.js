@@ -32,3 +32,10 @@ export const getLast = async function (customer_id) {
     .orderBy('m.id', 'desc')
     .first();
 };
+
+export const find = async function (message_id) {
+  return await db('message as m')
+    .select('m.*')
+    .where('m.id', message_id)
+    .first();
+};
