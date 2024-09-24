@@ -7,6 +7,7 @@ import sendFileMessage from '../services/greenApi/sendFileMessage.js';
 import replyFile from '../services/greenApi/replyFile.js';
 import replyLocation from "../services/greenApi/replyLocation.js";
 import getOrder from "../services/leedvertex/getOrder.js";
+import formatDate from "../helpers/formatDate.js";
 
 export const get = async (req, res) => {
 	try {
@@ -21,7 +22,11 @@ export const get = async (req, res) => {
       });
 		};
 
-    const messages = await Message.getChat(customer_id);
+    const messagesFromDm = await Message.getChat(customer_id);
+    const messages = messagesFromDm.map((message) => ({
+      ...message,
+      created_at: formatDate(message.created_at)
+    }));
 
 		await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 

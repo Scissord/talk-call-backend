@@ -17,10 +17,11 @@ export const create = async function (data) {
 
 export const getChat = async function (customer_id) {
   return await db('message as m')
-    .select('m.*', 'cu.avatar')
+    .select('m.*', 'cu.avatar', 'u.name as manager_name')
     .select(db.raw('COALESCE(json_agg(a.*) FILTER (WHERE a.id IS NOT NULL), \'[]\') as attachments'))
     .leftJoin('attachment as a', 'a.message_id', 'm.id')
     .leftJoin('customer as cu', 'cu.id', 'm.customer_id')
+    .leftJoin('user as u', 'u.id', 'message.user_id')
     .where('customer_id', customer_id)
     .groupBy('m.id', 'cu.avatar');
 };
