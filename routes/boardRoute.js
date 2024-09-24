@@ -5,5 +5,6 @@ import * as controller from '../controllers/boardController.js';
 const router = express.Router();
 
 router.get("", protectRoute, controller.getBoard);
+router.post("/cache", controller.cacheBoard);
 
 export default router;
