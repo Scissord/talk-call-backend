@@ -95,7 +95,11 @@ export const cache = async (req, res) => {
       messages = JSON.parse(messages);
       messages.push(message);
     } else {
-      messages = await Message.getChat(message.customer_id);
+      const messagesFromDm = await Message.getChat(message.customer_id);
+      messages = messagesFromDm.map((message) => ({
+        ...message,
+        created_at: formatDate(message.created_at)
+      }));
     };
 
     await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
