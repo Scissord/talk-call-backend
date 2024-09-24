@@ -4,6 +4,7 @@ import * as Attachment from "../models/attachment.js";
 import redisClient from '../services/redis/redis.js';
 import sendTextMessage from '../services/greenApi/sendTextMessage.js';
 import sendFileMessage from '../services/greenApi/sendFileMessage.js';
+import replyFile from '../services/greenApi/replyFile.js';
 import getOrder from "../services/leedvertex/getOrder.js";
 
 export const get = async (req, res) => {
@@ -113,7 +114,7 @@ export const reply = async (req, res) => {
     if(!attachment) {
       obj = await sendTextMessage(req.user.id, customer, message.text, customer_id);
     } else {
-      obj = await sendFileMessage(req.user.id, customer, attachment, customer_id);
+      obj = await replyFile(req.user.id, customer, attachment, customer_id);
     };
 
     let messages = await redisClient.get(customer_id);

@@ -3,7 +3,7 @@ import * as Message from '../../models/message.js';
 import * as Attachment from '../../models/attachment.js';
 import * as Instance from '../../models/instance.js';
 
-export default async function sendFileMessage(user_id, customer, attachment, customer_id) {
+export default async function replyFile(user_id, customer, attachment, customer_id) {
   const instance = await Instance.findByBuyerPhone(customer.buyer_phone);
 
   const res = await axios({
