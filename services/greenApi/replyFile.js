@@ -3,7 +3,7 @@ import * as Message from '../../models/message.js';
 import * as Attachment from '../../models/attachment.js';
 import * as Instance from '../../models/instance.js';
 
-export default async function replyFile(user_id, customer, attachment, customer_id) {
+export default async function replyFile(user_id, customer, file, customer_id) {
   const instance = await Instance.findByBuyerPhone(customer.buyer_phone);
 
   const res = await axios({
@@ -14,8 +14,8 @@ export default async function replyFile(user_id, customer, attachment, customer_
     },
     data: {
       chatId: customer.phone,
-      urlFile: attachment.link,
-      fileName: attachment.name
+      urlFile: file.link,
+      fileName: file.name
     },
   })
 
@@ -31,9 +31,9 @@ export default async function replyFile(user_id, customer, attachment, customer_
 
     const attachment = await Attachment.create({
       message_id: obj.id,
-      link: attachment.link,
-      name: attachment.name,
-      contentType: attachment.contentType
+      link: file.link,
+      name: file.name,
+      contentType: file.contentType
     });
 
     obj.attachments = [attachment]
