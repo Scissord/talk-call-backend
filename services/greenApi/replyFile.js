@@ -33,7 +33,10 @@ export default async function replyFile(user_id, customer, file, customer_id) {
       message_id: obj.id,
       link: file.link,
       name: file.name,
-      contentType: file.contentType
+      contentType: file.contentType,
+      lat: file.lat,
+      lon: file.lon,
+      thumb: file.thumb
     });
 
     obj.attachments = [attachment]
