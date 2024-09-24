@@ -23,7 +23,7 @@ export const getChat = async function (customer_id) {
     .leftJoin('customer as cu', 'cu.id', 'm.customer_id')
     .leftJoin('user as u', 'u.id', 'm.user_id')
     .where('customer_id', customer_id)
-    .groupBy('m.id', 'cu.avatar');
+    .groupBy('m.id', 'cu.avatar', 'u.name');
 };
 
 export const getLast = async function (customer_id) {
