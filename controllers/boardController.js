@@ -69,7 +69,7 @@ export const cacheBoard = async (req, res) => {
     console.log(req.body)
     res.status(200).send(boardData);
   } catch (err) {
-    console.log("Error in getBoard boardController", err.message);
+    console.log("Error in cache boardController", err.message);
     res.status(500).send({ error: "Internal Server Error" });
   };
 };

@@ -3,6 +3,7 @@ import knex from './knex.js';
 const db = knex();
 
 export const get = async function (limit, page, search, status, manager_id) {
+  console.log(status, manager_id);
   const result = await db('customer as c')
     .select('c.*', 'u.name as manager_name')
     .leftJoin('user as u', 'c.manager_id', 'u.id')
@@ -22,6 +23,8 @@ export const get = async function (limit, page, search, status, manager_id) {
       currentPage: page,
       isLengthAware: true
     });
+
+  console.log(result);
 
   return {
     customers: result.data,
