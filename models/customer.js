@@ -8,7 +8,7 @@ export const get = async function (limit, page, search, status, manager_id) {
       'message.customer_id',
       'm.text as last_message_text',
       'm.created_at as last_message_date',
-      'c.id as id',
+      'c.*',
       'u.name as manager_name',
       db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.is_checked = false) as counter')
     )
