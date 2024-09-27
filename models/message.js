@@ -42,7 +42,7 @@ export const find = async function (message_id) {
 };
 
 export const clear = async function (customer_id) {
-  return await db('message as m')
-    .where('m.customer_id', customer_id)
-    .update('m.is_checked', true)
+  return await db('message')
+    .where('customer_id', customer_id)
+    .update('is_checked', true);
 };
