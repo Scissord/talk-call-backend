@@ -16,9 +16,11 @@ export const get = async function (limit, page, search, status, manager_id) {
       db('message as m')
         .select('m.customer_id', 'm.text', 'm.created_at')
         .whereIn('m.id', function () {
-          this.select(db.raw('MAX(id)'))
+          this.select('message.id')
             .from('message')
-            .whereRaw('message.customer_id = m.customer_id');
+            .whereRaw('message.customer_id = m.customer_id')
+            .orderBy('message.created_at', 'desc')
+            .limit(1);
         })
         .as('m'),
       'm.customer_id',
@@ -35,7 +37,6 @@ export const get = async function (limit, page, search, status, manager_id) {
         q.where('c.manager_id', manager_id);
       }
     })
-    .orderBy('m.created_at', 'desc')
     .paginate({
       perPage: limit,
       currentPage: page,
