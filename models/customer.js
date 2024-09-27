@@ -3,19 +3,16 @@ import knex from './knex.js';
 const db = knex();
 
 export const get = async function (limit, page, search, status, manager_id) {
-  const result = await db('customer as c')
-    .leftJoin(
-      db('message as m')
-        .select('m.customer_id')
-        .max('m.created_at as last_message_time')
-        .groupBy('m.customer_id')
-        .as('last_messages'),
-      'c.id', 'last_messages.customer_id'
+  const result = await db('message as m')
+    .select(
+      'm.customer_id',
+      'm.text as last_message_text',
+      'm.created_at as last_message_date',
+      'c.*',
+      'u.name as manager_name',
+      db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.is_checked = false) as counter')
     )
-    .leftJoin('message as m', function() {
-      this.on('m.customer_id', '=', 'last_messages.customer_id')
-        .andOn('m.created_at', '=', 'last_messages.last_message_time');
-    })
+    .leftJoin('customer as c', 'm.customer_id', 'c.id')
     .leftJoin('user as u', 'm.user_id', 'u.id')
     .where((q) => {
       if (search) {
@@ -28,14 +25,8 @@ export const get = async function (limit, page, search, status, manager_id) {
         q.where('c.manager_id', manager_id);
       }
     })
-    .orderBy('last_messages.last_message_time', 'desc')
-    .select(
-      'm.text as last_message_text',
-      'm.created_at as last_message_date',
-      'c.*',
-      'u.name as manager_name',
-      db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.is_checked = false) as counter')
-    )
+    .orderBy('m.created_at', 'desc')
+    .groupBy('m.customer_id', 'm.text', 'm.created_at', 'c.id', 'u.name')
     .paginate({
       perPage: limit,
       currentPage: page,
