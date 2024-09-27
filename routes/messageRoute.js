@@ -17,8 +17,6 @@ router.post("/", protectRoute, upload.array('files'), controller.create);
 router.post("/leadvertex", protectRoute, controller.leadvertexCreate);
 // Переправить сообщение
 router.post("/reply", protectRoute, controller.reply);
-// Удалить непрочитанные
-router.post("/clear", protectRoute, controller.clear);
 // Занести в кэш
 router.post("/cache", controller.cache);
 

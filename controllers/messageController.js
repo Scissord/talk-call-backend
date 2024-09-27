@@ -12,6 +12,7 @@ import formatDate from "../helpers/formatDate.js";
 export const get = async (req, res) => {
 	try {
     const customer_id = req.params.customer_id
+    await Message.clear(customer_id);
 
     const cachedMessages = await redisClient.get(customer_id);
 		if (cachedMessages) {
@@ -114,7 +115,7 @@ export const cache = async (req, res) => {
 export const clear = async (req, res) => {
   try {
     const customer_id = req.body.customer_id;
-    await Message.clear(customer_id);
+
 
 		res.status(200).send({ status: "ok" });
 	}	catch (err) {
