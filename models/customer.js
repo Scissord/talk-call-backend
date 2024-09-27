@@ -17,8 +17,9 @@ export const get = async function (limit, page, search, status, manager_id) {
       this.select('*')
         .from('message')
         .distinctOn('customer_id')
-        .orderBy('customer_id', 'id', 'desc') // сортировка по customer_id и id для получения последних сообщений
-        .as('m'); // подзапрос для уникальных сообщений
+        .orderBy('customer_id', 'desc')
+        .orderBy('id', 'desc')
+        .as('m');
     })
     .leftJoin('customer as c', 'm.customer_id', 'c.id')
     .leftJoin('user as u', 'm.user_id', 'u.id')
