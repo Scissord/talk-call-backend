@@ -8,8 +8,10 @@ export const get = async (req, res) => {
 
     const customers = await Customer.get(limit, page, search, role.status, id);
 
+    console.log(customers);
+
     for (const customer of customers) {
-      console.log(customer);
+      // console.log(customer);
       customer.time = customer.last_message_date ? formatDate(customer.last_message_date) : "";
 
       customers[customer.id] = {
