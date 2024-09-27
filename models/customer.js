@@ -5,10 +5,10 @@ const db = knex();
 export const get = async function (limit, page, search, status, manager_id) {
   const result = await db('message as m')
     .select(
-      'm.customer_id',
+      'message.customer_id',
       'm.text as last_message_text',
       'm.created_at as last_message_date',
-      'c.*',
+      'c.id as id',
       'u.name as manager_name',
       db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.is_checked = false) as counter')
     )
@@ -26,7 +26,7 @@ export const get = async function (limit, page, search, status, manager_id) {
       }
     })
     .orderBy('m.created_at', 'desc')
-    .groupBy('m.customer_id', 'm.text', 'm.created_at', 'c.id', 'u.name')
+    .groupBy('c.id', 'message.customer_id', 'm.text', 'm.created_at', 'u.name')
     .paginate({
       perPage: limit,
       currentPage: page,
