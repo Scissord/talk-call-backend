@@ -36,29 +36,7 @@ export const get = async function (limit, page, search, status, manager_id) {
   return result.data;
 };
 
-
 export const getForBoard = async function (status) {
-  // return await db('customer as c')
-  //   .select('c.*', 'm.text as text', 'm.created_at as created_at', 'u.name as manager_name')
-  //   .leftJoin(
-  //     db('message as m')
-  //       .select('m.customer_id', 'm.text', 'm.id', 'm.created_at')
-  //       .whereIn('m.id', function () {
-  //         this.select(db.raw('max(id)'))
-  //           .from('message')
-  //           .whereRaw('message.customer_id = m.customer_id');
-  //       })
-  //       .as('m'),
-  //     'm.customer_id',
-  //     'c.id'
-  //   )
-  //   .leftJoin('user as u', 'c.manager_id', 'u.id')
-  //   .where((q) => {
-  //     if (status !== 100) {
-  //       q.where('c.status', status);
-  //     }
-  //   });
-
   return await db('message as m')
     .select(
       'm.customer_id',
