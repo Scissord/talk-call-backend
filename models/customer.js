@@ -7,8 +7,8 @@ export const get = async function (limit, page, search, status, manager_id) {
     .select(
       'c.*',
       'u.name as manager_name',
-      'm.text as last_message_text',
-      'm.created_at as last_message_date',
+      'm.text as text',
+      'm.created_at as created_at',
       db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.isChecked = false) as counter')
     )
     .leftJoin('user as u', 'c.manager_id', 'u.id')
@@ -41,10 +41,7 @@ export const get = async function (limit, page, search, status, manager_id) {
       isLengthAware: true
     });
 
-  return {
-    customers: result.data,
-    lastPage: result.pagination.lastPage
-  };
+  return result.data
 };
 
 export const getForBoard = async function (status) {
