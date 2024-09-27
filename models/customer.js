@@ -3,23 +3,26 @@ import knex from './knex.js';
 const db = knex();
 
 export const get = async function (limit, page, search, status, manager_id) {
-  const result = await db('customer as c')
+  const result = await db
+    .with('last_messages', (qb) => {
+      qb.select('customer_id', 'text', 'created_at')
+        .from('message')
+        .whereIn('id', function () {
+          this.select(db.raw('MAX(id)'))
+            .from('message')
+            .groupBy('customer_id');
+        });
+    })
     .select(
       'c.*',
       'u.name as manager_name',
-      'm.text as text',
-      'm.created_at as last_message_date',
+      'lm.text as last_message_text',
+      'lm.created_at as last_message_date',
       db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.is_checked = false) as counter')
     )
+    .from('customer as c')
     .leftJoin('user as u', 'c.manager_id', 'u.id')
-    .leftJoin(
-      db('message as m')
-        .select('m.customer_id', 'm.text', 'm.created_at')
-        .whereRaw('m.id = (SELECT MAX(message.id) FROM message WHERE message.customer_id = c.id)')
-        .as('m'),
-      'm.customer_id',
-      'c.id'
-    )
+    .leftJoin('last_messages as lm', 'lm.customer_id', 'c.id')
     .where((q) => {
       if (search) {
         q.where('c.order_id', 'ilike', `%${search}%`)
@@ -31,14 +34,14 @@ export const get = async function (limit, page, search, status, manager_id) {
         q.where('c.manager_id', manager_id);
       }
     })
-    .orderBy('last_message_date', 'desc')
+    .orderBy('lm.created_at', 'desc')  // Сортировка по дате последнего сообщения
     .paginate({
       perPage: limit,
       currentPage: page,
       isLengthAware: true
     });
 
-  return result.data
+  return result.data;
 };
 
 export const getForBoard = async function (status) {
