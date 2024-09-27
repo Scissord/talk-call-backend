@@ -44,5 +44,5 @@ export const find = async function (message_id) {
 export const clear = async function (customer_id) {
   return await db('message as m')
     .where('m.customer_id', customer_id)
-    .update('isChecked', true)
+    .update('m.isChecked', true)
 };
