@@ -12,7 +12,7 @@ export const get = async function (limit, page, search, status, manager_id) {
       'u.name as manager_name',
       db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.is_checked = false) as counter')
     )
-    .leftJoin('customer as c', 'm.customer_id', 'c.id')
+    .join('customer as c', 'm.customer_id', 'c.id')
     .leftJoin('user as u', 'm.user_id', 'u.id')
     .where((q) => {
       if (search) {
