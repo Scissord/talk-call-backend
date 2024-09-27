@@ -13,6 +13,13 @@ export const get = async function (limit, page, search, status, manager_id) {
       'u.name as manager_name',
       db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.is_checked = false) as counter')
     )
+    .from(function () {
+      this.select('*')
+        .from('message')
+        .distinctOn('customer_id')
+        .orderBy('customer_id', 'id', 'desc') // сортировка по customer_id и id для получения последних сообщений
+        .as('m'); // подзапрос для уникальных сообщений
+    })
     .leftJoin('customer as c', 'm.customer_id', 'c.id')
     .leftJoin('user as u', 'm.user_id', 'u.id')
     .where((q) => {
@@ -26,7 +33,6 @@ export const get = async function (limit, page, search, status, manager_id) {
         q.where('c.manager_id', manager_id);
       }
     })
-    .orderBy('m.customer_id')
     .orderBy('m.created_at', 'desc')
     .paginate({
       perPage: limit,
