@@ -9,7 +9,7 @@ export const get = async (req, res) => {
     const customers = await Customer.get(limit, page, search, role.status, id);
 
     for (const customer of customers) {
-      customer.time = formatDate(card.created_at);
+      customer.time = formatDate(customer.created_at);
 
       customers[customer.id] = {
         id: customer.id,
@@ -24,7 +24,6 @@ export const get = async (req, res) => {
         status: +customer.status,
       };
     };
-
 
 		res.status(200).send({ message: 'ok', customers });
 	}	catch (err) {
