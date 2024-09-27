@@ -6,8 +6,8 @@ export const get = async function (limit, page, search, status, manager_id) {
   const result = await db('message as m')
     .select(
       'm.customer_id',
-      'm.text as last_message_text',
-      'm.created_at as last_message_date',
+      db.raw('MAX(m.created_at) as last_message_date'),
+      db.raw('(SELECT text FROM message WHERE customer_id = m.customer_id ORDER BY created_at DESC LIMIT 1) as last_message_text'),
       'c.*',
       'u.name as manager_name',
       db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.is_checked = false) as counter')
@@ -25,8 +25,8 @@ export const get = async function (limit, page, search, status, manager_id) {
         q.where('c.manager_id', manager_id);
       }
     })
-    .orderBy('m.created_at', 'desc')
-    .groupBy('m.customer_id', 'm.text', 'm.created_at', 'c.id', 'u.name')
+    .groupBy('m.customer_id', 'c.id', 'u.name')
+    .orderBy('last_message_date', 'desc')
     .paginate({
       perPage: limit,
       currentPage: page,
