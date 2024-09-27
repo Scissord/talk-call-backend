@@ -13,10 +13,8 @@ export const get = async (req, res) => {
       customer.name = customer.name || "";
       customer.avatar = customer.avatar || "";
       customer.counter = Number(customer.counter);
-      customer.good = customer.good;
-      customer.order_id = customer.order_id;
       customer.manager_name = customer.manager_name || "";
-      customer.text = customer.text || "";
+      customer.last_message_text = customer.last_message_text || "";
       customer.status = Number(customer.status);
     };
 
