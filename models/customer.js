@@ -17,7 +17,7 @@ export const get = async function (limit, page, search, status, manager_id) {
       this.select('*')
         .from('message')
         .distinctOn('customer_id')
-        .orderBy('customer_id', 'desc')
+        .orderBy('customer_id')
         .orderBy('id', 'desc')
         .as('m');
     })
