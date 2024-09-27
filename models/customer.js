@@ -15,13 +15,7 @@ export const get = async function (limit, page, search, status, manager_id) {
     .leftJoin(
       db('message as m')
         .select('m.customer_id', 'm.text', 'm.created_at')
-        .whereIn('m.id', function () {
-          this.select('message.id')
-            .from('message')
-            .whereRaw('message.customer_id = m.customer_id')
-            .orderBy('message.created_at', 'desc')
-            .limit(1);
-        })
+        .whereRaw('m.id = (SELECT MAX(message.id) FROM message WHERE message.customer_id = c.id)')
         .as('m'),
       'm.customer_id',
       'c.id'
@@ -37,6 +31,7 @@ export const get = async function (limit, page, search, status, manager_id) {
         q.where('c.manager_id', manager_id);
       }
     })
+    .orderBy('last_message_date', 'desc')
     .paginate({
       perPage: limit,
       currentPage: page,
