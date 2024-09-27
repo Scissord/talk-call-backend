@@ -2,6 +2,8 @@ const formatDate = (createdAt) => {
   const now = new Date();
   const createdDate = new Date(createdAt);
 
+  createdDate.setHours(createdDate.getHours() - 1);
+
   const isToday = now.toLocaleDateString('ru-RU', { timeZone: 'Asia/Almaty' }) === createdDate.toLocaleDateString('ru-RU', { timeZone: 'Asia/Almaty' });
   const isYesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
     .toLocaleDateString('ru-RU', { timeZone: 'Asia/Almaty' }) === createdDate.toLocaleDateString('ru-RU', { timeZone: 'Asia/Almaty' });
