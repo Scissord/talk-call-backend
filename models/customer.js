@@ -8,7 +8,7 @@ export const get = async function (limit, page, search, status, manager_id) {
       'c.*',
       'u.name as manager_name',
       'm.text as text',
-      'm.created_at as created_at',
+      'm.created_at as last_message_date',
       db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.isChecked = false) as counter')
     )
     .leftJoin('user as u', 'c.manager_id', 'u.id')

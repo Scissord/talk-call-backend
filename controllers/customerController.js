@@ -9,7 +9,7 @@ export const get = async (req, res) => {
     const customers = await Customer.get(limit, page, search, role.status, id);
 
     for (const customer of customers) {
-      customer.time = formatDate(customer.created_at);
+      customer.time = formatDate(customer.last_message_date);
 
       customers[customer.id] = {
         id: customer.id,
