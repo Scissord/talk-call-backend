@@ -75,7 +75,7 @@ export const get = async function (limit, page, search, status, manager_id) {
       isLengthAware: true
     });
 
-  return result;
+  return result.data;
 };
 
 
