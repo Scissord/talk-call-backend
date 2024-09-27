@@ -8,24 +8,16 @@ export const get = async (req, res) => {
 
     const customers = await Customer.get(limit, page, search, role.status, id);
 
-    console.log(customers);
-
     for (const customer of customers) {
-      // console.log(customer);
       customer.time = customer.last_message_date ? formatDate(customer.last_message_date) : "";
-
-      customers[customer.id] = {
-        id: customer.id,
-        name: customer.name ? customer.name : "",
-        avatar: customer.avatar ? customer.avatar : "",
-        counter: +customer.counter,
-        good: customer.good,
-        order_id: customer.order_id,
-        manager_name: customer.manager_name ? customer.manager_name : "",
-        text: customer.text ? customer.text : "",
-        time: customer.time ? customer.time : "",
-        status: +customer.status,
-      };
+      customer.name = customer.name || "";
+      customer.avatar = customer.avatar || "";
+      customer.counter = Number(customer.counter);
+      customer.good = customer.good;
+      customer.order_id = customer.order_id;
+      customer.manager_name = customer.manager_name || "";
+      customer.text = customer.text || "";
+      customer.status = Number(customer.status);
     };
 
 		res.status(200).send({ message: 'ok', customers });
