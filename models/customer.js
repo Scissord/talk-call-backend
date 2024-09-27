@@ -2,50 +2,9 @@ import knex from './knex.js';
 
 const db = knex();
 
-// export const get = async function (limit, page, search, status, manager_id) {
-//   const result = await db('customer as c')
-//     .select(
-//       'c.*',
-//       'u.name as manager_name',
-//       'm.text as last_message_text',
-//       'm.created_at as last_message_date',
-//       db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.is_checked = false) as counter')
-//     )
-//     .leftJoin('user as u', 'c.manager_id', 'u.id')
-//     .leftJoin(
-//       db('message as m')
-//         .select('m.customer_id', 'm.text', 'm.created_at')
-//         .whereIn('m.id', function () {
-//           this.select(db.raw('MAX(id)'))
-//             .from('message')
-//             .whereRaw('message.customer_id = m.customer_id');
-//         })
-//         .as('m'),
-//       'm.customer_id',
-//       'c.id'
-//     )
-//     .where((q) => {
-//       if (search) {
-//         q.where('c.order_id', 'ilike', `%${search}%`)
-//           .orWhere('c.phone', 'ilike', `%${search}%`)
-//           .orWhere('c.name', 'ilike', `%${search}%`);
-//       }
-//       if (status !== 100) {
-//         q.where('c.status', status);
-//         q.where('c.manager_id', manager_id);
-//       }
-//     })
-//     .paginate({
-//       perPage: limit,
-//       currentPage: page,
-//       isLengthAware: true
-//     });
-
-//   return result.data
-// };
-
 export const get = async function (limit, page, search, status, manager_id) {
   const result = await db('message as m')
+    .distinctOn('m.customer_id')
     .select(
       'm.customer_id',
       'm.text as last_message_text',
@@ -68,7 +27,6 @@ export const get = async function (limit, page, search, status, manager_id) {
       }
     })
     .orderBy('m.created_at', 'desc')
-    .groupBy('m.customer_id', 'm.text', 'm.created_at', 'c.id', 'u.name')
     .paginate({
       perPage: limit,
       currentPage: page,
