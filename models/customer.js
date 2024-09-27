@@ -35,6 +35,7 @@ export const get = async function (limit, page, search, status, manager_id) {
         q.where('c.manager_id', manager_id);
       }
     })
+    .orderBy('m.last_message_date', 'desc')
     .paginate({
       perPage: limit,
       currentPage: page,
