@@ -5,14 +5,14 @@ const db = knex();
 export const get = async function (limit, page, search, status, manager_id) {
   const result = await db('message as m')
     .select(
-      'message.customer_id',
+      'm.customer_id',
       'm.text as last_message_text',
       'm.created_at as last_message_date',
       'c.*',
       'u.name as manager_name',
       db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.is_checked = false) as counter')
     )
-    .join('customer as c', 'm.customer_id', 'c.id')
+    .leftJoin('customer as c', 'm.customer_id', 'c.id')
     .leftJoin('user as u', 'm.user_id', 'u.id')
     .where((q) => {
       if (search) {
