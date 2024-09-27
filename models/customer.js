@@ -3,10 +3,27 @@ import knex from './knex.js';
 const db = knex();
 
 export const get = async function (limit, page, search, status, manager_id) {
-  console.log(status, manager_id);
   const result = await db('customer as c')
-    .select('c.*', 'u.name as manager_name')
+    .select(
+      'c.*',
+      'u.name as manager_name',
+      'm.text as last_message_text',
+      'm.created_at as last_message_date',
+      db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.isChecked = false) as unchecked_messages_count')
+    )
     .leftJoin('user as u', 'c.manager_id', 'u.id')
+    .leftJoin(
+      db('message as m')
+        .select('m.customer_id', 'm.text', 'm.created_at')
+        .whereIn('m.id', function () {
+          this.select(db.raw('MAX(id)'))
+            .from('message')
+            .whereRaw('message.customer_id = m.customer_id');
+        })
+        .as('m'),
+      'm.customer_id',
+      'c.id'
+    )
     .where((q) => {
       if (search) {
         q.where('c.order_id', 'ilike', `%${search}%`)
@@ -23,8 +40,6 @@ export const get = async function (limit, page, search, status, manager_id) {
       currentPage: page,
       isLengthAware: true
     });
-
-  console.log(result);
 
   return {
     customers: result.data,
