@@ -40,3 +40,9 @@ export const find = async function (message_id) {
     .where('m.id', message_id)
     .first();
 };
+
+export const clear = async function (customer_id) {
+  return await db('message as m')
+    .where('m.customer_id', customer_id)
+    .update('isChecked', true)
+};

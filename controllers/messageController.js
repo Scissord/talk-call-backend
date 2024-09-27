@@ -111,6 +111,18 @@ export const cache = async (req, res) => {
 	}
 };
 
+export const clear = async (req, res) => {
+  try {
+    const customer_id = req.body.customer_id;
+    await Message.clear(customer_id);
+
+		res.status(200).send({ status: "ok" });
+	}	catch (err) {
+		console.log("Error in clear message controller", err.message);
+		res.status(500).send({ error: "Internal Server Error" });
+	}
+};
+
 export const reply = async (req, res) => {
   try {
     const { message_id, customer_id } = req.body;
