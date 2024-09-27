@@ -33,7 +33,7 @@ export const getBoard = async (req, res) => {
 
     for (const card of cardsFromDb) {
       card.path = findProduct(+card.good);
-      card.time = formatDate(card.created_at);
+      card.time = formatDate(card.last_message_date);
 
       cards[card.id] = {
         id: card.id,
@@ -42,7 +42,7 @@ export const getBoard = async (req, res) => {
         good: card.good,
         order_id: card.order_id,
         manager_id: card.manager_id,
-        text: card.text,
+        text: card.last_message_text,
         path: card.path,
         time: card.time,
         manager_name: card.manager_name,
