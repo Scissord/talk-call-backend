@@ -26,7 +26,7 @@ export const get = async function (limit, page, search, status, manager_id) {
       }
     })
     .orderBy('m.created_at', 'desc')
-    .groupBy('c.id', 'message.customer_id', 'm.text', 'm.created_at', 'u.name')
+    .groupBy('c.id', 'm.customer_id', 'm.text', 'm.created_at', 'u.name')
     .paginate({
       perPage: limit,
       currentPage: page,
