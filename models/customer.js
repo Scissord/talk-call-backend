@@ -47,7 +47,7 @@ export const getForBoard = async function (status) {
       db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.is_checked = false) as counter')
     )
     .leftJoin('customer as c', 'm.customer_id', 'c.id')
-    .leftJoin('user as u', 'm.user_id', 'u.id')
+    .leftJoin('user as u', 'c.manager_id', 'u.id')
     .where((q) => {
       if (status !== 100) {
         q.where('c.status', status);

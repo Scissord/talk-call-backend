@@ -16,13 +16,13 @@ export default async function sameColumn(
     cards_ids: updatedSourceTaskIds,
   });
 
-  // const cachedBoard = await redisClient.get(`board_${status}`);
+  const cachedBoard = await redisClient.get(`board_${status}`);
 
-  // if (cachedBoard) {
-  //   const boardData = JSON.parse(cachedBoard);
+  if (cachedBoard) {
+    const boardData = JSON.parse(cachedBoard);
 
-  //   boardData.columns[sourceColumnId].cardsIds = updatedSourceTaskIds;
+    boardData.columns[sourceColumnId].cardsIds = updatedSourceTaskIds;
 
-  //   await redisClient.setEx(`board_${status}`, 3600, JSON.stringify(boardData));
-  // };
+    await redisClient.setEx(`board_${status}`, 3600, JSON.stringify(boardData));
+  };
 };
