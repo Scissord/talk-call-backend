@@ -1,4 +1,5 @@
 import * as Column from '../../models/column.js';
+import redisClient from '../redis/redis.js';
 
 export default async function sameColumn(
   sourceColumn,

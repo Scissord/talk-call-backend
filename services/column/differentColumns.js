@@ -1,5 +1,6 @@
 import * as Column from '../../models/column.js';
 import * as Customer from '../../models/customer.js';
+import redisClient from '../redis/redis.js';
 
 export default async function differentColumns(
   sourceColumn,
