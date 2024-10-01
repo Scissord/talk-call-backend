@@ -5,15 +5,24 @@ const db = knex();
 export const get = async function (limit, page, search, status, manager_id) {
   const result = await db('message as m')
     .select(
-      'm.customer_id',
-      db.raw('MAX(m.created_at) as last_message_date'),
-      db.raw('(SELECT text FROM message WHERE customer_id = m.customer_id ORDER BY created_at DESC LIMIT 1) as last_message_text'),
-      'c.*',
+      'c.id as id',
+      'c.name as name',
+      'c.avatar as avatar',
+      'c.good as good',
+      'c.order_id as order_id',
+      'u.id as manager_id',
       'u.name as manager_name',
-      db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.is_checked = false) as counter')
+      'm.text as last_message_text',
+      'm.created_at as last_message_date',
+      db.raw(`(SELECT COUNT(*) FROM message WHERE customer_id = c.id AND is_checked = false) as counter`)
     )
-    .leftJoin('customer as c', 'm.customer_id', 'c.id')
+    .join('customer as c', 'm.customer_id', 'c.id')
     .leftJoin('user as u', 'c.manager_id', 'u.id')
+    .whereIn('m.id', function () {
+      this.select(db.raw('MAX(id)'))
+          .from('message')
+          .groupBy('customer_id');
+    })
     .where((q) => {
       if (search) {
         q.where('c.order_id', 'ilike', `%${search}%`)
@@ -25,8 +34,7 @@ export const get = async function (limit, page, search, status, manager_id) {
         q.where('c.manager_id', manager_id);
       }
     })
-    .groupBy('m.customer_id', 'c.id', 'u.name')
-    .orderBy('last_message_date', 'desc')
+    .orderBy('m.created_at', 'desc')
     .paginate({
       perPage: limit,
       currentPage: page,
@@ -39,22 +47,30 @@ export const get = async function (limit, page, search, status, manager_id) {
 export const getForBoard = async function (status) {
   return await db('message as m')
     .select(
-      'm.customer_id',
-      db.raw('MAX(m.created_at) as last_message_date'),
-      db.raw('(SELECT text FROM message WHERE customer_id = m.customer_id ORDER BY created_at DESC LIMIT 1) as last_message_text'),
-      'c.*',
+      'c.id as id',
+      'c.name as name',
+      'c.avatar as avatar',
+      'c.good as good',
+      'c.order_id as order_id',
+      'u.id as manager_id',
       'u.name as manager_name',
-      db.raw('(SELECT COUNT(*) FROM message WHERE message.customer_id = c.id AND message.is_checked = false) as counter')
+      'm.text as last_message_text',
+      'm.created_at as last_message_date',
+      db.raw(`(SELECT COUNT(*) FROM message WHERE customer_id = c.id AND is_checked = false) as counter`)
     )
-    .leftJoin('customer as c', 'm.customer_id', 'c.id')
+    .join('customer as c', 'm.customer_id', 'c.id')
     .leftJoin('user as u', 'c.manager_id', 'u.id')
+    .whereIn('m.id', function () {
+      this.select(db.raw('MAX(id)'))
+          .from('message')
+          .groupBy('customer_id');
+    })
     .where((q) => {
       if (status !== 100) {
         q.where('c.status', status);
       }
     })
-    .groupBy('m.customer_id', 'c.id', 'u.name')
-    .orderBy('last_message_date', 'desc')
+    .orderBy('m.created_at', 'desc')
 };
 
 export const create = async function (data) {
