@@ -30,7 +30,7 @@ export default async function getOrder(order_id, text, user_id, status, phone) {
         good: firstGoodKey,
         ai_active: false,
         manager_id: user_id,
-        phone: phone !== "" ? phone : customer.phone,
+        phone: phone !== "" ? phone : order.phone,
         status,
         order_id
       });
