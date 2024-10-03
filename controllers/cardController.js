@@ -1,8 +1,10 @@
 import * as Column from "../models/column.js";
 import * as Card from "../models/card.js";
 import * as CardItem from "../models/card_item.js";
+import * as Customer from "../models/customer.js";
 import sameColumn from "../services/column/sameColumn.js";
 import differentColumns from "../services/column/differentColumns.js";
+import redisClient from "../services/redis/redis.js";
 
 export const getCard = async (req, res) => {
   try {
@@ -56,7 +58,19 @@ export const deleteCard = async (req, res) => {
     const cards_ids = column.cards_ids.filter((id) => id !== card_id);
     await Column.update(column.id, { cards_ids });
 
-    await Card.softDelete(card_id);
+    await Customer.update(card_id, {
+      deleted_manager: req.user.id
+    });
+
+    const cachedBoard = await redisClient.get(`board_${req.user.role.status}`);
+
+    if (cachedBoard) {
+      const boardData = JSON.parse(cachedBoard);
+
+      boardData.columns[column_id].cardsIds = cards_ids;
+
+      await redisClient.setEx(`board_${req.user.role.status}`, 3600, JSON.stringify(boardData));
+    };
 
     res.status(200).send({ message: "ok" });
   } catch (err) {
