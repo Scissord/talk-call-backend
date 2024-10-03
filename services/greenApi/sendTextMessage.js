@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as User from '../../models/user.js';
 import * as Message from '../../models/message.js';
 import * as Instance from '../../models/instance.js';
 
@@ -27,7 +28,8 @@ export default async function sendTextMessage(user_id, customer, message, custom
     });
   };
 
-  // add manager_name by user_id
+  // const manager = await User.find(user_id);
+  // obj.manager_name = manager.name;
 
   return obj;
 };
