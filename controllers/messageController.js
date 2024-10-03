@@ -87,8 +87,6 @@ export const leadvertexCreate = async (req, res) => {
 
 export const cache = async (req, res) => {
   try {
-    console.log(req.body);
-
     const message = req.body;
     const customer_id = req.body.customer_id.toString();
 
