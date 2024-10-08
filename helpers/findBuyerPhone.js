@@ -1,9 +1,10 @@
 export default function findBuyerPhone(user_id) {
   let phone = '';
   switch (user_id) {
-    case 107:
-      phone = '77075819597@c.us';
-      break;
+    // Алиш тест
+    // case 107:
+    //   phone = '77075819597@c.us';
+    //   break;
     case 108:
       // Бека
       phone = '77089263364@c.us';
