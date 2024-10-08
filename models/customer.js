@@ -44,6 +44,46 @@ export const get = async function (limit, page, search, status, manager_id) {
   return result.data;
 };
 
+export const getForBuyers = async function (limit, page, search, phone) {
+  const result = await db('message as m')
+    .select(
+      'c.id as id',
+      'c.name as name',
+      'c.avatar as avatar',
+      'c.good as good',
+      'c.order_id as order_id',
+      'c.buyer_phone as buyer_phone',
+      'u.id as manager_id',
+      'u.name as manager_name',
+      'm.text as last_message_text',
+      'm.created_at as last_message_date',
+      db.raw(`(SELECT COUNT(*) FROM message WHERE customer_id = c.id AND is_checked = false) as counter`)
+    )
+    .join('customer as c', 'm.customer_id', 'c.id')
+    .leftJoin('user as u', 'c.manager_id', 'u.id')
+    .whereIn('m.id', function () {
+      this.select(db.raw('MAX(id)'))
+          .from('message')
+          .groupBy('customer_id');
+    })
+    .where((q) => {
+      if (search) {
+        q.where('c.order_id', 'ilike', `%${search}%`)
+          .orWhere('c.phone', 'ilike', `%${search}%`)
+          .orWhere('c.name', 'ilike', `%${search}%`);
+      }
+      q.where("c.buyer_phone", phone)
+    })
+    .orderBy('m.created_at', 'desc')
+    .paginate({
+      perPage: limit,
+      currentPage: page,
+      isLengthAware: true
+    });
+
+  return result.data;
+};
+
 export const getForBoard = async function (status) {
   return await db('message as m')
     .select(

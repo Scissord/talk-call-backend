@@ -1,12 +1,22 @@
 import * as Customer from "../models/customer.js";
 import formatDate from "../helpers/formatDate.js";
+import findBuyerPhone from "../helpers/findBuyerPhone.js";
 
 export const get = async (req, res) => {
 	try {
     const { limit, page, search } = req.query;
     const { id, role } = req.user;
 
-    const customers = await Customer.get(limit, page, search, role.status, id);
+    let customers = [];
+
+    if(+role.status === 1 || +role.status === 2 || +role.status === 100) {
+      customers = await Customer.get(limit, page, search, role.status, id);
+    }
+
+    if(+role.status === 10) {
+      const phone = findBuyerPhone(+id);
+      customers = await Customer.getForBuyers(limit, page, search, phone);
+    }
 
     for (const customer of customers) {
       customer.time = customer.last_message_date ? formatDate(customer.last_message_date) : "";
