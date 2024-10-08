@@ -81,13 +81,9 @@ export const update = async (req, res) => {
   try {
     const user_id = req.params.user_id;
     const { name, role } = req.body;
-    // password,
-    // const salt = await bcrypt.genSalt(10);
-		// const hashedPassword = await bcrypt.hash(password, salt);
 
     await User.update(user_id, {
       name: name,
-      // password: hashedPassword,
       role: role
     });
 
