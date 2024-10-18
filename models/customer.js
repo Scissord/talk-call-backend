@@ -73,7 +73,7 @@ export const getForBuyers = async function (limit, page, search, phone) {
           .orWhere('c.name', 'ilike', `%${search}%`);
       }
       q.where("c.buyer_phone", phone)
-      q.where("c.status", 4)
+      // q.where("c.status", 4)
     })
     .orderBy('m.created_at', 'desc')
     .paginate({
