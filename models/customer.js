@@ -93,6 +93,7 @@ export const getForBoard = async function (status) {
       'c.avatar as avatar',
       'c.good as good',
       'c.order_id as order_id',
+      'c.isfixed as isfixed',
       'u.id as manager_id',
       'u.name as manager_name',
       'm.text as last_message_text',

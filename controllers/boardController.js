@@ -64,6 +64,7 @@ export const getBoard = async (req, res) => {
         last_message_text: card.last_message_text || "",
         last_message_date: card.last_message_date || new Date,
         status: Number(card.status),
+        isfixed: card.isfixed || false,
       };
     };
 

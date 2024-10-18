@@ -95,3 +95,20 @@ export const moveCard = async (req, res) => {
     res.status(400).send({ error: "Invalid request payload" });
   }
 };
+
+export const toggleFixCard = async (req, res) => {
+  const { card_id } = req.params;
+
+  try {
+    const card = await Customer.find(card_id);
+
+    await Customer.update(card_id, {
+      isfixed: !card.isfixed
+    })
+
+    res.status(200).send({ message: "Card moved successfully" });
+  } catch (err) {
+    console.log("Error in toggleFixCard boardController", err.message);
+    res.status(400).send({ error: "Invalid request payload" });
+  }
+};
