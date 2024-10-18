@@ -46,3 +46,9 @@ export const clear = async function (customer_id) {
     .where('customer_id', customer_id)
     .update('is_checked', true);
 };
+
+export const deleteManager = async function (user_id) {
+  return await db('message')
+    .update('user_id', null)
+    .where('user_id', user_id)
+};

@@ -51,7 +51,7 @@ export default function findBuyerPhone(user_id) {
       break;
     case 119:
       // Али
-      phone = '77754693441@c.us';
+      phone = '77754849478@c.us';
       break;
     case 120:
       // Абылай

@@ -2,6 +2,8 @@ import bcrypt from 'bcryptjs';
 import * as User from "../models/user.js";
 import * as UserToken from "../models/user_token.js";
 import * as Column from '../models/column.js';
+import * as Customer from '../models/customer.js';
+import * as Message from '../models/message.js';
 import generateTokens from "../helpers/generateTokens.js";
 
 export const create = async (req, res) => {
@@ -103,26 +105,12 @@ export const destroy = async (req, res) => {
     const user_id = req.params.user_id;
     const { role } = req.body;
 
+    await Message.deleteManager(user_id);
+
     await User.destroy(user_id);
     await UserToken.destroy(user_id);
 
-    const column = await Column.getByManagerId(user_id);
-    if (column.cards_ids.length > 0) {
-      let targetManagerId;
-
-      if (+role === 3 || +role === 5) {
-        targetManagerId = 43;
-      } else if (+role === 4 || +role === 6) {
-        targetManagerId = 45;
-      }
-
-      if (targetManagerId) {
-        const sourceColumn = await Column.getByManagerId(targetManagerId);
-        await Column.update(sourceColumn.id, {
-          cards_ids: [...column.cards_ids, ...sourceColumn.cards_ids]
-        });
-      }
-    }
+    await Customer.updateWhenDeleteManager(user_id, req.user.id);
 
     await Column.destroy(user_id);
 

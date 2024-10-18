@@ -109,8 +109,15 @@ export const getForBoard = async function (status) {
       if (status !== 100) {
         q.where('c.status', status);
       }
+      q.where('c.deleted_manager', null);
     })
     .orderBy('m.created_at', 'desc')
+};
+
+export const updateWhenDeleteManager = async function (manager_id, newId) {
+  return await db('customer')
+    .update('manager_id', newId)
+    .where('manager_id', manager_id)
 };
 
 export const create = async function (data) {

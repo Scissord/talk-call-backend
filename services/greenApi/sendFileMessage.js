@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as Message from '../../models/message.js';
 import * as Attachment from '../../models/attachment.js';
 import * as Instance from '../../models/instance.js';
+import * as User from '../../models/user.js';
 
 export default async function sendFileMessage(user_id, customer, file, customer_id) {
   const instance = await Instance.findByBuyerPhone(customer.buyer_phone);
@@ -39,6 +40,9 @@ export default async function sendFileMessage(user_id, customer, file, customer_
 
     obj.attachments = [attachment]
   };
+
+  const manager = await User.find(user_id);
+  obj.manager_name = manager.name;
 
   return obj;
 };

@@ -2,8 +2,6 @@ import * as Column from "../models/column.js";
 import * as Card from "../models/card.js";
 import * as CardItem from "../models/card_item.js";
 import * as Customer from "../models/customer.js";
-import sameColumn from "../services/column/sameColumn.js";
-import differentColumns from "../services/column/differentColumns.js";
 import redisClient from "../services/redis/redis.js";
 
 export const getCard = async (req, res) => {
@@ -52,25 +50,19 @@ export const createCard = async (req, res) => {
 export const deleteCard = async (req, res) => {
   try {
     const card_id = req.params.card_id;
-    const { column_id } = req.body;
-
-    const column = await Column.find(column_id);
-    const cards_ids = column.cards_ids.filter((id) => id !== card_id);
-    await Column.update(column.id, { cards_ids });
 
     await Customer.update(card_id, {
       deleted_manager: req.user.id
     });
 
-    const cachedBoard = await redisClient.get(`board_${req.user.role.status}`);
+    // const status = req.user.role.status;
+    // const cachedBoard = await redisClient.get(`board_${status}`);
 
-    if (cachedBoard) {
-      const boardData = JSON.parse(cachedBoard);
-
-      boardData.columns[column_id].cardsIds = cards_ids;
-
-      await redisClient.setEx(`board_${req.user.role.status}`, 3600, JSON.stringify(boardData));
-    };
+    // if (cachedBoard) {
+    //   const boardData = JSON.parse(cachedBoard);
+    //   delete boardData.cards[card_id];
+    //   await redisClient.setEx(`board_${status}`, 3600, JSON.stringify(boardData));
+    // };
 
     res.status(200).send({ message: "ok" });
   } catch (err) {
@@ -80,38 +72,22 @@ export const deleteCard = async (req, res) => {
 };
 
 export const moveCard = async (req, res) => {
-  const { status } = req.user.role;
-  const { cardId, sourceColumnId, destinationColumnId, sourceIndex, destinationIndex } = req.body;
+  // const status = req.user.role.status;
+  const { card_id } = req.params;
+  const { manager_id } = req.body;
 
   try {
-    const sourceColumn = await Column.find(sourceColumnId);
-    const destinationColumn = await Column.find(destinationColumnId);
+    await Customer.update(card_id, {
+      manager_id
+    })
 
-    if (!sourceColumn || !destinationColumn) {
-      return res.status(404).send({ error: 'Column not found' });
-    }
+    // const cachedBoard = await redisClient.get(`board_${status}`);
 
-    if (sourceColumnId === destinationColumnId) {
-      sameColumn(
-        sourceColumn,
-        sourceIndex,
-        destinationIndex,
-        cardId,
-        sourceColumnId,
-        status
-      );
-    } else {
-      differentColumns(
-        sourceColumn,
-        sourceIndex,
-        sourceColumnId,
-        destinationColumn,
-        destinationIndex,
-        cardId,
-        destinationColumnId,
-        status
-      );
-    }
+    // if (cachedBoard) {
+    //   const boardData = JSON.parse(cachedBoard);
+    //   boardData.cards[card_id].manager_id = manager_id;
+    //   await redisClient.setEx(`board_${status}`, 3600, JSON.stringify(boardData));
+    // };
 
     res.status(200).send({ message: "Card moved successfully" });
   } catch (err) {

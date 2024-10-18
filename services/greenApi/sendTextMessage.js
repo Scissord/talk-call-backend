@@ -28,8 +28,8 @@ export default async function sendTextMessage(user_id, customer, message, custom
     });
   };
 
-  // const manager = await User.find(user_id);
-  // obj.manager_name = manager.name;
+  const manager = await User.find(user_id);
+  obj.manager_name = manager.name;
 
   return obj;
 };
