@@ -54,7 +54,6 @@ export const create = async (req, res) => {
 
     await Column.create({
       title: name,
-      cards_ids: [],
       position,
       status,
       manager_id: user.id
