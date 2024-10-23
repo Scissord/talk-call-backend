@@ -170,6 +170,37 @@ export const getMoreCards = async (req, res) => {
   }
 };
 
+export const getCustomerInfo = async (req, res) => {
+  try {
+    console.log(req.body)
+    const { customer_id } = req.body.info;
+    const card = await Customer.getCustomerForColumn(customer_id);
+
+    console.log(card);
+
+    card.id = card.id;
+    card.name = card.name || "";
+    card.avatar = card.avatar || "";
+    card.good = card.good || "";
+    card.order_id = card.order_id || "";
+    card.manager_id = card.manager_id || "";
+    card.text = card.last_message_text || "";
+    card.path = findProduct(+card.good);
+    card.time = card.last_message_date ? formatDate(card.last_message_date) : "";
+    card.manager_name = card.manager_name || "";
+    card.counter = Number(card.counter);
+    card.last_message_text = card.last_message_text || "";
+    card.last_message_date = card.last_message_date || new Date;
+    card.status = Number(card.status);
+    card.isfixed = card.isfixed || false;
+
+    res.status(200).send(card);
+  } catch (err) {
+    console.log("Error in getCustomerInfo boardController", err.message);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+};
+
 export const cacheBoard = async (req, res) => {
   try {
     console.log(req.body)

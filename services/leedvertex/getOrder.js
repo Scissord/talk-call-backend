@@ -1,9 +1,9 @@
 import axios from 'axios';
 import * as Customer from '../../models/customer.js';
-import * as Column from '../../models/column.js';
 import sendTextMessage from '../greenApi/sendTextMessage.js';
 import updateAvatar from '../greenApi/updateAvatar.js';
 import redisClient from '../redis/redis.js';
+import randomInstance from '../instance/randomInstance.js';
 
 export default async function getOrder(order_id, text, user_id, status, phone) {
   let customer = await Customer.findWhere({ order_id: order_id });
@@ -24,9 +24,11 @@ export default async function getOrder(order_id, text, user_id, status, phone) {
       const goodKeys = Object.keys(order.goods);
       const firstGoodKey = goodKeys[0];
 
+      const randomPhone = await randomInstance();
+
       customer = await Customer.create({
         name: order.fio,
-        buyer_phone: '77018163104@c.us',
+        buyer_phone: randomPhone,
         good: firstGoodKey,
         ai_active: false,
         manager_id: user_id,
@@ -36,6 +38,7 @@ export default async function getOrder(order_id, text, user_id, status, phone) {
       });
     };
   }
+
   if(phone !== "") {
     customer = await Customer.update(customer.id, {
       phone,
