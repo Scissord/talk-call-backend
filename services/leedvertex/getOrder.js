@@ -26,7 +26,7 @@ export default async function getOrder(order_id, text, user_id, status, phone) {
 
       customer = await Customer.create({
         name: order.fio,
-        buyer_phone: '77752426015@c.us',
+        buyer_phone: '77018163104@c.us',
         good: firstGoodKey,
         ai_active: false,
         manager_id: user_id,

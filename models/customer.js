@@ -116,6 +116,45 @@ export const getForBoard = async function (status) {
     .orderBy('m.created_at', 'desc')
 };
 
+export const getForColumn = async function (manager_id, page) {
+  const result = await db('message as m')
+    .select(
+      'c.id as id',
+      'c.name as name',
+      'c.avatar as avatar',
+      'c.good as good',
+      'c.order_id as order_id',
+      'c.isfixed as isfixed',
+      'u.id as manager_id',
+      'u.name as manager_name',
+      'm.text as last_message_text',
+      'm.created_at as last_message_date',
+      db.raw(`(SELECT COUNT(*) FROM message WHERE customer_id = c.id AND is_checked = false) as counter`)
+    )
+    .join('customer as c', 'm.customer_id', 'c.id')
+    .leftJoin('user as u', 'c.manager_id', 'u.id')
+    .whereIn('m.id', function () {
+      this.select(db.raw('MAX(id)'))
+          .from('message')
+          .groupBy('customer_id');
+    })
+    .where((q) => {
+      q.where('c.manager_id', manager_id)
+      q.where('c.deleted_manager', null);
+    })
+    .orderBy('m.created_at', 'desc')
+    .paginate({
+      perPage: 20,
+      currentPage: page,
+      isLengthAware: true
+    });
+
+  return {
+    cardsFromDb: result.data,
+    total: result.pagination.total
+  };
+};
+
 export const updateWhenDeleteManager = async function (manager_id, newId) {
   return await db('customer')
     .update('manager_id', newId)

@@ -5,6 +5,9 @@ import * as controller from '../controllers/boardController.js';
 const router = express.Router();
 
 router.get("", protectRoute, controller.getBoard);
+router.get("/columns", protectRoute, controller.getColumns);
+router.post("/cards", protectRoute, controller.getCards);
+router.post("/more-cards", protectRoute, controller.getMoreCards);
 router.post("/cache", controller.cacheBoard);
 
 export default router;

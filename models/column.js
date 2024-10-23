@@ -8,7 +8,7 @@ export const get = async function (status) {
     .where((q) => {
       if(status !== 100) {
         q.where('status', status);
-      };
+      }
     })
     .orderBy('position', 'asc');
 };
