@@ -175,8 +175,6 @@ export const getCustomerInfo = async (req, res) => {
     const { customer_id } = req.body;
     const card = await Customer.getCustomerForColumn(customer_id);
 
-    console.log(card);
-
     card.id = card.id;
     card.name = card.name || "";
     card.avatar = card.avatar || "";
