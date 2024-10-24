@@ -172,8 +172,7 @@ export const getMoreCards = async (req, res) => {
 
 export const getCustomerInfo = async (req, res) => {
   try {
-    console.log(req.body)
-    const { customer_id } = req.body.info;
+    const { customer_id } = req.body;
     const card = await Customer.getCustomerForColumn(customer_id);
 
     console.log(card);
