@@ -15,6 +15,12 @@ export const create = async function (data) {
   return data;
 };
 
+export const update = async function (id, data) {
+  return await db('user')
+    .update(data)
+    .where('id', id)
+};
+
 export const isExist = async function (name, phone) {
   return await db('user')
     .select('*')

@@ -80,17 +80,23 @@ export const get = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
+
     const user_id = req.params.user_id;
-    const { name, role } = req.body;
+    const info = req.body;
 
-    await User.update(user_id, {
-      name: name,
-      role: role
-    });
+    if(info.password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(info.password, salt);
+      info.password = hashedPassword;
+    }
 
-    await Column.updateByManagerId(user_id, {
-      title: name
-    });
+    await User.update(user_id, info);
+
+    if(+info.role !== 7) {
+      await Column.updateByManagerId(user_id, {
+        title: info.name
+      });
+    };
 
 		res.status(200).send({ message: 'ok' });
 	}	catch (err) {
@@ -102,7 +108,6 @@ export const update = async (req, res) => {
 export const destroy = async (req, res) => {
   try {
     const user_id = req.params.user_id;
-    const { role } = req.body;
 
     await Message.deleteManager(user_id);
 
@@ -116,6 +121,17 @@ export const destroy = async (req, res) => {
 		res.status(200).send({ message: 'ok' });
 	}	catch (err) {
 		console.log("Error in destroy user controller", err.message);
+		res.status(500).send({ error: "Internal Server Error" });
+	}
+};
+
+export const getStatistics = async (req, res) => {
+	try {
+    const customers = await Customer.get();
+
+		res.status(200).send({ message: 'ok', users });
+	}	catch (err) {
+		console.log("Error in get getStatistics controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
 	}
 };
