@@ -52,3 +52,12 @@ export const deleteManager = async function (user_id) {
     .update('user_id', null)
     .where('user_id', user_id)
 };
+
+export const getLengthInCurrentMonth = async function () {
+  const count = await db('message')
+    .count('*')
+    .where('created_at', '>=', db.raw("date_trunc('month', CURRENT_DATE)"))
+    .andWhere('created_at', '<', db.raw("date_trunc('month', CURRENT_DATE) + INTERVAL '1 month'"));
+
+  return count[0].count;
+};

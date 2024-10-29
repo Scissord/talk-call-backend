@@ -226,3 +226,38 @@ export const update = async function (id, data) {
 
   return customer;
 };
+
+export const getLengthInCurrentMonth = async function () {
+  const count = await db('customer')
+    .count('*')
+    .where('last_active', '>=', db.raw("date_trunc('month', CURRENT_DATE)"))
+    .andWhere('last_active', '<', db.raw("date_trunc('month', CURRENT_DATE) + INTERVAL '1 month'"));
+
+  return count[0].count;
+};
+
+export const getMostPopularOfferInCurrentMonth = async function () {
+  const count = await db('customer')
+    .select('good as good_id')
+    .count('good as sales_count')
+    .where('last_active', '>=', db.raw("date_trunc('month', CURRENT_DATE)"))
+    .andWhere('last_active', '<', db.raw("date_trunc('month', CURRENT_DATE) + INTERVAL '1 month'"))
+    .groupBy('good')
+    .orderBy('sales_count', 'desc')
+    .first();
+
+  return count;
+};
+
+export const getMostPopularBuyerInCurrentMonth = async function () {
+  const count = await db('customer')
+    .select('buyer_phone as buyer_phone')
+    .count('buyer_phone as sales_count')
+    .where('last_active', '>=', db.raw("date_trunc('month', CURRENT_DATE)"))
+    .andWhere('last_active', '<', db.raw("date_trunc('month', CURRENT_DATE) + INTERVAL '1 month'"))
+    .groupBy('buyer_phone')
+    .orderBy('sales_count', 'desc')
+    .first();
+
+  return count;
+};

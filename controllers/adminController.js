@@ -4,7 +4,9 @@ import * as UserToken from "../models/user_token.js";
 import * as Column from '../models/column.js';
 import * as Customer from '../models/customer.js';
 import * as Message from '../models/message.js';
+import * as AI_Integrations from '../models/ai_integrations.js';
 import generateTokens from "../helpers/generateTokens.js";
+import findProductName from "../helpers/findProductName.js"
 
 export const create = async (req, res) => {
   try {
@@ -127,9 +129,54 @@ export const destroy = async (req, res) => {
 
 export const getStatistics = async (req, res) => {
 	try {
-    const customers = await Customer.get();
+    // Колличество новых лидов в этом месяце
+    const customers_length = await Customer.getLengthInCurrentMonth();
+    // Сообщений отправленно в этом месяце
+    const messages_length = await Message.getLengthInCurrentMonth();
+    // Самый популярный оффер в этом месяце
+    const most_popular_offer = await Customer.getMostPopularOfferInCurrentMonth();
+    const product = findProductName(+most_popular_offer.good_id);
 
-		res.status(200).send({ message: 'ok', users });
+    // Баер с большим количеством номером в этом месяце
+    const most_popular_buyer = await Customer.getMostPopularBuyerInCurrentMonth();
+    const ai_integrations = await AI_Integrations.get();
+
+    const cards = [
+      {
+        id: 1,
+        number: customers_length,
+        title: 'Клиенты',
+        description: 'Колличество новых лидов в этом месяце.',
+        color: '#02c0f0',
+        icon: 'clients'
+      },
+      {
+        id: 2,
+        number: messages_length,
+        title: 'Сообщения',
+        description: 'Сообщений отправленно и принято в этом месяце.',
+        color: '#01a65a',
+        icon: 'messages'
+      },
+      {
+        id: 3,
+        number: most_popular_offer.sales_count,
+        title: product.name,
+        description: 'Самый популярный оффер в этом месяце.',
+        color: '#f59c11',
+        icon: 'product'
+      },
+      {
+        id: 4,
+        number: most_popular_buyer.sales_count,
+        title: ai_integrations.find((user) => user.phone === most_popular_buyer.buyer_phone)?.id ?? '-',
+        description: 'Баер с большим количеством клиентов в этом месяце.',
+        color: '#dc4d3b',
+        icon: 'glasses'
+      }
+    ]
+
+		res.status(200).send(cards);
 	}	catch (err) {
 		console.log("Error in get getStatistics controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
