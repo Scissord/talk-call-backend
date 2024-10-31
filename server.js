@@ -38,5 +38,5 @@ app.use('/api', apiRoutes);
 
 app.listen(PORT, () => {
 	printName();
-	console.log(`Welcome to Constructor server, port ${PORT} ✅✅✅`);
+	console.log(`Welcome to chat server, port ${PORT} ✅✅✅`);
 });

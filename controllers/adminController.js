@@ -54,6 +54,17 @@ export const create = async (req, res) => {
       };
     };
 
+    if(+role === 9) {
+      status = 5;
+      const columns = await Column.get(5);
+      if (columns.length > 0) {
+        const lastPosition = columns[columns.length - 1].position;
+        position = +lastPosition + 1;
+      } else {
+        position = 1;
+      };
+    };
+
     await Column.create({
       title: name,
       position,
