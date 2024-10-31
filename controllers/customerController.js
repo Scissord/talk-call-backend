@@ -9,7 +9,7 @@ export const get = async (req, res) => {
 
     let customers = [];
 
-    if(+role.status === 1 || +role.status === 2 || +role.status === 100) {
+    if(+role.status === 1 || +role.status === 2 || +role.status === 5 || +role.status === 100) {
       customers = await Customer.get(limit, page, search, role.status, id);
     }
 
