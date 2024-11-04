@@ -14,15 +14,15 @@ export const get = async function (status) {
 };
 
 export const getForManager = async function (id, manager_id) {
-  // const coreColumn = await db('column')
-  //   .select('*')
-  //   .where('id', id);
+  const coreColumn = await db('column')
+    .select('*')
+    .where('id', id);
 
   const selfColumn = await db('column')
     .select('*')
     .where('manager_id', manager_id);
 
-  return [...selfColumn];
+  return [...coreColumn, ...selfColumn];
 };
 
 export const getByManagerId = async function (manager_id) {

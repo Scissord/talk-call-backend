@@ -5,8 +5,20 @@ import formatDate from "../helpers/formatDate.js";
 
 export const getColumns = async (req, res) => {
   try {
+    const role = req.user.role.id;
     const status = req.user.role.status;
-    const columns = await Column.get(status);
+
+    let columns = null;
+
+    if(+role === 3) {
+      columns = await Column.getForManager(3, req.user.id);
+    } else if (+role === 4) {
+      columns = await Column.getForManager(6, req.user.id);
+    } else if (+role === 9) {
+      columns = await Column.getForManager(72, req.user.id);
+    } else {
+      columns = await Column.get(status);
+    }
 
     res.status(200).send(columns);
   } catch (err) {
