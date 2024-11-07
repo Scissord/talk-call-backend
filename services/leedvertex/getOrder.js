@@ -24,11 +24,11 @@ export default async function getOrder(order_id, text, user_id, status, phone) {
       const goodKeys = Object.keys(order.goods);
       const firstGoodKey = goodKeys[0];
 
-      const randomPhone = await randomInstance();
+      const { randomBuyerPhone, randomInstanceId, randomApiToken } = await randomInstance();
 
       customer = await Customer.create({
         name: order.fio,
-        buyer_phone: randomPhone,
+        buyer_phone: randomBuyerPhone,
         good: firstGoodKey,
         ai_active: false,
         manager_id: user_id,
