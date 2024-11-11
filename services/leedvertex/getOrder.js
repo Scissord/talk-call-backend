@@ -45,6 +45,8 @@ export default async function getOrder(order_id, text, user_id, status, phone) {
     })
   };
 
+  console.log("getOrder", customer);
+
   const message = await sendTextMessage(user_id, customer, text, customer.id);
   await updateAvatar(customer);
 
