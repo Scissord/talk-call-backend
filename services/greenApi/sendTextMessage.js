@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as User from '../../models/user.js';
 import * as Message from '../../models/message.js';
 import * as Instance from '../../models/instance.js';
+import * as Customer from '../../models/customer.js';
 import randomInstance from '../instance/randomInstance.js';
 
 export default async function sendTextMessage(user_id, customer, message, customer_id) {
@@ -13,6 +14,10 @@ export default async function sendTextMessage(user_id, customer, message, custom
       api_token: randomApiToken,
       phone: randomBuyerPhone
     };
+
+    await Customer.update(customer_id, {
+      buyer_phone: randomBuyerPhone
+    });
   }
 
   console.log("sendTextMessage", instance);

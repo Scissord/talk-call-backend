@@ -12,6 +12,10 @@ export default async function updateAvatar(customer) {
       api_token: randomApiToken,
       phone: randomBuyerPhone
     };
+
+    await Customer.update(customer.id, {
+      buyer_phone: randomBuyerPhone
+    });
   };
 
   console.log("updateAvatar", instance);
