@@ -1,9 +1,18 @@
 import axios from 'axios';
 import * as Customer from '../../models/customer.js';
 import * as Instance from '../../models/instance.js';
+import randomInstance from '../instance/randomInstance.js';
 
 export default async function updateAvatar(customer) {
-  const instance = await Instance.findByBuyerPhone(customer.buyer_phone);
+  let instance = await Instance.findByBuyerPhone(customer.buyer_phone);
+  if (!instance) {
+    const { randomBuyerPhone, randomInstanceId, randomApiToken } = await randomInstance();
+    instance = {
+      instance_id: randomInstanceId,
+      api_token: randomApiToken,
+      phone: randomBuyerPhone
+    };
+  };
 
   const res = await axios({
     url: `${process.env.GREEN_API_URL}/waInstance${instance.instance_id}/getAvatar/${instance.api_token}`,

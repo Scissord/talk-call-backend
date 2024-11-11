@@ -6,8 +6,6 @@ import cors from "cors";
 
 import apiRoutes from './routes/index.js';
 
-import printName from "./helpers/printName.js";
-
 const allowedOrigins = [
   'http://localhost:5173',
   'https://tc-chat.pw',
@@ -37,6 +35,5 @@ app.use(cors({
 app.use('/api', apiRoutes);
 
 app.listen(PORT, () => {
-	printName();
 	console.log(`Welcome to chat server, port ${PORT} ✅✅✅`);
 });
