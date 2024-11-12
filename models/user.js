@@ -10,7 +10,7 @@ export const getForChats = async function (role_id, role_id2) {
   return await db('user')
     .select('*')
     .where('role', role_id)
-    .andWhere('role', role_id2)
+    .orWhere('role', role_id2)
 };
 
 export const create = async function (data) {
