@@ -8,6 +8,7 @@ import customerRoutes from './customerRoute.js';
 import messageRoutes from './messageRoute.js';
 import adminRoutes from './adminRoute.js';
 import downloadRoutes from './downloadRoute.js'
+import userRoutes from './userRoute.js';
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router.use('/customers', customerRoutes);
 router.use('/messages', messageRoutes);
 router.use('/admin', adminRoutes);
 router.use('/download', downloadRoutes);
+router.use('/users', userRoutes);
 router.use('/uploads', express.static('uploads'));
 
 export default router;

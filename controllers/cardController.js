@@ -72,22 +72,13 @@ export const deleteCard = async (req, res) => {
 };
 
 export const moveCard = async (req, res) => {
-  // const status = req.user.role.status;
-  const { card_id } = req.params;
-  const { manager_id } = req.body;
-
   try {
+    const { card_id } = req.params;
+    const { manager_id } = req.body;
+
     await Customer.update(card_id, {
       manager_id
     })
-
-    // const cachedBoard = await redisClient.get(`board_${status}`);
-
-    // if (cachedBoard) {
-    //   const boardData = JSON.parse(cachedBoard);
-    //   boardData.cards[card_id].manager_id = manager_id;
-    //   await redisClient.setEx(`board_${status}`, 3600, JSON.stringify(boardData));
-    // };
 
     res.status(200).send({ message: "Card moved successfully" });
   } catch (err) {

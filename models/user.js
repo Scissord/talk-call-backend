@@ -6,6 +6,13 @@ export const get = async function () {
   return await db('user').select('*')
 };
 
+export const getForChats = async function (role_id, role_id2) {
+  return await db('user')
+    .select('*')
+    .where('role_id', role_id)
+    .andWhere('role_id2', role_id2)
+};
+
 export const create = async function (data) {
   const [user] = await db("user")
     .insert(data)

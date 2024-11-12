@@ -114,9 +114,6 @@ export const cache = async (req, res) => {
 
 export const clear = async (req, res) => {
   try {
-    const customer_id = req.body.customer_id;
-
-
 		res.status(200).send({ status: "ok" });
 	}	catch (err) {
 		console.log("Error in clear message controller", err.message);

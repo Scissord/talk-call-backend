@@ -182,6 +182,12 @@ export const getCustomerForColumn = async function (customer_id) {
     .first();
 };
 
+export const getConnections = async function (phone) {
+  return await db('customer as c')
+    .select('c.order_id')
+    .where('c.phone', phone)
+};
+
 export const updateWhenDeleteManager = async function (manager_id, newId) {
   return await db('customer')
     .update('manager_id', newId)
