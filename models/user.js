@@ -9,8 +9,8 @@ export const get = async function () {
 export const getForChats = async function (role_id, role_id2) {
   return await db('user')
     .select('*')
-    .where('role_id', role_id)
-    .andWhere('role_id2', role_id2)
+    .where('role', role_id)
+    .andWhere('role', role_id2)
 };
 
 export const create = async function (data) {
