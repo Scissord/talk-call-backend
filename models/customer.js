@@ -19,9 +19,11 @@ export const get = async function (limit, page, search, status, manager_id) {
     .join('customer as c', 'm.customer_id', 'c.id')
     .leftJoin('user as u', 'c.manager_id', 'u.id')
     .whereIn('m.id', function () {
-      this.select(db.raw('MAX(id)'))
+      this.select('id')
           .from('message')
-          .groupBy('customer_id');
+          .whereRaw('customer_id = m.customer_id')
+          .orderBy('created_at', 'desc')
+          .limit(1);
     })
     .where((q) => {
       if (search) {
@@ -62,9 +64,11 @@ export const getForBuyers = async function (limit, page, search, phone) {
     .join('customer as c', 'm.customer_id', 'c.id')
     .leftJoin('user as u', 'c.manager_id', 'u.id')
     .whereIn('m.id', function () {
-      this.select(db.raw('MAX(id)'))
+      this.select('id')
           .from('message')
-          .groupBy('customer_id');
+          .whereRaw('customer_id = m.customer_id')
+          .orderBy('created_at', 'desc')
+          .limit(1);
     })
     .where((q) => {
       if (search) {
@@ -103,9 +107,11 @@ export const getForBoard = async function (status) {
     .join('customer as c', 'm.customer_id', 'c.id')
     .leftJoin('user as u', 'c.manager_id', 'u.id')
     .whereIn('m.id', function () {
-      this.select(db.raw('MAX(id)'))
+      this.select('id')
           .from('message')
-          .groupBy('customer_id');
+          .whereRaw('customer_id = m.customer_id')
+          .orderBy('created_at', 'desc')
+          .limit(1);
     })
     .where((q) => {
       if (status !== 100) {
@@ -134,9 +140,11 @@ export const getForColumn = async function (manager_id, page) {
     .join('customer as c', 'm.customer_id', 'c.id')
     .leftJoin('user as u', 'c.manager_id', 'u.id')
     .whereIn('m.id', function () {
-      this.select(db.raw('MAX(id)'))
+      this.select('id')
           .from('message')
-          .groupBy('customer_id');
+          .whereRaw('customer_id = m.customer_id')
+          .orderBy('created_at', 'desc')
+          .limit(1);
     })
     .where((q) => {
       q.where('c.manager_id', manager_id)
@@ -173,9 +181,11 @@ export const getCustomerForColumn = async function (customer_id) {
     .join('customer as c', 'm.customer_id', 'c.id')
     .leftJoin('user as u', 'c.manager_id', 'u.id')
     .whereIn('m.id', function () {
-      this.select(db.raw('MAX(id)'))
+      this.select('id')
           .from('message')
-          .groupBy('customer_id');
+          .whereRaw('customer_id = m.customer_id')
+          .orderBy('created_at', 'desc')
+          .limit(1);
     })
     .where('m.customer_id', customer_id)
     .orderBy('m.created_at', 'desc')
@@ -184,7 +194,7 @@ export const getCustomerForColumn = async function (customer_id) {
 
 export const getConnections = async function (phone) {
   return await db('customer as c')
-    .select('c.order_id')
+    .select('c.order_id', 'c.id')
     .where('c.phone', phone)
 };
 

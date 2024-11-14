@@ -21,3 +21,9 @@ export const findByMessageId = async function (message_id) {
     .where('a.message_id', message_id)
     .first();
 };
+
+export const destroyAttachment = async function (message_id) {
+  return await db('attachment')
+    .where('message_id', message_id)
+    .del()
+};

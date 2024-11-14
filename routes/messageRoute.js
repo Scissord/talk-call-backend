@@ -15,6 +15,8 @@ router.get("/:customer_id", protectRoute, controller.get);
 router.post("/", protectRoute, upload.array('files'), controller.create);
 // Написать по номеру
 router.post("/leadvertex", protectRoute, controller.leadvertexCreate);
+// Синхронизация
+router.post("/sync/:customer_id", protectRoute, controller.sync);
 // Переправить сообщение
 router.post("/reply", protectRoute, controller.reply);
 // Занести в кэш

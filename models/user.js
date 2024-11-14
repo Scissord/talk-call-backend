@@ -36,18 +36,18 @@ export const isExist = async function (name, phone) {
     .first();
 };
 
-export const findByName = async function (name) {
-  return await db('user')
-    .select('*')
-    .where('name', name)
-    .first();
-};
-
 export const find = async function (id) {
   return await db('user')
    .select('*')
    .where('id', id)
    .first();
+};
+
+export const findByName = async function (name) {
+  return await db('user')
+    .select('*')
+    .where('name', name)
+    .first();
 };
 
 export const destroy = async function (id) {

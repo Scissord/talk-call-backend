@@ -23,7 +23,8 @@ export const getChat = async function (customer_id) {
     .leftJoin('customer as cu', 'cu.id', 'm.customer_id')
     .leftJoin('user as u', 'u.id', 'm.user_id')
     .where('customer_id', customer_id)
-    .groupBy('m.id', 'cu.avatar', 'u.name');
+    .groupBy('m.id', 'cu.avatar', 'u.name')
+    .orderBy('m.created_at', 'asc');
 };
 
 export const getLast = async function (customer_id) {
@@ -45,6 +46,12 @@ export const clear = async function (customer_id) {
   return await db('message')
     .where('customer_id', customer_id)
     .update('is_checked', true);
+};
+
+export const destroyChat = async function (customer_id) {
+  return await db('message')
+    .where('customer_id', customer_id)
+    .del()
 };
 
 export const deleteManager = async function (user_id) {

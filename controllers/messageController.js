@@ -1,6 +1,7 @@
 import * as Message from "../models/message.js";
 import * as Customer from "../models/customer.js";
 import * as Attachment from "../models/attachment.js";
+import * as Instance from "../models/instance.js";
 import redisClient from '../services/redis/redis.js';
 import sendTextMessage from '../services/greenApi/sendTextMessage.js';
 import sendFileMessage from '../services/greenApi/sendFileMessage.js';
@@ -8,6 +9,7 @@ import replyFile from '../services/greenApi/replyFile.js';
 import replyLocation from "../services/greenApi/replyLocation.js";
 import getOrder from "../services/leedvertex/getOrder.js";
 import formatDate from "../helpers/formatDate.js";
+import updateChat from "../services/greenApi/updateChat.js";
 
 export const get = async (req, res) => {
 	try {
@@ -94,6 +96,7 @@ export const cache = async (req, res) => {
 
     if(messages && messages.length > 0) {
       messages = JSON.parse(messages);
+      message.created_at = formatDate(message.created_at)
       messages.push(message);
     } else {
       const messagesFromDm = await Message.getChat(message.customer_id);
@@ -151,6 +154,34 @@ export const reply = async (req, res) => {
 		res.status(200).send({ status: "ok" });
 	}	catch (err) {
 		console.log("Error in reply message controller", err.message);
+		res.status(500).send({ error: "Internal Server Error" });
+	}
+};
+
+export const sync = async (req, res) => {
+  try {
+    const { customer_id } = req.params;
+    const customer = await Customer.find(customer_id);
+    if(!customer) res.status(400).send({ status: "Customer not found" });
+
+    const instance = await Instance.findByBuyerPhone(customer.buyer_phone);
+    if(!instance) res.status(400).send({ status: "Instance not found" });
+
+    let messages = [];
+    const isUpdated = await updateChat(customer_id, customer.phone, instance);
+    if(isUpdated) {
+      const messagesFromDm = await Message.getChat(customer_id);
+      messages = messagesFromDm.map((message) => ({
+        ...message,
+        created_at: formatDate(message.created_at)
+      }));
+
+      await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
+    }
+
+    res.status(200).send({ status: "ok", messages });
+	}	catch (err) {
+		console.log("Error in sync message controller", err.message);
 		res.status(500).send({ error: "Internal Server Error" });
 	}
 };

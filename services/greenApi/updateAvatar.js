@@ -18,8 +18,6 @@ export default async function updateAvatar(customer) {
     });
   };
 
-  console.log("updateAvatar", instance);
-
   const res = await axios({
     url: `${process.env.GREEN_API_URL}/waInstance${instance.instance_id}/getAvatar/${instance.api_token}`,
     method: 'POST',
