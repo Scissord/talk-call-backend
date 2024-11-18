@@ -73,6 +73,10 @@ export default function findBuyerPhone(user_id) {
       // Диас
       phone = '77052970355@c.us';
       break;
+    case 156:
+      // Сабина фемистон 2
+      phone = '77781945330@c.us';
+      break;
     default:
       phone = '77752426015@c.us';
   };
