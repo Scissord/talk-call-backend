@@ -3,9 +3,23 @@ import * as Message from '../../models/message.js';
 import * as Attachment from '../../models/attachment.js';
 import * as Instance from '../../models/instance.js';
 import * as User from '../../models/user.js';
+import * as Customer from '../../models/customer.js';
+import randomInstance from '../instance/randomInstance.js';
 
 export default async function sendFileMessage(user_id, customer, file, customer_id) {
-  const instance = await Instance.findByBuyerPhone(customer.buyer_phone);
+  let instance = await Instance.findByBuyerPhone(customer.buyer_phone);
+  if (!instance) {
+    const { randomBuyerPhone, randomInstanceId, randomApiToken } = await randomInstance();
+    instance = {
+      instance_id: randomInstanceId,
+      api_token: randomApiToken,
+      phone: randomBuyerPhone
+    };
+
+    await Customer.update(customer_id, {
+      buyer_phone: randomBuyerPhone
+    });
+  }
   const url = process.env.URL + 'uploads/' + file.filename;
 
   const res = await axios({
