@@ -54,6 +54,7 @@ export const create = async (req, res) => {
 
     if(type === 'textMessage') {
       obj = await sendTextMessage(req.user.id, customer, message, customer_id);
+      console.log(obj)
     };
 
     if(type === 'fileMessage') {
@@ -79,7 +80,7 @@ export const leadvertexCreate = async (req, res) => {
     const { leadvertex_id, phone, message } = req.body;
 
     const customer = await getOrder(leadvertex_id, message, req.user.id, req.user.role.status, phone);
-    
+
     res.status(200).send({ status: "ok", customer: customer });
 	}	catch (err) {
 		console.log("Error in leadvertexCreate message controller", err.message);
