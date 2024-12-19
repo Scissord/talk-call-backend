@@ -16,7 +16,7 @@ export const create = async function (data) {
 };
 
 export const getChat = async function (customer_id) {
-  return await db('message as m')
+  const messages = await db('message as m')
     .select('m.*', 'cu.avatar', 'u.name as manager_name')
     .select(db.raw('COALESCE(json_agg(a.*) FILTER (WHERE a.id IS NOT NULL), \'[]\') as attachments'))
     .leftJoin('attachment as a', 'a.message_id', 'm.id')
@@ -25,6 +25,15 @@ export const getChat = async function (customer_id) {
     .where('customer_id', customer_id)
     .groupBy('m.id', 'cu.avatar', 'u.name')
     .orderBy('m.created_at', 'asc');
+
+  const processedMessages = messages.map((message) => {
+    if (message.text) {
+      message.text = message.text.replace(/\bQS\w*\b/g, '****');
+    }
+    return message;
+  });
+
+  return processedMessages;
 };
 
 export const getLast = async function (customer_id) {
