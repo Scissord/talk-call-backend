@@ -198,7 +198,7 @@ export const template = async (req, res) => {
     const customer = await Customer.find(customer_id);
     if (!customer) return res.status(400).send({ message: 'No customer' });
 
-    const obj = await sendTemplateMessage(req.user.id, customer, file, customer_id, product, type);
+    const obj = await sendTemplateMessage(req.user.id, customer, file, customer_id, product);
 
     let messages = await redisClient.get(customer_id);
     messages = messages ? JSON.parse(messages) : [];

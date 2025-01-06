@@ -6,7 +6,7 @@ import * as User from '../../models/user.js';
 import * as Customer from '../../models/customer.js';
 import randomInstance from '../instance/randomInstance.js';
 
-export default async function sendFileMessage(user_id, customer, file, customer_id, product, type) {
+export default async function sendFileMessage(user_id, customer, file, customer_id, product) {
   let instance = await Instance.findByBuyerPhone(customer.buyer_phone);
 
   if (!instance) {
@@ -51,7 +51,7 @@ export default async function sendFileMessage(user_id, customer, file, customer_
   }
 
   if (isAuthorized) {
-    const url = process.env.URL + `templates/${product}/${type}/` + file.filename;
+    const url = process.env.URL + `templates/${product}/` + file.filename;
     await axios({
       url: `${process.env.GREEN_API_URL}/waInstance${instance.instance_id}/sendFileByUrl/${instance.api_token}`,
       method: 'POST',
