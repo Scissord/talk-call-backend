@@ -10,13 +10,13 @@ export default async function findTemplate(product, type) {
       filePath = `./templates/${product}/${type}.jpg`;
       break;
     case 'audio':
-      filePath = './templates/${product}/${type}.ogg';
+      filePath = `./templates/${product}/${type}.ogg`;
       break;
     case 'image':
-      filePath = './templates/${product}/${type}.jpg';
+      filePath = `./templates/${product}/${type}.jpg`;
       break;
     case 'pic':
-      filePath = './templates/${product}/${type}.webp';
+      filePath = `./templates/${product}/${type}.webp`;
       break;
     default:
       throw new Error(`Unknown type "${type}"`);
