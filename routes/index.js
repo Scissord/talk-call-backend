@@ -22,5 +22,6 @@ router.use('/admin', adminRoutes);
 router.use('/download', downloadRoutes);
 router.use('/users', userRoutes);
 router.use('/uploads', express.static('uploads'));
+router.use('/templates', express.static('templates'));
 
 export default router;

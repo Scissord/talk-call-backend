@@ -5,25 +5,27 @@ import * as Instance from "../models/instance.js";
 import redisClient from '../services/redis/redis.js';
 import sendTextMessage from '../services/greenApi/sendTextMessage.js';
 import sendFileMessage from '../services/greenApi/sendFileMessage.js';
+import sendTemplateMessage from '../services/greenApi/sendTemplateMessage.js';
 import replyFile from '../services/greenApi/replyFile.js';
 import replyLocation from "../services/greenApi/replyLocation.js";
 import getOrder from "../services/leedvertex/getOrder.js";
 import formatDate from "../helpers/formatDate.js";
 import updateChat from "../services/greenApi/updateChat.js";
+import findTemplate from "../services/template/find.js";
 
 export const get = async (req, res) => {
-	try {
+  try {
     const customer_id = req.params.customer_id
     await Message.clear(customer_id);
 
     const cachedMessages = await redisClient.get(customer_id);
-		if (cachedMessages) {
+    if (cachedMessages) {
 
-			return res.status(200).send({
+      return res.status(200).send({
         message: 'ok',
         messages: JSON.parse(cachedMessages),
       });
-		};
+    };
 
     const messagesFromDm = await Message.getChat(customer_id);
     const messages = messagesFromDm.map((message) => ({
@@ -31,16 +33,16 @@ export const get = async (req, res) => {
       created_at: formatDate(message.created_at)
     }));
 
-		await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
+    await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
-		res.status(200).send({
+    res.status(200).send({
       message: 'ok',
       messages,
     });
-	}	catch (err) {
-		console.log("Error in get message controller", err.message);
-		res.status(500).send({ error: "Internal Server Error" });
-	}
+  } catch (err) {
+    console.log("Error in get message controller", err.message);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
 };
 
 export const create = async (req, res) => {
@@ -52,12 +54,12 @@ export const create = async (req, res) => {
 
     let obj = null;
 
-    if(type === 'textMessage') {
+    if (type === 'textMessage') {
       obj = await sendTextMessage(req.user.id, customer, message, customer_id);
       console.log(obj)
     };
 
-    if(type === 'fileMessage') {
+    if (type === 'fileMessage') {
       obj = await sendFileMessage(req.user.id, customer, file, customer_id);
     };
 
@@ -68,11 +70,11 @@ export const create = async (req, res) => {
 
     await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
-		res.status(200).send({ message: obj });
-	}	catch (err) {
-		console.log("Error in post message controller", err.message);
-		res.status(500).send({ error: "Internal Server Error" });
-	}
+    res.status(200).send({ message: obj });
+  } catch (err) {
+    console.log("Error in post message controller", err.message);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
 };
 
 export const leadvertexCreate = async (req, res) => {
@@ -82,10 +84,10 @@ export const leadvertexCreate = async (req, res) => {
     const customer = await getOrder(leadvertex_id, message, req.user.id, req.user.role.status, phone);
 
     res.status(200).send({ status: "ok", customer: customer });
-	}	catch (err) {
-		console.log("Error in leadvertexCreate message controller", err.message);
-		res.status(500).send({ error: "Internal Server Error" });
-	}
+  } catch (err) {
+    console.log("Error in leadvertexCreate message controller", err.message);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
 };
 
 export const cache = async (req, res) => {
@@ -95,7 +97,7 @@ export const cache = async (req, res) => {
 
     let messages = await redisClient.get(customer_id);
 
-    if(messages && messages.length > 0) {
+    if (messages && messages.length > 0) {
       messages = JSON.parse(messages);
       message.created_at = formatDate(message.created_at)
       messages.push(message);
@@ -109,20 +111,20 @@ export const cache = async (req, res) => {
 
     await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
-		res.status(200).send({ message: "ok" });
-	}	catch (err) {
-		console.log("Error in cache message controller", err.message);
-		res.status(500).send({ error: "Internal Server Error" });
-	}
+    res.status(200).send({ message: "ok" });
+  } catch (err) {
+    console.log("Error in cache message controller", err.message);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
 };
 
 export const clear = async (req, res) => {
   try {
-		res.status(200).send({ status: "ok" });
-	}	catch (err) {
-		console.log("Error in clear message controller", err.message);
-		res.status(500).send({ error: "Internal Server Error" });
-	}
+    res.status(200).send({ status: "ok" });
+  } catch (err) {
+    console.log("Error in clear message controller", err.message);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
 };
 
 export const reply = async (req, res) => {
@@ -135,10 +137,10 @@ export const reply = async (req, res) => {
 
     let obj = null;
 
-    if(!attachment) {
+    if (!attachment) {
       obj = await sendTextMessage(req.user.id, customer, message.text, customer_id);
     } else {
-      if(!attachment.contentType) {
+      if (!attachment.contentType) {
         obj = await replyLocation(req.user.id, customer, attachment, customer_id);
       } else {
         obj = await replyFile(req.user.id, customer, attachment, customer_id);
@@ -152,25 +154,25 @@ export const reply = async (req, res) => {
 
     await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
-		res.status(200).send({ status: "ok" });
-	}	catch (err) {
-		console.log("Error in reply message controller", err.message);
-		res.status(500).send({ error: "Internal Server Error" });
-	}
+    res.status(200).send({ status: "ok" });
+  } catch (err) {
+    console.log("Error in reply message controller", err.message);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
 };
 
 export const sync = async (req, res) => {
   try {
     const { customer_id } = req.params;
     const customer = await Customer.find(customer_id);
-    if(!customer) res.status(400).send({ status: "Customer not found" });
+    if (!customer) res.status(400).send({ status: "Customer not found" });
 
     const instance = await Instance.findByBuyerPhone(customer.buyer_phone);
-    if(!instance) res.status(400).send({ status: "Instance not found" });
+    if (!instance) res.status(400).send({ status: "Instance not found" });
 
     let messages = [];
     const isUpdated = await updateChat(customer_id, customer.phone, instance);
-    if(isUpdated) {
+    if (isUpdated) {
       const messagesFromDm = await Message.getChat(customer_id);
       messages = messagesFromDm.map((message) => ({
         ...message,
@@ -181,8 +183,33 @@ export const sync = async (req, res) => {
     }
 
     res.status(200).send({ status: "ok", messages });
-	}	catch (err) {
-		console.log("Error in sync message controller", err.message);
-		res.status(500).send({ error: "Internal Server Error" });
-	}
+  } catch (err) {
+    console.log("Error in sync message controller", err.message);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+};
+
+export const template = async (req, res) => {
+  try {
+    const { customer_id, product, type } = req.body;
+
+    const file = await findTemplate(product, type);
+    if (!file) return res.status(400).send({ message: 'No file' });
+    const customer = await Customer.find(customer_id);
+    if (!customer) return res.status(400).send({ message: 'No customer' });
+
+    const obj = await sendTemplateMessage(req.user.id, customer, file, customer_id, product, type);
+
+    let messages = await redisClient.get(customer_id);
+    messages = messages ? JSON.parse(messages) : [];
+
+    messages.push(obj);
+
+    await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
+
+    res.status(200).send({ message: obj });
+  } catch (err) {
+    console.log("Error in template message controller", err.message);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
 };

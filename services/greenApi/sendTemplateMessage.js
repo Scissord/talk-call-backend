@@ -6,7 +6,7 @@ import * as User from '../../models/user.js';
 import * as Customer from '../../models/customer.js';
 import randomInstance from '../instance/randomInstance.js';
 
-export default async function sendFileMessage(user_id, customer, file, customer_id) {
+export default async function sendFileMessage(user_id, customer, file, customer_id, product, type) {
   let instance = await Instance.findByBuyerPhone(customer.buyer_phone);
 
   if (!instance) {
@@ -51,7 +51,7 @@ export default async function sendFileMessage(user_id, customer, file, customer_
   }
 
   if (isAuthorized) {
-    const url = process.env.URL + 'uploads/' + file.filename;
+    const url = process.env.URL + `templates/${product}/${type}/` + file.filename;
     await axios({
       url: `${process.env.GREEN_API_URL}/waInstance${instance.instance_id}/sendFileByUrl/${instance.api_token}`,
       method: 'POST',
@@ -61,7 +61,7 @@ export default async function sendFileMessage(user_id, customer, file, customer_
       data: {
         chatId: customer.phone,
         urlFile: url,
-        fileName: file.originalname
+        fileName: file.filename
       },
     })
 
@@ -76,7 +76,7 @@ export default async function sendFileMessage(user_id, customer, file, customer_
     const attachment = await Attachment.create({
       message_id: obj.id,
       link: url,
-      name: file.originalname,
+      name: file.filename,
       contentType: file.mimetype
     });
 
