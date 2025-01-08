@@ -4,26 +4,31 @@ import * as MessageMapper from './messageMapper.js';
 import * as Attachment from '../../models/attachment.js';
 
 export default async function updateChat(customer_id, phone, instance) {
-  let isUpdated = false;
-  const res = await axios({
-    url: `${process.env.GREEN_API_URL}/waInstance${instance.instance_id}/getChatHistory/${instance.api_token}`,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: {
-      chatId: phone
-    }
-  })
+  let res = { status: null };
 
-  const messages = await Message.getChat(customer_id);
+  try {
+    res = await axios({
+      url: `${process.env.GREEN_API_URL}/waInstance${instance.instance_id}/getChatHistory/${instance.api_token}`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        chatId: phone
+      }
+    })
+  } catch (err) {
+    console.error('Error fetching chat history:', err.message);
+  };
 
-  // if(messages.length !== res.data.length) {
+  if (res.status === 200) {
+    const messages = await Message.getChat(customer_id);
+
     await Message.destroyChat(customer_id);
-    for(const message of messages) {
+    for (const message of messages) {
       await Attachment.destroyAttachment(message.id);
     };
-    for(const message of res.data) {
+    for (const message of res.data) {
       switch (message.typeMessage) {
         case 'locationMessage':
           const lm = await MessageMapper.locationMessage(customer_id, message)
@@ -55,9 +60,8 @@ export default async function updateChat(customer_id, phone, instance) {
         default:
           break;
       }
-      isUpdated = true;
     };
-  // }
+  };
 
-  return isUpdated;
+  return;
 };

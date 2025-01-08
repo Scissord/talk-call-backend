@@ -10,7 +10,7 @@ export const getColumns = async (req, res) => {
 
     let columns = null;
 
-    if(+role === 3) {
+    if (+role === 3) {
       columns = await Column.getForManager(3, req.user.id);
     } else if (+role === 4) {
       columns = await Column.getForManager(6, req.user.id);
@@ -34,7 +34,7 @@ export const getCards = async (req, res) => {
 
     const cards = [];
 
-    for(const column of columns) {
+    for (const column of columns) {
       const { cardsFromDb, total } = await Customer.getForColumn(column.manager_id, 1);
 
       cardsFromDb.forEach((card, index) => {

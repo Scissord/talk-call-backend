@@ -2,21 +2,23 @@ import fs from 'fs/promises';
 import path from 'path';
 import mime from 'mime-types';
 
-export default async function findTemplate(product, type) {
+export default async function findTemplate(product, type, i) {
   let filePath = null;
 
   switch (type) {
     case 'cert':
-      filePath = `./templates/${product}/${type}.jpg`;
+      filePath = `./templates/${product}/${type}${i}.jpg`;
       break;
     case 'audio':
-      filePath = `./templates/${product}/${type}.ogg`;
+      filePath = `./templates/${product}/${type}${i}.ogg`;
       break;
     case 'image':
-      filePath = `./templates/${product}/${type}.jpg`;
+      filePath = `./templates/${product}/${type}${i}.jpg`;
       break;
     case 'pic':
-      filePath = `./templates/${product}/${type}.webp`;
+      filePath = `./templates/${product}/${type}${i}.webp`;
+    case 'qr':
+      filePath = `./templates/${product}/${type}${i}.jpg`;
       break;
     default:
       throw new Error(`Unknown type "${type}"`);

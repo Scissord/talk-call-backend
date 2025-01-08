@@ -163,6 +163,7 @@ export const reply = async (req, res) => {
 
 export const sync = async (req, res) => {
   try {
+    console.log('sync');
     const { customer_id } = req.params;
     const customer = await Customer.find(customer_id);
     if (!customer) res.status(400).send({ status: "Customer not found" });
@@ -171,16 +172,14 @@ export const sync = async (req, res) => {
     if (!instance) res.status(400).send({ status: "Instance not found" });
 
     let messages = [];
-    const isUpdated = await updateChat(customer_id, customer.phone, instance);
-    if (isUpdated) {
-      const messagesFromDm = await Message.getChat(customer_id);
-      messages = messagesFromDm.map((message) => ({
-        ...message,
-        created_at: formatDate(message.created_at)
-      }));
+    await updateChat(customer_id, customer.phone, instance);
+    const messagesFromDm = await Message.getChat(customer_id);
+    messages = messagesFromDm.map((message) => ({
+      ...message,
+      created_at: formatDate(message.created_at)
+    }));
 
-      await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
-    }
+    await redisClient.setEx(customer_id, 3600, JSON.stringify(messages));
 
     res.status(200).send({ status: "ok", messages });
   } catch (err) {
@@ -191,9 +190,9 @@ export const sync = async (req, res) => {
 
 export const template = async (req, res) => {
   try {
-    const { customer_id, product, type } = req.body;
+    const { customer_id, product, type, i } = req.body;
 
-    const file = await findTemplate(product, type);
+    const file = await findTemplate(product, type, i);
     if (!file) return res.status(400).send({ message: 'No file' });
     const customer = await Customer.find(customer_id);
     if (!customer) return res.status(400).send({ message: 'No customer' });
