@@ -17,6 +17,7 @@ export default async function findTemplate(product, type, i) {
       break;
     case 'pic':
       filePath = `./templates/${product}/${type}${i}.webp`;
+      break;
     case 'qr':
       filePath = `./templates/${product}/${type}${i}.jpg`;
       break;
