@@ -56,7 +56,6 @@ export const create = async (req, res) => {
 
     if (type === 'textMessage') {
       obj = await sendTextMessage(req.user.id, customer, message, customer_id);
-      console.log(obj)
     };
 
     if (type === 'fileMessage') {

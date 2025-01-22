@@ -35,5 +35,5 @@ app.use(cors({
 app.use('/api', apiRoutes);
 
 app.listen(PORT, () => {
-	console.log(`Welcome to chat server, port ${PORT} ✅✅✅`);
+  console.log(`Welcome to chat server, port ${PORT} ✅✅✅`);
 });
