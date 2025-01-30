@@ -277,3 +277,10 @@ export const getMostPopularBuyerInCurrentMonth = async function () {
 
   return count;
 };
+
+
+export const updateOrderID = async function (oldId, newId) {
+  return await db('customer')
+    .update('order_id', newId)
+    .where('order_id', oldId)
+};
