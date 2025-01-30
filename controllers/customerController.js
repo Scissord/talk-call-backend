@@ -40,7 +40,7 @@ export const updateFilteredOrder = async (req, res) => {
     try {
         const apiToken = 'kjsdaKRhlsrk0rjjekjskaaaaaaaa'; 
         const ordersUrl = `https://talkcall-kz.leadvertex.ru/api/admin/getOrdersIdsByConditionSearchAfter.html`;
-        const orderInfoUrl = `https://demo-1.leadvertex.ru/api/admin/getOrdersByIds.html?token=${apiToken}`;
+        const orderInfoUrl = `https://talkcall-kz.leadvertex.ru/api/admin/getOrdersByIds.html?token=${apiToken}`;
 
         let allOrderIds = [];
         let searchAfter = ""; // Начинаем без searchAfter
