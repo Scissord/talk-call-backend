@@ -49,7 +49,7 @@ export const updateFilteredOrder = async (req, res) => {
         while (true) {
             const params = {
                 token: apiToken,
-                additional19: '><',  // Фильтр на НЕ пустые значения
+                additional19: '1',  // Фильтр на НЕ пустые значения
                 additional13: 'whatsapp-chat-gpt'
             };
             
