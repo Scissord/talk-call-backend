@@ -39,36 +39,72 @@ export const get = async (req, res) => {
 export const updateFilteredOrder = async (req, res) => {
     try {
         const apiToken = 'kjsdaKRhlsrk0rjjekjskaaaaaaaa'; 
-        const url = `https://talkcall-kz.leadvertex.ru/api/admin/getOrdersIdsByCondition.html`;
-        const getInfoOrderUrl = `https://demo-1.leadvertex.ru/api/admin/getOrdersByIds.html?token=${apiToken}`
-        const params = {
-            token: apiToken,
-            additional19: '><', 
-            additional13: 'whatsapp-chat-gpt'
-        };
+        const ordersUrl = `https://talkcall-kz.leadvertex.ru/api/admin/getOrdersIdsByConditionSearchAfter.html`;
+        const orderInfoUrl = `https://demo-1.leadvertex.ru/api/admin/getOrdersByIds.html?token=${apiToken}`;
 
-        const response = await axios.get(url, { params });
+        let allOrderIds = [];
+        let searchAfter = ""; // Начинаем без searchAfter
 
-        if (response.status === 200) {
-            const orderIds = response.data;
+        // 🔹 1. Получаем заказы порциями
+        while (true) {
+            const params = {
+                token: apiToken,
+                additional19: '><',  // Фильтр на НЕ пустые значения
+                additional13: 'whatsapp-chat-gpt'
+            };
+            
+            if (searchAfter) {
+                params.searchAfter = searchAfter; // Передаем searchAfter, если он есть
+            }
 
+            const response = await axios.get(ordersUrl, { params });
 
-            for (const order of orderIds) {
-              const res = await axios.get(`${getInfoOrderUrl}&ids=${order}`)
-              const orderInfo = res.data[order]
-              const oldID = orderInfo['additional19']
-              try {
-                await Customer.updateOrderID(oldID, order)
-                console.log(`oldID: ${oldID}, newID: ${order}`)
-              } catch (error) {
-                console.log(`${error} ${error.message}`)
-              }
-          }
-        } else {
-            return res.status(response.status).json({ success: false, message: 'Ошибка API LeadVertex' });
+            if (response.status === 200) {
+                const data = response.data;
+
+                if (!data.ids || data.ids.length === 0) break; // Если заказов больше нет, выходим из цикла
+
+                allOrderIds.push(...data.ids); // Добавляем найденные заказы
+
+                searchAfter = data.searchAfter; // Запоминаем новый searchAfter
+
+                if (!searchAfter) break; // Если searchAfter больше нет, выходим из цикла
+            } else {
+                return res.status(response.status).json({ success: false, message: 'Ошибка API LeadVertex' });
+            }
         }
+
+        console.log(`🔹 Найдено заказов: ${allOrderIds.length}`);
+
+        // 🔹 2. Запрашиваем детали заказов
+        for (const orderId of allOrderIds) {
+            try {
+                const res = await axios.get(`${orderInfoUrl}&ids=${orderId}`);
+                const orderInfo = res.data[orderId]; 
+
+                if (!orderInfo) {
+                    console.log(`⚠️ Ошибка: заказ ${orderId} не найден в API LeadVertex`);
+                    continue;
+                }
+
+                const oldID = orderInfo['additional19']; 
+
+                if (oldID) {
+                    await Customer.updateOrderID(oldID, orderId);
+                    console.log(`✅ Заказ обновлен: oldID=${oldID}, newID=${orderId}`);
+                } else {
+                    console.log(`⚠️ У заказа ${orderId} нет additional19`);
+                }
+            } catch (error) {
+                console.error(`❌ Ошибка при обработке заказа ${orderId}:`, error.message);
+            }
+        }
+
+        return res.json({ success: true, ordersProcessed: allOrderIds.length });
+
     } catch (error) {
-        console.error('Ошибка получения заказов:', error);
+        console.error('❌ Ошибка получения заказов:', error);
         return res.status(500).json({ success: false, message: 'Ошибка сервера' });
     }
 };
+
